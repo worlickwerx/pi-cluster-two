@@ -13,12 +13,12 @@ const uint8_t can_addr = 0x10; // get from slot id | 0x10
 
 int main (void)
 {
-    canmgr_setup (can_addr);
     identify_setup ();
     activity_setup ();
     target_reset_setup ();
     target_power_setup ();
     target_console_setup ();
+    canmgr_setup (can_addr); // calls target_console, _power, _reset 
 
     while (1) {
         canmgr_update ();
@@ -28,12 +28,12 @@ int main (void)
         target_console_update ();
     }
 
+    canmgr_finalize ();
     target_console_finalize ();
     target_power_finalize ();
     target_reset_finalize ();
     activity_finalize ();
     identify_finalize ();
-    canmgr_finalize ();
 }
 
 /*
