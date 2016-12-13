@@ -32,7 +32,8 @@ SRCS_CXX = \
 	can.cpp \
 	identify.cpp \
 	activity.cpp \
-	target_reset.cpp
+	target_reset.cpp \
+	target_console.cpp
 
 # configurable options
 OPTIONS = -DF_CPU=48000000 -DLAYOUT_US_ENGLISH -DUSING_MAKEFILE
