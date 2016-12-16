@@ -1,5 +1,6 @@
 #include <WProgram.h>
 #include "can.h"
+#include "canmgr_proto.h"
 #include "canmgr.h"
 #include "activity.h"
 #include "identify.h"
@@ -7,7 +8,7 @@
 #include "target_reset.h"
 #include "target_console.h"
 
-static struct canmgr_payload canmgr_console_id;
+static struct canmgr_pkt canmgr_console_id;
 static uint8_t canmgr_console_connected;
 
 void canmgr_setup (uint32_t can_addr)
@@ -22,7 +23,7 @@ void canmgr_setup (uint32_t can_addr)
 
 // test: cansend 200#0000000001 to turn on
 //       cansend 200#0000000000 to turn off
-void canmgr_dispatch (struct canmgr_payload *pkt, uint8_t len)
+void canmgr_dispatch (struct canmgr_pkt *pkt, uint8_t len)
 {
     switch (pkt->object) {
         case CANOBJ_LED_IDENTIFY:
@@ -74,17 +75,14 @@ void canmgr_update (void)
     char cons_buf[4];
     uint8_t len, cons_len;
     uint32_t id;
-    struct canmgr_payload pkt;
+    struct canmgr_pkt pkt;
 
     if (can0_available ()) {
         activity_pulse ();
-        if (can0_read (&id, &len, buf) && len >= 4) {
-            if (len < 4)
-                return; // runt
-            pkt.object = buf[3];
-            pkt.object |= (buf[2]&3)<<8;
-            memcpy (pkt.data, &buf[4], 4);
-            canmgr_dispatch (&pkt, len - 4);
+        if (can0_read (&id, &len, buf)) {
+            int data_len = canmgr_pkt_decode (&pkt, buf, len);
+            if (data_len >= 0)
+                canmgr_dispatch (&pkt, len - 4);
         }
     }
     if ((cons_len = target_console_recv (cons_buf, 4)) > 0) {

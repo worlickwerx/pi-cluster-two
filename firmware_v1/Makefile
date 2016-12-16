@@ -23,7 +23,8 @@ SRCS_C = \
 	main.c \
 	canmgr.c \
 	target_power.c \
-	address.c
+	address.c \
+	canmgr_proto.c
 SRCS_CXX = \
 	teensy3/yield.cpp \
 	teensy3/HardwareSerial1.cpp \
@@ -35,6 +36,9 @@ SRCS_CXX = \
 	activity.cpp \
 	target_reset.cpp \
 	target_console.cpp
+
+CANMGR_DIR := $(shell pwd)/../libcanmgr
+VPATH = $(CANMGR_DIR)
 
 # configurable options
 OPTIONS = -DF_CPU=48000000 -DLAYOUT_US_ENGLISH -DUSING_MAKEFILE
@@ -50,7 +54,7 @@ OPTIONS += -D__$(MCU)__ -DARDUINO=10600 -DTEENSYDUINO=121
 
 # CPPFLAGS = compiler options for C and C++
 CPPFLAGS = -Wall -g -Os -mcpu=cortex-m4 -mthumb -MMD $(OPTIONS)
-CPPFLAGS += -Iteensy3 -IFlexCAN
+CPPFLAGS += -Iteensy3 -IFlexCAN -I$(CANMGR_DIR)
 
 # compiler options for C++ only
 CXXFLAGS = -std=gnu++0x -felide-constructors -fno-exceptions -fno-rtti
