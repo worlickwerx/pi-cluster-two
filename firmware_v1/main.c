@@ -25,7 +25,6 @@ int main (void)
         identify_update ();
         activity_update ();
         target_reset_update ();
-        target_console_update ();
     }
 
     canmgr_finalize ();

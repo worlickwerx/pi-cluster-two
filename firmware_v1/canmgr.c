@@ -10,13 +10,6 @@
 static struct canmgr_payload canmgr_console_id;
 static uint8_t canmgr_console_connected;
 
-void console_recv (char *buf, int len, void *arg)
-{
-    if (canmgr_console_connected) {
-        // send to connected id
-    }
-}
-
 void canmgr_setup (uint32_t can_addr)
 {
     int i;
@@ -25,7 +18,6 @@ void canmgr_setup (uint32_t can_addr)
     for (i = 0; i < 8; i++)
         can0_setfilter (can_addr<<5, i);
     canmgr_console_connected = 0;
-    target_console_set_receiver (console_recv, NULL);
 }
 
 // test: cansend 200#0000000001 to turn on
@@ -79,7 +71,8 @@ void canmgr_dispatch (struct canmgr_payload *pkt, uint8_t len)
 void canmgr_update (void)
 {
     uint8_t buf[8];
-    uint8_t len;
+    char cons_buf[4];
+    uint8_t len, cons_len;
     uint32_t id;
     struct canmgr_payload pkt;
 
@@ -93,6 +86,9 @@ void canmgr_update (void)
             memcpy (pkt.data, &buf[4], 4);
             canmgr_dispatch (&pkt, len - 4);
         }
+    }
+    if ((cons_len = target_console_recv (cons_buf, 4)) > 0) {
+        // send to connected object
     }
 }
 
