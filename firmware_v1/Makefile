@@ -22,7 +22,8 @@ SRCS_C = \
 	teensy3/usb_dev.c \
 	main.c \
 	canmgr.c \
-	target_power.c
+	target_power.c \
+	address.c
 SRCS_CXX = \
 	teensy3/yield.cpp \
 	teensy3/HardwareSerial1.cpp \
