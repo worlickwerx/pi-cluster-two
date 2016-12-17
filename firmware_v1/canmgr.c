@@ -8,8 +8,15 @@
 #include "target_reset.h"
 #include "target_console.h"
 
-static struct canmgr_pkt canmgr_console_id;
-static uint8_t canmgr_console_connected;
+static struct canmgr_pkt canmgr_console_id = {
+    .pri = 1,
+    .type = CANMGR_TYPE_DAT,
+    .cluster = 0,
+    .module = 0,
+    .node = 8,
+    .object = 0x0382,
+};
+static uint8_t canmgr_console_connected = 1;
 
 void canmgr_setup (uint32_t can_addr)
 {
@@ -46,25 +53,8 @@ void canmgr_dispatch (struct canmgr_pkt *pkt, uint8_t len)
             // FIXME: send ACK
             break;
         case CANOBJ_TARGET_CONSOLECONN:
-            if (!canmgr_console_connected) {
-                canmgr_console_id.object = pkt->data[3]
-                                         | ((pkt->data[2] & 3) << 8);
-                canmgr_console_id.type = (pkt->data[2] >> 4) & 3;
-                canmgr_console_id.node = ((pkt->data[2] >> 6) & 3)
-                                       | (pkt->data[1] & 0x0F) << 2;
-                canmgr_console_id.module = ((pkt->data[1] >> 4) & 0x0F)
-                                         | (pkt->data[0] & 3) << 4;
-                canmgr_console_id.cluster = pkt->data[0] >> 2;
-                canmgr_console_connected = 1;
-                // FIXME: send ACK
-            } else  {
-                // FIXME: send NAK
-            }
             break;
         case CANOBJ_TARGET_CONSOLEDISC:
-            // FIXME: check if "owner"
-            canmgr_console_connected = 0;
-            // FIXME: send ACK
             break;
     }
 }
@@ -72,7 +62,6 @@ void canmgr_dispatch (struct canmgr_pkt *pkt, uint8_t len)
 void canmgr_update (void)
 {
     uint8_t buf[8];
-    char cons_buf[4];
     uint8_t len, cons_len;
     uint32_t id;
     struct canmgr_pkt pkt;
@@ -85,8 +74,14 @@ void canmgr_update (void)
                 canmgr_dispatch (&pkt, len - 4);
         }
     }
-    if ((cons_len = target_console_recv (cons_buf, 4)) > 0) {
-        // send to connected object
+    if (target_console_available ()) {
+        activity_pulse ();
+        cons_len = target_console_recv (&canmgr_console_id.data[0], 4);
+        int len = canmgr_pkt_encode (&canmgr_console_id, cons_len, buf, 8);
+        if (len >= 0) {
+            // FIXME set id
+            can0_write (id, len, buf, 100);
+        }
     }
 }
 
