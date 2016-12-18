@@ -2,7 +2,18 @@
 #include <string.h>
 #include "canmgr_proto.h"
 
-int canmgr_deode_hdr (struct canmgr_hdr *hdr, uint8_t *data, int len)
+int canmgr_compare_hdr (struct canmgr_hdr *h1, struct canmgr_hdr *h2)
+{
+    if (h1->object != h2->object || h1->node != h2->node
+                                 || h1->module != h2->module
+                                 || h1->cluster != h2->cluster
+                                 || h1->type != h2->type
+                                 || h1->pri != h2->pri)
+        return -1;
+    return 0;
+}
+
+int canmgr_decode_hdr (struct canmgr_hdr *hdr, uint8_t *data, int len)
 {
     if (len != 4)
         return -1;
@@ -65,7 +76,7 @@ int canmgr_encode_hdr (struct canmgr_hdr *hdr, uint8_t *data, int len)
     /* 1 bit priority */
     data[0] |= hdr->pri<<7;
 
-    return 0; 
+    return 0;
 }
 
 int canmgr_encode (struct canmgr_frame *fr, struct rawcan_frame *raw)

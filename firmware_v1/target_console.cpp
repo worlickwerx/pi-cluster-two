@@ -8,6 +8,7 @@ void target_console_setup (void)
 
 void target_console_finalize (void)
 {
+    Serial1.end ();
 }
 
 void target_console_send (uint8_t *buf, int len)
@@ -19,7 +20,7 @@ void target_console_send (uint8_t *buf, int len)
 
 int target_console_available (void)
 {
-    return Serial1.available ();
+    return (Serial1.available () > 0) ? 1 : 0;
 }
 
 int target_console_recv (uint8_t *buf, int len)

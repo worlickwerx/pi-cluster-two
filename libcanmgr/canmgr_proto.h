@@ -84,6 +84,8 @@ int canmgr_encode (struct canmgr_frame *fr, struct rawcan_frame *raw);
 int canmgr_decode_hdr (struct canmgr_hdr *hdr, uint8_t *data, int len);
 int canmgr_encode_hdr (struct canmgr_hdr *hdr, uint8_t *data, int len);
 
+int canmgr_compare_hdr (struct canmgr_hdr *hdr1, struct canmgr_hdr *hdr2);
+
 #endif /* _CANMGR_PROTO_H */
 
 /*
