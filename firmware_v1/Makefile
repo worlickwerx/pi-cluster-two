@@ -20,30 +20,35 @@ SRCS_C = \
 	teensy3/nonstd.c \
 	teensy3/analog.c \
 	teensy3/usb_dev.c \
+	teensy3/usb_mem.c \
+	teensy3/usb_serial.c \
+	teensy3/usb_desc.c \
 	main.c \
 	canmgr.c \
 	target_power.c \
 	address.c \
 	canmgr_proto.c
+
 SRCS_CXX = \
 	teensy3/yield.cpp \
 	teensy3/HardwareSerial1.cpp \
 	teensy3/HardwareSerial2.cpp \
 	teensy3/HardwareSerial3.cpp \
+	teensy3/usb_inst.cpp \
 	FlexCAN/FlexCAN.cpp \
 	can.cpp \
 	identify.cpp \
 	activity.cpp \
 	target_reset.cpp \
-	target_console.cpp
+	target_console.cpp \
 
 CANMGR_DIR := $(shell pwd)/../libcanmgr
 VPATH = $(CANMGR_DIR)
 
 # configurable options
 OPTIONS = -DF_CPU=48000000 -DLAYOUT_US_ENGLISH -DUSING_MAKEFILE
-#OPTIONS += -DUSB_SERIAL
-OPTIONS += -DUSB_DISABLED
+OPTIONS += -DUSB_SERIAL
+#OPTIONS += -DUSB_DISABLED
 
 # options needed by many Arduino libraries to configure for Teensy 3.0
 OPTIONS += -D__$(MCU)__ -DARDUINO=10600 -DTEENSYDUINO=121

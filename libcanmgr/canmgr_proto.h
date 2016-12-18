@@ -81,6 +81,9 @@ enum {
 int canmgr_decode (struct canmgr_frame *fr, struct rawcan_frame *raw);
 int canmgr_encode (struct canmgr_frame *fr, struct rawcan_frame *raw);
 
+int canmgr_decode_hdr (struct canmgr_hdr *hdr, uint8_t *data, int len);
+int canmgr_encode_hdr (struct canmgr_hdr *hdr, uint8_t *data, int len);
+
 #endif /* _CANMGR_PROTO_H */
 
 /*
