@@ -11,7 +11,7 @@
 
 static const uint8_t myaddr = 0; // lie
 
-int opencan (const char *name)
+int can_open (const char *name)
 {
     struct sockaddr_can addr;
     struct ifreq ifr;
@@ -19,30 +19,61 @@ int opencan (const char *name)
 
     if ((s = socket(PF_CAN, SOCK_RAW, CAN_RAW)) < 0) {
         fprintf (stderr, "socket: %m\n");
-        exit (1);
+        return -1;
     }
     strcpy(ifr.ifr_name, "can0" );
     if (ioctl(s, SIOCGIFINDEX, &ifr) < 0) {
         fprintf (stderr, "ioctl SIOCGIFINDEX: %m\n");
-        exit (1);
+        close (s);
+        return -1;
     }
     addr.can_family = AF_CAN;
     addr.can_ifindex = ifr.ifr_ifindex;
-    if (bind(s, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
+    if (bind (s, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
         fprintf (stderr, "bind: %m\n");
-        exit (1);
+        close (s);
+        return -1;
     }
     return s;
 }
 
+int can_send (int s, struct rawcan_frame *raw)
+{
+    struct can_frame frame;
+
+    frame.can_id = raw->id;
+    frame.can_dlc = raw->dlen;
+    memcpy (frame.data, raw->data, raw->dlen);
+
+    if (write (s, &frame, sizeof(frame)) != sizeof (frame))
+        return -1;
+    return 0;
+}
+
+int can_recv (int s, struct rawcan_frame *raw)
+{
+    struct can_frame frame;
+
+    if (read (s, &frame, sizeof(frame)) != sizeof (frame))
+        return -1;
+
+    raw->id = frame.can_id;
+    raw->dlen = frame.can_dlc;
+    memcpy (raw->data, frame.data, frame.can_dlc);
+    return 0;
+}
+
+void can_close (int s)
+{
+    close (s);
+}
+
 int main (int argc, char *argv[])
 {
-    struct canmgr_pkt req_pkt, rep_pkt;
-    struct canmgr_id req_id, rep_id;
-    int req_dlc, rep_dlc;
+    struct canmgr_frame in, out;
+    struct rawcan_frame raw;
     int c, m, n;
     int s;
-    struct can_frame frame;
 
     if (argc != 3) {
         fprintf (stderr, "Usage: canpower c,m,n 0|1\n");
@@ -53,74 +84,66 @@ int main (int argc, char *argv[])
         fprintf (stderr, "improperly specified target\n");
         exit (1);
     }
-    /* construct canmgr pkt and id
+    /* construct request
      * for now, no routing - cluster and module are ignored
      */
-    req_pkt.pri = 1;
-    req_pkt.type = CANMGR_TYPE_WO;
-    req_pkt.node = n | 0x10;
-    req_pkt.module = m;
-    req_pkt.cluster = c;
-    req_pkt.object = CANOBJ_TARGET_POWER;
-    req_pkt.data[0] = strtoul (argv[2], NULL, 10); /* 0=off, 1=on */
-    req_dlc = 1;
+    in.id.pri = 1;
+    in.id.dst = n | 0x10;
+    in.id.src = myaddr;
 
-    req_id.pri = 1;
-    req_id.dst = req_pkt.node;
-    req_id.src = myaddr;
+    in.hdr .pri = 1;
+    in.hdr.type = CANMGR_TYPE_WO;
+    in.hdr.node = in.id.dst;
+    in.hdr.module = m;
+    in.hdr.cluster = c;
+    in.hdr.object = CANOBJ_TARGET_POWER;
+    in.data[0] = strtoul (argv[2], NULL, 10); /* 0=off, 1=on */
+    in.dlen = 1;
 
-    /* construct linux can frame
+    /* encode raw frame
      */
-    frame.can_id = req_id.src;
-    frame.can_id |= (req_id.dst<<5);
-    frame.can_id |= (req_id.pri<<10);
-    if ((frame.can_dlc = canmgr_pkt_encode (&req_pkt,
-                                            req_dlc, &frame.data[0], 8)) < 0) {
-        fprintf (stderr, "error encoding CAN packet\n");
+    if (canmgr_encode (&in, &raw) < 0) {
+        fprintf (stderr, "error encoding CAN frame\n");
         exit (1);
     }
 
     /* send frame on can0
      * wait for ack/nak response
      */
-    s = opencan ("can0");
-    if (write(s, &frame, sizeof(frame)) != sizeof (frame)) {
-        fprintf (stderr, "write: %m\n");
+    if ((s = can_open ("can0")) < 0)
+        exit (1);
+    if (can_send (s, &raw) < 0) {
+        fprintf (stderr, "can_send: %m\n");
         exit (1);
     }
     // TODO timeout
     for (;;) {
-        if (read(s, &frame, sizeof(frame)) != sizeof (frame)) {
-            fprintf (stderr, "read: %m\n");
+        if (can_recv (s, &raw) < 0) {
+            fprintf (stderr, "can_recv: %m\n");
             exit (1);
         }
-        rep_id.src = frame.can_id & 0x1f;
-        rep_id.dst = (frame.can_id>>5) & 0x1f;
-        rep_id.pri = (frame.can_id>>10) & 1;
-        rep_dlc = canmgr_pkt_decode (&rep_pkt, &frame.data[0], frame.can_dlc);
-        if (rep_dlc < 0) {
-            fprintf (stderr, "canmgr_pkt_decode error, ignoring pkt\n");
+        if (canmgr_decode (&out, &raw) < 0) {
+            fprintf (stderr, "canmgr_decode error, ignoring packet\n");
             continue;
         }
-        if (rep_id.src != req_id.dst || rep_id.dst != req_id.src)
+        if (out.id.src != in.id.dst || out.id.dst != in.id.src)
             continue;
-        if (rep_pkt.object != CANOBJ_TARGET_POWER)
+        if (out.hdr.object != CANOBJ_TARGET_POWER)
             continue;
-        if (rep_pkt.cluster != req_pkt.cluster
-                || rep_pkt.module != req_pkt.module
-                || rep_pkt.node != req_pkt.node)
+        if (out.hdr.cluster != in.hdr.cluster
+                || out.hdr.module != in.hdr.module
+                || out.hdr.node != in.hdr.node)
             continue;
-        if (rep_pkt.type == CANMGR_TYPE_ACK) {
+        if (out.hdr.type == CANMGR_TYPE_ACK) {
             fprintf (stderr, "OK\n");
             exit (0);
         }
-        if (rep_pkt.type == CANMGR_TYPE_NAK) {
+        if (out.hdr.type == CANMGR_TYPE_NAK) {
             fprintf (stderr, "Received NAK response\n");
             exit (1);
         }
     }
-    
-    close (s);
+    can_close (s);
 
     exit (0);
 }

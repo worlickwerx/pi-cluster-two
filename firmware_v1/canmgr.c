@@ -8,16 +8,6 @@
 #include "target_reset.h"
 #include "target_console.h"
 
-static struct canmgr_pkt canmgr_console_id = {
-    .pri = 1,
-    .type = CANMGR_TYPE_DAT,
-    .cluster = 0,
-    .module = 0,
-    .node = 8,
-    .object = 0x0382,
-};
-static uint8_t canmgr_console_connected = 1;
-
 void canmgr_setup (uint32_t can_addr)
 {
     int i;
@@ -25,53 +15,66 @@ void canmgr_setup (uint32_t can_addr)
     // receive dst=can_addr
     for (i = 0; i < 8; i++)
         can0_setfilter (can_addr<<5, i);
-    canmgr_console_connected = 0;
 }
 
-void canmgr_ack (struct canmgr_id *id, struct canmgr_pkt *pkt, int type)
+int can_recv (struct rawcan_frame *raw)
 {
-    struct canmgr_id ackid;
-    struct canmgr_pkt ackpkt = *pkt;
-    uint32_t rawid; 
-    uint8_t buf[8];
-    int len;
-
-    ackid.src = id->dst;
-    ackid.dst = id->src;
-    ackid.pri = id->pri;
-    ackpkt.type = type;
-
-    rawid = ackid.src;
-    rawid |= ackid.dst<<5;
-    rawid |= ackid.pri<<10;
-
-    len = canmgr_pkt_encode (&ackpkt, 0, buf, 8);
-    can0_write (rawid, len, buf, 100);
+    if (!can0_read (&raw->id, &raw->dlen, &raw->data[0]))
+        return -1;
+    return 0;
 }
 
-void canmgr_dispatch (struct canmgr_id *id, struct canmgr_pkt *pkt, uint8_t len)
+int can_send (struct rawcan_frame *raw)
 {
-    switch (pkt->object) {
+    if (!can0_write (raw->id, raw->dlen, &raw->data[0], 100))
+        return -1;
+    return 0;
+}
+
+void canmgr_ack (struct canmgr_frame *fr, int type)
+{
+    struct canmgr_frame ack;
+    struct rawcan_frame raw;
+
+    ack.id.src = fr->id.dst;
+    ack.id.dst = fr->id.src;
+    ack.id.pri = fr->id.pri;
+
+    ack.hdr = fr->hdr;
+    ack.hdr.type = type;
+    ack.dlen = 0;
+
+    if (canmgr_encode (&ack, &raw) < 0)
+        return;
+    can_send (&raw);
+}
+
+void canmgr_dispatch (struct canmgr_frame *fr)
+{
+    switch (fr->hdr.object) {
         case CANOBJ_LED_IDENTIFY:
-            if (len == 1)
-                identify_set (pkt->data[0]);
-            // FIXME: send ACK
+            if (fr->dlen == 1) {
+                identify_set (fr->data[0]);
+                canmgr_ack (fr, CANMGR_TYPE_ACK);
+            }
+                canmgr_ack (fr, CANMGR_TYPE_NAK);
             break;
         case CANOBJ_TARGET_POWER:
-            if (len == 1 && (pkt->data[0] == 0 || pkt->data[0] == 1)) {
-                target_power_set (pkt->data[0]);
-                canmgr_ack (id, pkt, CANMGR_TYPE_ACK);
+            if (fr->dlen == 1 && (fr->data[0] == 0 || fr->data[0] == 1)) {
+                target_power_set (fr->data[0]);
+                canmgr_ack (fr, CANMGR_TYPE_ACK);
             } else
-                canmgr_ack (id, pkt, CANMGR_TYPE_NAK);
+                canmgr_ack (fr, CANMGR_TYPE_NAK);
             break;
         case CANOBJ_TARGET_RESET:
-            if (len == 1) {
-                if (pkt->data[0] == 1 || pkt->data[0] == 0)
-                    target_reset_set (pkt->data[0]);
+            if (fr->dlen== 1) {
+                if (fr->data[0] == 1 || fr->data[0] == 0)
+                    target_reset_set (fr->data[0]);
                 else
                     target_reset_pulse ();
-            }
-            // FIXME: send ACK
+                canmgr_ack (fr, CANMGR_TYPE_ACK);
+            } else
+                canmgr_ack (fr, CANMGR_TYPE_NAK);
             break;
         case CANOBJ_TARGET_CONSOLECONN:
             break;
@@ -82,31 +85,14 @@ void canmgr_dispatch (struct canmgr_id *id, struct canmgr_pkt *pkt, uint8_t len)
 
 void canmgr_update (void)
 {
-    uint8_t buf[8];
-    uint32_t rawid;
-    uint8_t len, cons_len;
-    struct canmgr_pkt pkt;
-    struct canmgr_id id;
+    struct rawcan_frame raw;
+    struct canmgr_frame in;
 
     if (can0_available ()) {
         activity_pulse ();
-        if (can0_read (&rawid, &len, buf)) {
-            id.src = rawid & 0x1f;
-            id.dst = (rawid>>5) & 0x1f;
-            id.pri = (rawid>>10)&1;
-            int data_len = canmgr_pkt_decode (&pkt, buf, len);
-            if (data_len >= 0)
-                canmgr_dispatch (&id, &pkt, len - 4);
-        }
-    }
-    if (target_console_available ()) {
-        activity_pulse ();
-        cons_len = target_console_recv (&canmgr_console_id.data[0], 4);
-        int len = canmgr_pkt_encode (&canmgr_console_id, cons_len, buf, 8);
-        if (len >= 0) {
-            // FIXME set id
-            can0_write (rawid, len, buf, 100);
-        }
+        if (can_recv (&raw) < 0 || canmgr_decode (&in, &raw) < 0)
+            return;
+        canmgr_dispatch (&in);
     }
 }
 

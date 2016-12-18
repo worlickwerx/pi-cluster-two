@@ -19,16 +19,28 @@ struct canmgr_id {
 };
 #define CANMGR_DST_MASK (0b01111100000)
 
-// CAN packet (4 byte header + 0-4 byte data)
-//   pri:1 type:3 cluster:6 module:6 node:6 object:10 data:32
-struct canmgr_pkt {
+// header uses first 4 bytes of CAN payload
+//   pri:1 type:3 cluster:6 module:6 node:6 object:10
+struct canmgr_hdr {
     uint32_t pri:1;
     uint32_t type:3;
     uint32_t cluster:6;         // gcan address
     uint32_t module:6;          // mcan address
     uint32_t node:6;            // lcan address
     uint32_t object:10;
+};
+
+struct canmgr_frame {
+    struct canmgr_id id;
+    struct canmgr_hdr hdr;
+    uint8_t dlen;
     uint8_t data[4];
+};
+
+struct rawcan_frame {
+    uint32_t id;
+    uint8_t dlen;
+    uint8_t data[8];
 };
 
 // special 6-bit canmgr addresses for cluster/module/node
@@ -66,17 +78,8 @@ enum {
 };
 
 
-/* Encode/decode canmgr_pkt to/from 8 byte CAN payload.
- * decode returns the number of bytes in the data field (0-4), or -1 on error.
- * encode returns the number of bytes to send (4-8), or -1 on error.
- */
-int canmgr_pkt_decode (struct canmgr_pkt *pkt, uint8_t *buf, int buf_len);
-int canmgr_pkt_encode (struct canmgr_pkt *pkt, int data_len,
-                       uint8_t *buf, int buf_len);
-
-/*
- * vi:tabstop=4 shiftwidth=4 expandtab
- */
+int canmgr_decode (struct canmgr_frame *fr, struct rawcan_frame *raw);
+int canmgr_encode (struct canmgr_frame *fr, struct rawcan_frame *raw);
 
 #endif /* _CANMGR_PROTO_H */
 
