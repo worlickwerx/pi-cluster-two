@@ -111,11 +111,11 @@ int main (int argc, char *argv[])
                 || rep_pkt.node != req_pkt.node)
             continue;
         if (rep_pkt.type == CANMGR_TYPE_ACK) {
-            fprintf (stderr, "command accepted\n");
+            fprintf (stderr, "OK\n");
             exit (0);
         }
         if (rep_pkt.type == CANMGR_TYPE_NAK) {
-            fprintf (stderr, "command failed\n");
+            fprintf (stderr, "Received NAK response\n");
             exit (1);
         }
     }
