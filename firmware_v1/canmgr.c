@@ -28,9 +28,28 @@ void canmgr_setup (uint32_t can_addr)
     canmgr_console_connected = 0;
 }
 
-// test: cansend 200#0000000001 to turn on
-//       cansend 200#0000000000 to turn off
-void canmgr_dispatch (struct canmgr_pkt *pkt, uint8_t len)
+void canmgr_ack (struct canmgr_id *id, struct canmgr_pkt *pkt, int type)
+{
+    struct canmgr_id ackid;
+    struct canmgr_pkt ackpkt = *pkt;
+    uint32_t rawid; 
+    uint8_t buf[8];
+    int len;
+
+    ackid.src = id->dst;
+    ackid.dst = id->src;
+    ackid.pri = id->pri;
+    ackpkt.type = type;
+
+    rawid = ackid.src;
+    rawid |= ackid.dst<<5;
+    rawid |= ackid.pri<<10;
+
+    len = canmgr_pkt_encode (&ackpkt, 0, buf, 8);
+    can0_write (rawid, len, buf, 100);
+}
+
+void canmgr_dispatch (struct canmgr_id *id, struct canmgr_pkt *pkt, uint8_t len)
 {
     switch (pkt->object) {
         case CANOBJ_LED_IDENTIFY:
@@ -39,9 +58,11 @@ void canmgr_dispatch (struct canmgr_pkt *pkt, uint8_t len)
             // FIXME: send ACK
             break;
         case CANOBJ_TARGET_POWER:
-            if (len == 1)
+            if (len == 1 && (pkt->data[0] == 0 || pkt->data[0] == 1)) {
                 target_power_set (pkt->data[0]);
-            // FIXME: send ACK
+                canmgr_ack (id, pkt, CANMGR_TYPE_ACK);
+            } else
+                canmgr_ack (id, pkt, CANMGR_TYPE_NAK);
             break;
         case CANOBJ_TARGET_RESET:
             if (len == 1) {
@@ -62,16 +83,20 @@ void canmgr_dispatch (struct canmgr_pkt *pkt, uint8_t len)
 void canmgr_update (void)
 {
     uint8_t buf[8];
+    uint32_t rawid;
     uint8_t len, cons_len;
-    uint32_t id;
     struct canmgr_pkt pkt;
+    struct canmgr_id id;
 
     if (can0_available ()) {
         activity_pulse ();
-        if (can0_read (&id, &len, buf)) {
+        if (can0_read (&rawid, &len, buf)) {
+            id.src = rawid & 0x1f;
+            id.dst = (rawid>>5) & 0x1f;
+            id.pri = (rawid>>10)&1;
             int data_len = canmgr_pkt_decode (&pkt, buf, len);
             if (data_len >= 0)
-                canmgr_dispatch (&pkt, len - 4);
+                canmgr_dispatch (&id, &pkt, len - 4);
         }
     }
     if (target_console_available ()) {
@@ -80,7 +105,7 @@ void canmgr_update (void)
         int len = canmgr_pkt_encode (&canmgr_console_id, cons_len, buf, 8);
         if (len >= 0) {
             // FIXME set id
-            can0_write (id, len, buf, 100);
+            can0_write (rawid, len, buf, 100);
         }
     }
 }
