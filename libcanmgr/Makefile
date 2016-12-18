@@ -1,9 +1,9 @@
-OBJS = canmgr_proto_libcanmgr.o
+OBJS = canmgr_proto_libcanmgr.o canmgr_dump_libcanmgr.o
 
 all: libcanmgr.a
 
 libcanmgr.a: $(OBJS)
-	$(AR) rv $@ $<
+	$(AR) rv $@ $^
 
 %_libcanmgr.o:%.c
 	$(CC) -c -o$@ $<

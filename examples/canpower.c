@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "canmgr_proto.h"
+#include "canmgr_dump.h"
 #include "lxcan.h"
 
 static const uint8_t myaddr = 0; // lie
@@ -18,6 +19,7 @@ int main (int argc, char *argv[])
     struct rawcan_frame raw;
     int c, m, n;
     int s;
+    char dump[80]; 
 
     if (argc != 3) {
         fprintf (stderr, "Usage: canpower c,m,n 0|1\n");
@@ -58,6 +60,8 @@ int main (int argc, char *argv[])
         fprintf (stderr, "lxcan_open: %m\n");
         exit (1);
     }
+    canmgr_dump (&in, dump, sizeof (dump));
+    printf ("%s\n", dump);
     if (lxcan_send (s, &raw) < 0) {
         fprintf (stderr, "lxcan_send: %m\n");
         exit (1);
@@ -72,6 +76,8 @@ int main (int argc, char *argv[])
             fprintf (stderr, "canmgr_decode error, ignoring packet\n");
             continue;
         }
+        canmgr_dump (&out, dump, sizeof (dump));
+        printf ("%s\n", dump);
         if (out.id.src != in.id.dst || out.id.dst != in.id.src)
             continue;
         if (out.hdr.object != CANOBJ_TARGET_POWER)
