@@ -5,8 +5,8 @@ LIBADD = -L$(CANMGRDIR) -lcanmgr
 
 all: $(PROGS)
 
-canpower: canpower.o
-	$(CC) -o $@ $< $(LIBADD)
+canpower: canpower.o lxcan.o
+	$(CC) -o $@ $^ $(LIBADD)
 
 clean:
 	rm -f $(PROGS)

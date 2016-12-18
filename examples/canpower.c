@@ -8,65 +8,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "canmgr_proto.h"
+#include "lxcan.h"
 
 static const uint8_t myaddr = 0; // lie
-
-int can_open (const char *name)
-{
-    struct sockaddr_can addr;
-    struct ifreq ifr;
-    int s;
-
-    if ((s = socket(PF_CAN, SOCK_RAW, CAN_RAW)) < 0) {
-        fprintf (stderr, "socket: %m\n");
-        return -1;
-    }
-    strcpy(ifr.ifr_name, "can0" );
-    if (ioctl(s, SIOCGIFINDEX, &ifr) < 0) {
-        fprintf (stderr, "ioctl SIOCGIFINDEX: %m\n");
-        close (s);
-        return -1;
-    }
-    addr.can_family = AF_CAN;
-    addr.can_ifindex = ifr.ifr_ifindex;
-    if (bind (s, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
-        fprintf (stderr, "bind: %m\n");
-        close (s);
-        return -1;
-    }
-    return s;
-}
-
-int can_send (int s, struct rawcan_frame *raw)
-{
-    struct can_frame frame;
-
-    frame.can_id = raw->id;
-    frame.can_dlc = raw->dlen;
-    memcpy (frame.data, raw->data, raw->dlen);
-
-    if (write (s, &frame, sizeof(frame)) != sizeof (frame))
-        return -1;
-    return 0;
-}
-
-int can_recv (int s, struct rawcan_frame *raw)
-{
-    struct can_frame frame;
-
-    if (read (s, &frame, sizeof(frame)) != sizeof (frame))
-        return -1;
-
-    raw->id = frame.can_id;
-    raw->dlen = frame.can_dlc;
-    memcpy (raw->data, frame.data, frame.can_dlc);
-    return 0;
-}
-
-void can_close (int s)
-{
-    close (s);
-}
 
 int main (int argc, char *argv[])
 {
@@ -110,16 +54,18 @@ int main (int argc, char *argv[])
     /* send frame on can0
      * wait for ack/nak response
      */
-    if ((s = can_open ("can0")) < 0)
+    if ((s = lxcan_open ("can0")) < 0) {
+        fprintf (stderr, "lxcan_open: %m\n");
         exit (1);
-    if (can_send (s, &raw) < 0) {
-        fprintf (stderr, "can_send: %m\n");
+    }
+    if (lxcan_send (s, &raw) < 0) {
+        fprintf (stderr, "lxcan_send: %m\n");
         exit (1);
     }
     // TODO timeout
     for (;;) {
-        if (can_recv (s, &raw) < 0) {
-            fprintf (stderr, "can_recv: %m\n");
+        if (lxcan_recv (s, &raw) < 0) {
+            fprintf (stderr, "lxcan_recv: %m\n");
             exit (1);
         }
         if (canmgr_decode (&out, &raw) < 0) {
