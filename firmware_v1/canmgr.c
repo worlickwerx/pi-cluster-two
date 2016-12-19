@@ -9,8 +9,11 @@
 #include "target_console.h"
 
 static uint8_t myaddr;
-static uint8_t console_connected = 0;
-static struct canmgr_hdr console_hdr;
+static struct canmgr_hdr console_hdr = {
+    .cluster = CANMGR_ADDR_NOROUTE,
+    .module = CANMGR_ADDR_NOROUTE,
+    .node = CANMGR_ADDR_NOROUTE,
+};
 
 void canmgr_setup (uint8_t can_addr)
 {
@@ -36,7 +39,7 @@ int can_send (struct rawcan_frame *raw)
     return 0;
 }
 
-void canmgr_ack (struct canmgr_frame *fr, int type)
+void canmgr_ack (struct canmgr_frame *fr, int type, uint8_t *data, int len)
 {
     struct canmgr_frame ack;
     struct rawcan_frame raw;
@@ -47,83 +50,192 @@ void canmgr_ack (struct canmgr_frame *fr, int type)
 
     ack.hdr = fr->hdr;
     ack.hdr.type = type;
-    ack.dlen = 0;
+    memcpy (&ack.data[0], data, len);
+    ack.dlen = len;
 
     if (canmgr_encode (&ack, &raw) < 0)
         return;
     can_send (&raw);
 }
 
-int console_connect (uint8_t *data, int len)
+void canobj_led_identify (struct canmgr_frame *fr)
 {
-    if (console_connected)
-        return CANMGR_TYPE_NAK;
-    if (canmgr_decode_hdr (&console_hdr, data, len) < 0)
-        return CANMGR_TYPE_NAK;
-    console_connected = 1;
-    return CANMGR_TYPE_ACK;
+    uint8_t val;
+
+    switch (fr->hdr.type) {
+        case CANMGR_TYPE_WO:
+            if (fr->dlen != 1)
+                goto nak;
+            identify_set (fr->data[0]);
+            canmgr_ack (fr, CANMGR_TYPE_ACK, NULL, 0);
+            break;
+        case CANMGR_TYPE_RO:
+            if (fr->dlen != 0)
+                goto nak;
+            identify_get (&val);
+            canmgr_ack (fr, CANMGR_TYPE_ACK, &val, 1);
+            break;
+        case CANMGR_TYPE_DAT:
+            goto nak;
+        default:
+            break;
+    }
+    return;
+nak:
+    canmgr_ack (fr, CANMGR_TYPE_NAK, NULL, 0);
 }
 
-int console_disconnect (uint8_t *data, int len)
+void canobj_target_power (struct canmgr_frame *fr)
 {
-    struct canmgr_hdr hdr;
+    uint8_t val;
 
-    if (canmgr_decode_hdr (&hdr, data, len) < 0)
-        return CANMGR_TYPE_NAK;
-    if (canmgr_compare_hdr (&hdr, &console_hdr) != 0)
-        return CANMGR_TYPE_NAK;
-    console_connected = 0;
-    return CANMGR_TYPE_ACK;
+    switch (fr->hdr.type) {
+        case CANMGR_TYPE_WO:
+            if (fr->dlen != 1)
+                goto nak;
+            target_power_set (fr->data[0]);
+            canmgr_ack (fr, CANMGR_TYPE_ACK, NULL, 0);
+            break;
+        case CANMGR_TYPE_RO:
+            if (fr->dlen != 0)
+                goto nak;
+            target_power_get (&val);
+            canmgr_ack (fr, CANMGR_TYPE_ACK, &val, 1);
+            break;
+        case CANMGR_TYPE_DAT:
+            goto nak;
+        default:
+            break;
+    }
+    return;
+nak:
+    canmgr_ack (fr, CANMGR_TYPE_NAK, NULL, 0);
 }
 
+void canobj_target_reset (struct canmgr_frame *fr)
+{
+    uint8_t val;
+
+    switch (fr->hdr.type) {
+        case CANMGR_TYPE_WO:
+            if (fr->dlen != 1)
+                goto nak;
+            if (fr->data[0] == 1 || fr->data[0] == 0)
+                target_reset_set (fr->data[0]);
+            else
+                target_reset_pulse ();
+            canmgr_ack (fr, CANMGR_TYPE_ACK, NULL, 0);
+            break;
+        case CANMGR_TYPE_RO:
+            if (fr->dlen != 0)
+                goto nak;
+            target_reset_get (&val);
+            canmgr_ack (fr, CANMGR_TYPE_ACK, &val, 1); 
+            break;
+        case CANMGR_TYPE_DAT:
+            goto nak;
+        default:
+            break;
+    }
+    return;
+nak:
+    canmgr_ack (fr, CANMGR_TYPE_NAK, NULL, 0);
+}
+
+void canobj_target_consoleconn (struct canmgr_frame *fr)
+{
+    uint8_t val[4];
+
+    switch (fr->hdr.type) {
+        case CANMGR_TYPE_WO:
+            if (fr->dlen != 4)
+                goto nak;
+            if (!CONSOLE_UNCONNECTED (&fr->hdr))
+                goto nak;
+            /* data contains new console object - copy it there */
+            if (canmgr_decode_hdr (&console_hdr, fr->data, fr->dlen) < 0)
+                goto nak;
+            canmgr_ack (fr, CANMGR_TYPE_ACK, NULL, 0);
+            break;
+        case CANMGR_TYPE_RO:
+            if (fr->dlen != 0)
+                goto nak;
+            if (canmgr_encode_hdr (&console_hdr, val, 4) < 0)
+                goto nak;
+            canmgr_ack (fr, CANMGR_TYPE_ACK, val, 4); 
+            break;
+        case CANMGR_TYPE_DAT:
+            goto nak;
+        default:
+            break;
+    }
+    return;
+nak:
+    canmgr_ack (fr, CANMGR_TYPE_NAK, NULL, 0);
+}
+
+void canobj_target_consoledisc (struct canmgr_frame *fr)
+{
+    struct canmgr_hdr old;
+
+    switch (fr->hdr.type) {
+        case CANMGR_TYPE_WO:
+            if (fr->dlen != 4)
+                goto nak;
+            if (canmgr_decode_hdr (&old, fr->data, fr->dlen) < 0)
+                goto nak;
+            if (canmgr_compare_hdr (&old, &console_hdr) != 0)
+                goto nak;
+            console_hdr.cluster = CANMGR_ADDR_NOROUTE;
+            console_hdr.module = CANMGR_ADDR_NOROUTE;
+            console_hdr.node = CANMGR_ADDR_NOROUTE;
+            canmgr_ack (fr, CANMGR_TYPE_ACK, NULL, 0);
+            break;
+        case CANMGR_TYPE_RO:
+        case CANMGR_TYPE_DAT:
+            goto nak;
+        default:
+            break;
+    }
+    return;
+nak:
+    canmgr_ack (fr, CANMGR_TYPE_NAK, NULL, 0);
+}
+
+void canobj_unknown (struct canmgr_frame *fr)
+{
+    switch (fr->hdr.type) {
+        case CANMGR_TYPE_WO:
+        case CANMGR_TYPE_RO:
+        case CANMGR_TYPE_DAT:
+            canmgr_ack (fr, CANMGR_TYPE_NAK, NULL, 0);
+            break;
+        default:
+            break;
+    }
+}
+
+        
 void canmgr_dispatch (struct canmgr_frame *fr)
 {
-    int acktype = CANMGR_TYPE_NAK;
-
     switch (fr->hdr.object) {
         case CANOBJ_LED_IDENTIFY:
-            if (fr->hdr.type == CANMGR_TYPE_WO) {
-                if (fr->dlen == 1) {
-                    identify_set (fr->data[0]);
-                    acktype = CANMGR_TYPE_ACK;
-                }
-                canmgr_ack (fr, acktype);
-            }
+            canobj_led_identify (fr);
             break;
         case CANOBJ_TARGET_POWER:
-            if (fr->hdr.type == CANMGR_TYPE_WO) {
-                if (fr->dlen == 1) {
-                    target_power_set (fr->data[0]);
-                    acktype = CANMGR_TYPE_ACK;
-                }
-                canmgr_ack (fr, acktype);
-            }
+            canobj_target_power (fr);
             break;
         case CANOBJ_TARGET_RESET:
-            if (fr->hdr.type == CANMGR_TYPE_WO) {
-                if (fr->dlen == 1) {
-                    if (fr->data[0] == 1 || fr->data[0] == 0)
-                        target_reset_set (fr->data[0]);
-                    else
-                        target_reset_pulse ();
-                    acktype = CANMGR_TYPE_ACK;
-                }
-                canmgr_ack (fr, acktype);
-            }
+            canobj_target_power (fr);
             break;
         case CANOBJ_TARGET_CONSOLECONN:
-            if (fr->hdr.type == CANMGR_TYPE_WO) {
-                if (fr->dlen == 4 && !console_connected)
-                    acktype = console_connect (fr->data, fr->dlen);
-                canmgr_ack (fr, acktype);
-            }
+            canobj_target_consoleconn (fr);
             break;
         case CANOBJ_TARGET_CONSOLEDISC:
-            if (fr->hdr.type == CANMGR_TYPE_WO) {
-                if (fr->dlen == 4)
-                    acktype = console_disconnect (fr->data, fr->dlen);
-            }
-            canmgr_ack (fr, acktype);
+            canobj_target_consoledisc (fr);
+            break;
+        default:
+            canobj_unknown (fr);
             break;
     }
 }
@@ -139,20 +251,16 @@ void canmgr_update (void)
         if (can_recv (&raw) >= 0 && canmgr_decode (&fr, &raw) >= 0)
             canmgr_dispatch (&fr);
     }
-    if (console_connected && target_console_available ()) {
-        fr.id.src = 0;
-        fr.id.dst = 0;
-        fr.id.pri = 1;
-
-        fr.hdr.cluster = 0;
-        fr.hdr.module = 0;
-        fr.hdr.node = myaddr;
-        fr.hdr.type = CANMGR_TYPE_DAT;
-        fr.hdr.object = 0;
+    if (target_console_available ()) {
         fr.dlen = target_console_recv (&fr.data[0], 4);
-
-        canmgr_encode (&fr, &raw);
-        can_send (&raw);
+        if (!CONSOLE_UNCONNECTED(&console_hdr) && fr.dlen > 0) {
+            fr.id.src = 0;
+            fr.id.dst = 0;
+            fr.id.pri = 1;
+            fr.hdr = console_hdr;
+            canmgr_encode (&fr, &raw);
+            can_send (&raw);
+        }
     }
 }
 
