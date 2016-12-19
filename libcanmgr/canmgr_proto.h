@@ -77,7 +77,8 @@ enum {
     // jtag/openocd protocol for remote gdb, etc..
 };
 
-
+#define CONSOLE_UNCONNECTED(h) \
+    ((h)->cluster == 0x3f && (h)->module == 0x3f && (h)->node == 0x3f)
 int canmgr_decode (struct canmgr_frame *fr, struct rawcan_frame *raw);
 int canmgr_encode (struct canmgr_frame *fr, struct rawcan_frame *raw);
 

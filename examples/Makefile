@@ -1,4 +1,4 @@
-PROGS = canpower
+PROGS = canpower cancon
 CANMGRDIR := $(shell pwd)/../libcanmgr
 CFLAGS = -I$(CANMGRDIR)
 LIBADD = -L$(CANMGRDIR) -lcanmgr
@@ -6,6 +6,9 @@ LIBADD = -L$(CANMGRDIR) -lcanmgr
 all: $(PROGS)
 
 canpower: canpower.o lxcan.o
+	$(CC) -o $@ $^ $(LIBADD)
+
+cancon: cancon.o lxcan.o
 	$(CC) -o $@ $^ $(LIBADD)
 
 clean:
