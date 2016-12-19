@@ -25,16 +25,24 @@ void canmgr_setup (uint8_t can_addr)
     myaddr = can_addr;
 }
 
-int can_recv (struct rawcan_frame *raw)
+int can_recv (struct canmgr_frame *fr)
 {
-    if (!can0_read (&raw->id, &raw->dlen, &raw->data[0]))
+    struct rawcan_frame raw;
+
+    if (!can0_read (&raw.id, &raw.dlen, &raw.data[0]))
+        return -1;
+    if (canmgr_decode (fr, &raw) < 0)
         return -1;
     return 0;
 }
 
-int can_send (struct rawcan_frame *raw)
+int can_send (struct canmgr_frame *fr)
 {
-    if (!can0_write (raw->id, raw->dlen, &raw->data[0], 100))
+    struct rawcan_frame raw;
+
+    if (canmgr_encode (fr, &raw) < 0)
+        return -1;
+    if (!can0_write (raw.id, raw.dlen, &raw.data[0], 100))
         return -1;
     return 0;
 }
@@ -42,7 +50,6 @@ int can_send (struct rawcan_frame *raw)
 void canmgr_ack (struct canmgr_frame *fr, int type, uint8_t *data, int len)
 {
     struct canmgr_frame ack;
-    struct rawcan_frame raw;
 
     ack.id.src = fr->id.dst;
     ack.id.dst = fr->id.src;
@@ -53,9 +60,7 @@ void canmgr_ack (struct canmgr_frame *fr, int type, uint8_t *data, int len)
     memcpy (&ack.data[0], data, len);
     ack.dlen = len;
 
-    if (canmgr_encode (&ack, &raw) < 0)
-        return;
-    can_send (&raw);
+    can_send (&ack);
 }
 
 void canobj_led_identify (struct canmgr_frame *fr)
@@ -242,13 +247,11 @@ void canmgr_dispatch (struct canmgr_frame *fr)
 
 void canmgr_update (void)
 {
-    struct rawcan_frame raw;
     struct canmgr_frame fr;
-
 
     if (can0_available ()) {
         activity_pulse ();
-        if (can_recv (&raw) >= 0 && canmgr_decode (&fr, &raw) >= 0)
+        if (can_recv (&fr) == 0)
             canmgr_dispatch (&fr);
     }
     if (target_console_available ()) {
@@ -258,8 +261,7 @@ void canmgr_update (void)
             fr.id.dst = 0;
             fr.id.pri = 1;
             fr.hdr = console_hdr;
-            canmgr_encode (&fr, &raw);
-            can_send (&raw);
+            can_send (&fr);
         }
     }
 }
