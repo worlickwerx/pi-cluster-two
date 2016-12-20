@@ -13,7 +13,6 @@ static uint8_t myaddr;
 /* Console state
  */
 static struct canmgr_hdr console_hdr = {
-    .cluster = CANMGR_ADDR_NOROUTE,
     .module = CANMGR_ADDR_NOROUTE,
     .node = CANMGR_ADDR_NOROUTE,
 };
@@ -55,6 +54,9 @@ void canmgr_ack (struct canmgr_frame *fr, int type, uint8_t *data, int len)
 {
     struct canmgr_frame ack;
 
+    if (len > 5)
+        return;
+
     ack.id.src = fr->id.dst;
     ack.id.dst = fr->id.src;
     ack.id.pri = fr->id.pri;
@@ -82,6 +84,8 @@ void canmgr_console_send (uint8_t *buf, int len)
 
     if (!canmgr_console_send_ready ())
         return;
+    if (len > 5)
+        return;
 
     /* FIXME add routing */
     dat.id.src = myaddr;
@@ -90,7 +94,6 @@ void canmgr_console_send (uint8_t *buf, int len)
 
     dat.hdr.pri = 1;
     dat.hdr.type = CANMGR_TYPE_DAT;
-    dat.hdr.cluster = console_hdr.cluster;
     dat.hdr.module = console_hdr.module;
     dat.hdr.node = console_hdr.node;
     dat.hdr.object = console_hdr.object;
@@ -175,7 +178,7 @@ void canobj_target_reset (struct canmgr_frame *fr)
             if (fr->dlen != 0)
                 goto nak;
             target_reset_get (&val);
-            canmgr_ack (fr, CANMGR_TYPE_ACK, &val, 1); 
+            canmgr_ack (fr, CANMGR_TYPE_ACK, &val, 1);
             break;
         case CANMGR_TYPE_DAT:
             goto nak;
@@ -189,12 +192,10 @@ nak:
 
 void canobj_target_consoleconn (struct canmgr_frame *fr)
 {
-    uint8_t val[4];
+    uint8_t val[3];
 
     switch (fr->hdr.type) {
         case CANMGR_TYPE_WO:
-            if (fr->dlen != 4)
-                goto nak;
             /* data contains new console object - copy it there */
             if (canmgr_decode_hdr (&console_hdr, fr->data, fr->dlen) < 0)
                 goto nak;
@@ -203,9 +204,9 @@ void canobj_target_consoleconn (struct canmgr_frame *fr)
         case CANMGR_TYPE_RO:
             if (fr->dlen != 0)
                 goto nak;
-            if (canmgr_encode_hdr (&console_hdr, val, 4) < 0)
+            if (canmgr_encode_hdr (&console_hdr, val, 3) < 0)
                 goto nak;
-            canmgr_ack (fr, CANMGR_TYPE_ACK, val, 4); 
+            canmgr_ack (fr, CANMGR_TYPE_ACK, val, 3);
             break;
         case CANMGR_TYPE_DAT:
             goto nak;
@@ -223,13 +224,10 @@ void canobj_target_consoledisc (struct canmgr_frame *fr)
 
     switch (fr->hdr.type) {
         case CANMGR_TYPE_WO:
-            if (fr->dlen != 4)
-                goto nak;
             if (canmgr_decode_hdr (&old, fr->data, fr->dlen) < 0)
                 goto nak;
             if (canmgr_compare_hdr (&old, &console_hdr) != 0)
                 goto nak;
-            console_hdr.cluster = CANMGR_ADDR_NOROUTE;
             console_hdr.module = CANMGR_ADDR_NOROUTE;
             console_hdr.node = CANMGR_ADDR_NOROUTE;
             canmgr_ack (fr, CANMGR_TYPE_ACK, NULL, 0);
@@ -337,7 +335,7 @@ void canmgr_update (void)
             canmgr_dispatch (&fr);
     }
     if (target_console_available () && canmgr_console_send_ready ()) {
-        uint8_t buf[4];
+        uint8_t buf[5];
         int len;
         len = target_console_recv (buf, sizeof (buf));
         canmgr_console_send (buf, len);

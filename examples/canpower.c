@@ -11,16 +11,16 @@ static const uint8_t myaddr = 0; // lie
 int main (int argc, char *argv[])
 {
     struct canmgr_frame in, out;
-    int c, m, n;
+    int m, n;
     int s;
     char dump[80]; 
 
     if (argc != 3) {
-        fprintf (stderr, "Usage: canpower c,m,n 0|1\n");
+        fprintf (stderr, "Usage: canpower m,n 0|1\n");
         exit (1);
     }
-    if (sscanf (argv[1], "%d,%d,%d", &c, &m, &n) != 3
-            || c < 0 || c >= 0x10 || m < 0 || m >= 0x10 || c < 0 || c >= 0x10) {
+    if (sscanf (argv[1], "%d,%d", &m, &n) != 2
+            ||  m < 0 || m >= 0x10 || n < 0 || n >= 0x10) {
         fprintf (stderr, "improperly specified target\n");
         exit (1);
     }
@@ -35,7 +35,6 @@ int main (int argc, char *argv[])
     in.hdr.type = CANMGR_TYPE_WO;
     in.hdr.node = in.id.dst;
     in.hdr.module = m;
-    in.hdr.cluster = c;
     in.hdr.object = CANOBJ_TARGET_POWER;
     in.data[0] = strtoul (argv[2], NULL, 10); /* 0=off, 1=on */
     in.dlen = 1;
@@ -65,9 +64,7 @@ int main (int argc, char *argv[])
             continue;
         if (out.hdr.object != CANOBJ_TARGET_POWER)
             continue;
-        if (out.hdr.cluster != in.hdr.cluster
-                || out.hdr.module != in.hdr.module
-                || out.hdr.node != in.hdr.node)
+        if (out.hdr.module != in.hdr.module || out.hdr.node != in.hdr.node)
             continue;
         if (out.hdr.type == CANMGR_TYPE_ACK) {
             fprintf (stderr, "OK\n");

@@ -36,7 +36,7 @@ int main (int argc, char *argv[])
     for (;;) {
         if (lxcan_recv (s, &in) < 0) {
             fprintf (stderr, "lxcan_recv: %m\n");
-            exit (1);
+            continue;
         }
         dump_frame (&in);
     }

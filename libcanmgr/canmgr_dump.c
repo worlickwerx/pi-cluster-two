@@ -9,9 +9,9 @@
 void canmgr_dump (struct canmgr_frame *fr, char *buf, int len)
 {
     const char *typestr, *objstr;
-    char objstr_hex[5];
-    char datastr[4][4];
-    char dataprn[7];
+    char objstr_hex[7];
+    char datastr[5][4];
+    char dataprn[8];
     int i;
 
     switch (fr->hdr.type) {
@@ -28,7 +28,7 @@ void canmgr_dump (struct canmgr_frame *fr, char *buf, int len)
         case CANOBJ_TARGET_CONSOLEDISC: objstr = "CONSOLEDISC"; break;
         case CANOBJ_TARGET_POWER:       objstr = "POWER"; break;
         default:
-            snprintf (objstr_hex, sizeof (objstr_hex), "%.4x", fr->hdr.object);
+            snprintf (objstr_hex, sizeof (objstr_hex), "%.2x", fr->hdr.object);
             objstr = objstr_hex;
             break;
     }
@@ -41,13 +41,12 @@ void canmgr_dump (struct canmgr_frame *fr, char *buf, int len)
     }
     if (fr->dlen > 0)
         dataprn[fr->dlen + 1] = '\'';
-    snprintf (buf, len, "%.3x->%.3x  %4s %.2x,%.2x,%.2x %12s "
-                         "%2s %2s %2s %2s %s",
+    snprintf (buf, len, "%.3x->%.3x  %4s %.2x,%.2x %12s "
+                         "%2s %2s %2s %2s %2s %s",
             
               fr->id.src,
               fr->id.dst,
               typestr,
-              fr->hdr.cluster,
               fr->hdr.module,
               fr->hdr.node,
               objstr,
@@ -55,6 +54,7 @@ void canmgr_dump (struct canmgr_frame *fr, char *buf, int len)
               fr->dlen > 1 ? datastr[1] : "",
               fr->dlen > 2 ? datastr[2] : "",
               fr->dlen > 3 ? datastr[3] : "",
+              fr->dlen > 4 ? datastr[4] : "",
               dataprn
             );
 }

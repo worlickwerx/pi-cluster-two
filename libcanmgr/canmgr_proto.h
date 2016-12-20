@@ -1,40 +1,37 @@
 #ifndef _CANMGR_PROTO_H
 #define _CANMGR_PROTO_H
 
-// See Meiko CS/2 "Overview of the Control Area Network (CAN)"
-// The LCAN/XCAN/GCAN and extended addressing/routing scheme described
-// in that document was borrowed here.
+// Inspired by Meiko CS/2 "Overview of the Control Area Network (CAN)"
 
-// LCAN addressing within a module:
+// CAN addressing within a module:
 // compute board: 00 01 02 03 04 05 06 07 08 09 0a 0b
 // compute mgr:   10 11 12 13 14 15 16 17 18 19 1a 1b
 // module mgr:    1d
 
 // CAN id (11 byte):
-//   pri:1 dst:5 src:5  (priority: 0=high, 1=low)
+//   pri:1 dst:5 src:5
 struct canmgr_id {
-    uint16_t pri:1;
+    uint16_t pri:1; // 0=high, 1=low
     uint16_t dst:5;
     uint16_t src:5;
 };
 #define CANMGR_DST_MASK (0b01111100000)
 
-// header uses first 4 bytes of CAN payload
-//   pri:1 type:3 cluster:6 module:6 node:6 object:10
+// header uses first 3 bytes of CAN payload
+//   pri:1 type:3 module:6 node:6 object:8
 struct canmgr_hdr {
-    uint32_t pri:1;
+    uint32_t pri:1; // 0=high, 1=low
     uint32_t type:3;
-    uint32_t cluster:6;         // gcan address
-    uint32_t module:6;          // mcan address
-    uint32_t node:6;            // lcan address
-    uint32_t object:10;
+    uint32_t module:6;
+    uint32_t node:6;
+    uint32_t object:8;
 };
 
 struct canmgr_frame {
     struct canmgr_id id;
     struct canmgr_hdr hdr;
     uint8_t dlen;
-    uint8_t data[4];
+    uint8_t data[5];
 };
 
 struct rawcan_frame {
@@ -43,7 +40,7 @@ struct rawcan_frame {
     uint8_t data[8];
 };
 
-// special 6-bit canmgr addresses for cluster/module/node
+// special 6-bit canmgr addresses for module/node
 enum {
     CANMGR_ADDR_NOROUTE = 0b111111,
     CANMGR_ADDR_BCAST   = 0b111110,
@@ -76,10 +73,12 @@ enum {
     // heartbeat
 
     // jtag/openocd protocol for remote gdb, etc..
+
+    CANOBJ_TARGET_CONSOLEBASE = 0x80, // 0x80 - 0xff reserved for cancon
 };
 
 #define CONSOLE_UNCONNECTED(h) \
-    ((h)->cluster == 0x3f && (h)->module == 0x3f && (h)->node == 0x3f)
+    ((h)->module == 0x3f && (h)->node == 0x3f)
 int canmgr_decode (struct canmgr_frame *fr, struct rawcan_frame *raw);
 int canmgr_encode (struct canmgr_frame *fr, struct rawcan_frame *raw);
 

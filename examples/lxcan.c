@@ -3,6 +3,7 @@
 #include <linux/sockios.h>
 #include <stdint.h>
 #include <string.h>
+#include <errno.h>
 #include <linux/can.h>
 
 #include "canmgr_proto.h"
@@ -35,8 +36,10 @@ int lxcan_send (int s, struct canmgr_frame *fr)
     struct rawcan_frame raw;
     struct can_frame lin;
 
-    if (canmgr_encode (fr, &raw) < 0)
+    if (canmgr_encode (fr, &raw) < 0) {
+        errno = EPROTO;
         return -1;
+    }
     lin.can_id = raw.id;
     lin.can_dlc = raw.dlen;
     memcpy (lin.data, raw.data, raw.dlen);
@@ -53,12 +56,17 @@ int lxcan_recv (int s, struct canmgr_frame *fr)
 
     if (read (s, &lin, sizeof(lin)) != sizeof (lin))
         return -1;
-
+    if (lin.can_dlc > 8) {
+        errno = EPROTO;
+        return -1;
+    }
     raw.id = lin.can_id;
     raw.dlen = lin.can_dlc;
     memcpy (raw.data, lin.data, lin.can_dlc);
-    if (canmgr_decode (fr, &raw) < 0)
+    if (canmgr_decode (fr, &raw) < 0) {
+        errno = EPROTO;
         return -1;
+    }
     return 0;
 }
 

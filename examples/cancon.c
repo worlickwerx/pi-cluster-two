@@ -10,9 +10,10 @@
 #include "lxcan.h"
 
 static const uint8_t myaddr = 0; // lie
+static const uint8_t mymod = 0; // lie
 static struct canmgr_hdr cons;
 static int s;
-static int c, m, n;
+static int m, n;
 
 void canmgr_ack (struct canmgr_frame *fr, int type, uint8_t *data, int len)
 {
@@ -45,13 +46,12 @@ void console_connect (void)
     in.hdr.type = CANMGR_TYPE_WO;
     in.hdr.node = in.id.dst;
     in.hdr.module = m;
-    in.hdr.cluster = c;
     in.hdr.object = CANOBJ_TARGET_CONSOLECONN;
-    if (canmgr_encode_hdr (&cons, &in.data[0], 4) < 0) {
+    if (canmgr_encode_hdr (&cons, &in.data[0], 3) < 0) {
         fprintf (stderr, "error encoding console object\n");
         exit (1);
     }
-    in.dlen = 4;
+    in.dlen = 3;
     if (lxcan_send (s, &in) < 0) {
         fprintf (stderr, "lxcan_send: %m\n");
         exit (1);
@@ -71,13 +71,12 @@ void console_disconnect (void)
     in.hdr.type = CANMGR_TYPE_WO;
     in.hdr.node = in.id.dst;
     in.hdr.module = m;
-    in.hdr.cluster = c;
     in.hdr.object = CANOBJ_TARGET_CONSOLEDISC;
-    if (canmgr_encode_hdr (&cons, &in.data[0], 4) < 0) {
+    if (canmgr_encode_hdr (&cons, &in.data[0], 3) < 0) {
         fprintf (stderr, "error encoding console object\n");
         exit (1);
     }
-    in.dlen = 4;
+    in.dlen = 3;
     if (lxcan_send (s, &in) < 0) {
         fprintf (stderr, "lxcan_send: %m\n");
         exit (1);
@@ -115,11 +114,11 @@ int main (int argc, char *argv[])
     struct canmgr_frame in, out;
 
     if (argc != 2) {
-        fprintf (stderr, "Usage: cancon c,m,n\n");
+        fprintf (stderr, "Usage: cancon m,n\n");
         exit (1);
     }
-    if (sscanf (argv[1], "%d,%d,%d", &c, &m, &n) != 3
-            || c < 0 || c >= 0x10 || m < 0 || m >= 0x10 || c < 0 || c >= 0x10) {
+    if (sscanf (argv[1], "%d,%d", &m, &n) != 2
+            || m < 0 || m >= 0x10 || n < 0 || n >= 0x10) {
         fprintf (stderr, "improperly specified target\n");
         exit (1);
     }
@@ -128,9 +127,8 @@ int main (int argc, char *argv[])
     cons.pri = 1;
     cons.type = CANMGR_TYPE_DAT;
     cons.node = myaddr;
-    cons.module = 0;
-    cons.cluster = 0;
-    cons.object = 0x10f; // FIXME: make it unique
+    cons.module = mymod;
+    cons.object = CANOBJ_TARGET_CONSOLEBASE; // FIXME: make it unique
 
     if ((s = lxcan_open ("can0")) < 0) {
         fprintf (stderr, "lxcan_open: %m\n");
