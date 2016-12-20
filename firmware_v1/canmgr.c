@@ -17,8 +17,7 @@ static struct canmgr_hdr console_hdr = {
     .module = CANMGR_ADDR_NOROUTE,
     .node = CANMGR_ADDR_NOROUTE,
 };
-static unsigned long console_lastsent_millis = 0;
-static unsigned long console_lastsent_acked = 1;
+static int console_lastsent_needack = 0;
 
 void canmgr_setup (uint8_t can_addr)
 {
@@ -68,23 +67,22 @@ void canmgr_ack (struct canmgr_frame *fr, int type, uint8_t *data, int len)
     can_send (&ack, 0);
 }
 
+int canmgr_console_send_ready (void)
+{
+    if (CONSOLE_UNCONNECTED (&console_hdr))
+        return 0;
+    if (console_lastsent_needack)
+        return 0;
+    return 1;
+}
+
 void canmgr_console_send (uint8_t *buf, int len)
 {
     struct canmgr_frame dat;
-    unsigned long now = millis ();
 
-    if (CONSOLE_UNCONNECTED (&console_hdr))
+    if (!canmgr_console_send_ready ())
         return;
-    if (!console_lastsent_acked) {
-        unsigned elapsed;
-        if (now > console_lastsent_millis)
-            elapsed = now - console_lastsent_millis;
-        else
-            elapsed = ~0UL - (console_lastsent_millis - now);
-        if (elapsed < 100)
-            return;
-        console_lastsent_acked = 1;
-    }
+
     /* FIXME add routing */
     dat.id.src = myaddr;
     dat.id.dst = console_hdr.node;
@@ -97,10 +95,12 @@ void canmgr_console_send (uint8_t *buf, int len)
     dat.hdr.node = console_hdr.node;
     dat.hdr.object = console_hdr.object;
 
+    dat.dlen = len;
+    memcpy (&dat.data[0], buf, len);
+
     if (can_send (&dat, 100) < 0)
         return;
-    console_lastsent_millis = now;
-    console_lastsent_acked = 0;
+    console_lastsent_needack = 1;
 }
 
 void canobj_led_identify (struct canmgr_frame *fr)
@@ -233,6 +233,7 @@ void canobj_target_consoledisc (struct canmgr_frame *fr)
             console_hdr.module = CANMGR_ADDR_NOROUTE;
             console_hdr.node = CANMGR_ADDR_NOROUTE;
             canmgr_ack (fr, CANMGR_TYPE_ACK, NULL, 0);
+            console_lastsent_needack = 0;
             break;
         case CANMGR_TYPE_RO:
         case CANMGR_TYPE_DAT:
@@ -272,10 +273,7 @@ void canobj_target_consolesend (struct canmgr_frame *fr)
             goto nak;
         case CANMGR_TYPE_ACK:
         case CANMGR_TYPE_NAK:
-            if (!console_lastsent_acked && fr->hdr.node == console_hdr.node
-                                     && fr->hdr.cluster == console_hdr.cluster
-                                      && fr->hdr.module == console_hdr.module)
-                console_lastsent_acked = 1;
+            console_lastsent_needack = 0;
             break;
         default:
             break;
@@ -320,8 +318,10 @@ void canmgr_dispatch (struct canmgr_frame *fr)
             canobj_target_consolerecv (fr);
             break;
         default:
-            if (fr->hdr.object == console_hdr.object)
+            if (fr->hdr.object == console_hdr.object) {
                 canobj_target_consolesend (fr);
+                break;
+            }
             canobj_unknown (fr);
             break;
     }
@@ -336,7 +336,7 @@ void canmgr_update (void)
         if (can_recv (&fr, 0) == 0)
             canmgr_dispatch (&fr);
     }
-    if (target_console_available ()) {
+    if (target_console_available () && canmgr_console_send_ready ()) {
         uint8_t buf[4];
         int len;
         len = target_console_recv (buf, sizeof (buf));
