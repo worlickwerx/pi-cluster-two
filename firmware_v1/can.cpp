@@ -42,9 +42,10 @@ int can0_write (uint32_t id, uint8_t len, uint8_t *buf, uint16_t timeout)
     return can0.write (m);
 }
 
-int can0_read (uint32_t *id, uint8_t *len, uint8_t *buf)
+int can0_read (uint32_t *id, uint8_t *len, uint8_t *buf, uint16_t timeout)
 {
     CAN_message_t m;
+    m.timeout = timeout;
     int rc = can0.read (m);
     if (rc) {
         if (id)

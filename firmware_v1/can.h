@@ -18,7 +18,8 @@ EXTERNC int can0_available (void);
 EXTERNC int can0_write (uint32_t id, uint8_t len, uint8_t *buf,
                         uint16_t timeout);
 
-EXTERNC int can0_read (uint32_t *id, uint8_t *len, uint8_t *buf);
+EXTERNC int can0_read (uint32_t *id, uint8_t *len, uint8_t *buf,
+                       uint16_t timeout);
 
 #undef EXTERNC
 

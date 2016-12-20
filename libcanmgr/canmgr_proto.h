@@ -67,8 +67,9 @@ enum {
     CANOBJ_TARGET_SHUTDOWN = 2, // 1 byte (0=normal, 1=begin shutdown sequence)
     CANOBJ_TARGET_RESET = 3,    // 1 byte (0=run, 1=hold in reset, 2=toggle)
 
-    CANOBJ_TARGET_CONSOLECONN = 4, // 4 bytes: c:6 m:6 n:6 t:2 obj:10
-    CANOBJ_TARGET_CONSOLEDISC = 5, // 4 bytes: c:6 m:6 n:6 t:2 obj:10
+    CANOBJ_TARGET_CONSOLECONN = 4, // 4 bytes: canmgr_hdr
+    CANOBJ_TARGET_CONSOLEDISC = 5, // 4 bytes: canmgr_hdr
+    CANOBJ_TARGET_CONSOLERECV = 6, // 1-4 bytes of data
 
     // todo:
 
