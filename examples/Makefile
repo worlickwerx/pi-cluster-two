@@ -1,4 +1,4 @@
-PROGS = canpower cancon
+PROGS = canpower cancon cansnoop
 CANMGRDIR := $(shell pwd)/../libcanmgr
 CFLAGS = -I$(CANMGRDIR)
 LIBADD = -L$(CANMGRDIR) -lcanmgr
@@ -9,6 +9,9 @@ canpower: canpower.o lxcan.o
 	$(CC) -o $@ $^ $(LIBADD)
 
 cancon: cancon.o lxcan.o
+	$(CC) -o $@ $^ $(LIBADD)
+
+cansnoop: cansnoop.o lxcan.o monotime.o
 	$(CC) -o $@ $^ $(LIBADD)
 
 clean:

@@ -18,13 +18,14 @@ void canmgr_dump (struct canmgr_frame *fr, char *buf, int len)
         case CANMGR_TYPE_RO:  typestr = "RO"; break;
         case CANMGR_TYPE_WO:  typestr = "WO"; break;
         case CANMGR_TYPE_WNA: typestr = "WNA"; break;
-        case CANMGR_TYPE_DAT: typestr = "DAT"; break;
+        case CANMGR_TYPE_DAT: typestr = "D"; break;
         case CANMGR_TYPE_ACK: typestr = "ACK"; break;
         case CANMGR_TYPE_NAK: typestr = "NAK"; break;
         case CANMGR_TYPE_SIG: typestr = "SIG"; break;
     }
     switch (fr->hdr.object) {
         case CANOBJ_TARGET_CONSOLECONN: objstr = "CONSOLECONN"; break;
+        case CANOBJ_TARGET_CONSOLEDISC: objstr = "CONSOLEDISC"; break;
         case CANOBJ_TARGET_POWER:       objstr = "POWER"; break;
         default:
             snprintf (objstr_hex, sizeof (objstr_hex), "%.4x", fr->hdr.object);

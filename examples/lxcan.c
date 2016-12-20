@@ -30,29 +30,35 @@ int lxcan_open (const char *name)
     return s;
 }
 
-int lxcan_send (int s, struct rawcan_frame *raw)
+int lxcan_send (int s, struct canmgr_frame *fr)
 {
-    struct can_frame frame;
+    struct rawcan_frame raw;
+    struct can_frame lin;
 
-    frame.can_id = raw->id;
-    frame.can_dlc = raw->dlen;
-    memcpy (frame.data, raw->data, raw->dlen);
+    if (canmgr_encode (fr, &raw) < 0)
+        return -1;
+    lin.can_id = raw.id;
+    lin.can_dlc = raw.dlen;
+    memcpy (lin.data, raw.data, raw.dlen);
 
-    if (write (s, &frame, sizeof(frame)) != sizeof (frame))
+    if (write (s, &lin, sizeof(lin)) != sizeof (lin))
         return -1;
     return 0;
 }
 
-int lxcan_recv (int s, struct rawcan_frame *raw)
+int lxcan_recv (int s, struct canmgr_frame *fr)
 {
-    struct can_frame frame;
+    struct rawcan_frame raw;
+    struct can_frame lin;
 
-    if (read (s, &frame, sizeof(frame)) != sizeof (frame))
+    if (read (s, &lin, sizeof(lin)) != sizeof (lin))
         return -1;
 
-    raw->id = frame.can_id;
-    raw->dlen = frame.can_dlc;
-    memcpy (raw->data, frame.data, frame.can_dlc);
+    raw.id = lin.can_id;
+    raw.dlen = lin.can_dlc;
+    memcpy (raw.data, lin.data, lin.can_dlc);
+    if (canmgr_decode (fr, &raw) < 0)
+        return -1;
     return 0;
 }
 

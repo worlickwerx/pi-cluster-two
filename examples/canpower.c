@@ -1,8 +1,3 @@
-#include <sys/socket.h>
-#include <net/if.h>
-#include <linux/sockios.h>
-#include <linux/can.h>
-
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
@@ -16,7 +11,6 @@ static const uint8_t myaddr = 0; // lie
 int main (int argc, char *argv[])
 {
     struct canmgr_frame in, out;
-    struct rawcan_frame raw;
     int c, m, n;
     int s;
     char dump[80]; 
@@ -46,13 +40,6 @@ int main (int argc, char *argv[])
     in.data[0] = strtoul (argv[2], NULL, 10); /* 0=off, 1=on */
     in.dlen = 1;
 
-    /* encode raw frame
-     */
-    if (canmgr_encode (&in, &raw) < 0) {
-        fprintf (stderr, "error encoding CAN frame\n");
-        exit (1);
-    }
-
     /* send frame on can0
      * wait for ack/nak response
      */
@@ -62,19 +49,15 @@ int main (int argc, char *argv[])
     }
     canmgr_dump (&in, dump, sizeof (dump));
     printf ("%s\n", dump);
-    if (lxcan_send (s, &raw) < 0) {
+    if (lxcan_send (s, &in) < 0) {
         fprintf (stderr, "lxcan_send: %m\n");
         exit (1);
     }
     // TODO timeout
     for (;;) {
-        if (lxcan_recv (s, &raw) < 0) {
+        if (lxcan_recv (s, &out) < 0) {
             fprintf (stderr, "lxcan_recv: %m\n");
             exit (1);
-        }
-        if (canmgr_decode (&out, &raw) < 0) {
-            fprintf (stderr, "canmgr_decode error, ignoring packet\n");
-            continue;
         }
         canmgr_dump (&out, dump, sizeof (dump));
         printf ("%s\n", dump);
