@@ -26,7 +26,7 @@ void can0_setfilter (uint32_t idmask, uint8_t n)
 {
     CAN_filter_t f;
     f.rtr = 0;
-    f.ext = 0;
+    f.ext = 1;
     f.id = idmask;
     can0.setFilter (f, n);
 }
@@ -35,7 +35,7 @@ int can0_write (uint32_t id, uint8_t len, uint8_t *buf, uint16_t timeout)
 {
     CAN_message_t m;
     m.id = id;
-    m.ext = 0;
+    m.ext = 1;
     m.len = len;
     m.timeout = timeout;
     memcpy (m.buf, buf, len);

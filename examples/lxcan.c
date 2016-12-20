@@ -40,7 +40,7 @@ int lxcan_send (int s, struct canmgr_frame *fr)
         errno = EPROTO;
         return -1;
     }
-    lin.can_id = raw.id;
+    lin.can_id = raw.id | CAN_EFF_FLAG;
     lin.can_dlc = raw.dlen;
     memcpy (lin.data, raw.data, raw.dlen);
 
@@ -56,11 +56,11 @@ int lxcan_recv (int s, struct canmgr_frame *fr)
 
     if (read (s, &lin, sizeof(lin)) != sizeof (lin))
         return -1;
-    if (lin.can_dlc > 8) {
+    if (lin.can_dlc > 8 || !(lin.can_id & CAN_EFF_FLAG)) {
         errno = EPROTO;
         return -1;
     }
-    raw.id = lin.can_id;
+    raw.id = lin.can_id & CAN_EFF_MASK;
     raw.dlen = lin.can_dlc;
     memcpy (raw.data, lin.data, lin.can_dlc);
     if (canmgr_decode (fr, &raw) < 0) {
