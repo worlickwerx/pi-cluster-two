@@ -2,98 +2,75 @@
 #include <string.h>
 #include "canmgr_proto.h"
 
-int canmgr_compare_hdr (struct canmgr_hdr *h1, struct canmgr_hdr *h2)
-{
-    if (h1->object != h2->object || h1->node != h2->node
-                                 || h1->module != h2->module
-                                 || h1->type != h2->type
-                                 || h1->pri != h2->pri)
-        return -1;
-    return 0;
-}
-
-int canmgr_decode_hdr (struct canmgr_hdr *hdr, uint8_t *data, int len)
-{
-    if (len != 3)
-        return -1;
-
-    /* 8 bit object id */
-    hdr->object = data[2];
-    /* 6 bit node */
-    hdr->node = data[1]&0x3f;
-    /* 6 bit module (2 + 4) */
-    hdr->module = data[1]>>6;
-    hdr->module |= (data[0]&0x0f)<<2;
-    /* 3 bit type */
-    hdr->type = (data[0]&0x70)>>4;
-    /* 1 bit priority */
-    hdr->pri = (data[0]&0x80)>>7;
-
-    return 0;
-}
-
 int canmgr_decode (struct canmgr_frame *fr, struct rawcan_frame *raw)
 {
-    if (raw->dlen < 3 || raw->dlen > 8)
-        return -1;
-
-    /* 11 bit CAN id */
-    fr->id.src = raw->id & 0x1f;
-    fr->id.dst = (raw->id>>5) & 0x1f;
-    fr->id.pri = (raw->id>>10) & 1;
-
-    /* 3 byte header */
-    if (canmgr_decode_hdr (&fr->hdr, &raw->data[0], 3) < 0)
-        return -1;
-
-    /* 0-5 bytes of data */
-    fr->dlen = raw->dlen - 3;
-    memcpy (&fr->data[0], &raw->data[3], fr->dlen);
-
-    return 0;
-}
-
-int canmgr_encode_hdr (struct canmgr_hdr *hdr, uint8_t *data, int len)
-{
-    if (len != 3)
-        return -1;
-
-    /* 8 bit object id */
-    data[2] = hdr->object;
+    /* 2 bit object */
+    fr->object = raw->id & 3;
     /* 6 bit node */
-    data[1] = hdr->node;
+    fr->node = (raw->id>>2) & 0x3f;
     /* 6 bit module */
-    data[1] |= (hdr->module&3)<<6;
-    data[0] = hdr->module>>2;
+    fr->module = (raw->id>>8) & 0x3f;
     /* 3 bit type */
-    data[0] |= hdr->type<<4;
+    fr->type = (raw->id>>14) & 7;
     /* 1 bit priority */
-    data[0] |= hdr->pri<<7;
-
+    fr->xpri = (raw->id>>17) & 1;
+    /* 5 bit src */
+    fr->src = (raw->id>>18) & 0x1f;
+    /* 5 bit dst */
+    fr->dst = (raw->id>>23) & 0x1f;
+    /* 1 bit priority */
+    fr->pri = (raw->id>>28) & 1;
+    /* 0-8 bytes of data */
+    if (fr->object == 3) { // extended object id
+        if (raw->dlen == 0)
+            return -1;
+        fr->object += raw->data[0];
+        fr->dlen = raw->dlen - 1;
+        memcpy (fr->data, &raw->data[1], fr->dlen);
+    } else {
+        fr->dlen = raw->dlen;
+        memcpy (fr->data, raw->data, fr->dlen);
+    }
     return 0;
 }
 
 int canmgr_encode (struct canmgr_frame *fr, struct rawcan_frame *raw)
 {
-    if (fr->dlen > 5)
+    if (fr->dlen > canmgr_maxdata (fr->object))
         return -1;
 
-    /* 11 bit CAN id */
-    raw->id = fr->id.src;
-    raw->id |= fr->id.dst<<5;
-    raw->id |= fr->id.pri<<10;
-
-    /* 3 byte header */
-    if (canmgr_encode_hdr (&fr->hdr, &raw->data[0], 3) < 0)
-        return -1;
-
-    /* 0-5 bytes of data */
-    raw->dlen = fr->dlen + 3;
-    memcpy (&raw->data[3], &fr->data[0], fr->dlen);
-
+    /* 2 bit object */
+    raw->id = fr->object > 3 ? 3 : fr->object;
+    /* 6 bit node */
+    raw->id |= fr->node<<2;
+    /* 6 bit module */
+    raw->id |= fr->module<<8;
+    /* 3 bit type */
+    raw->id |= fr->type<<14;
+    /* 1 bit priority */
+    raw->id |= fr->xpri<<17;
+    /* 5 bit src */
+    raw->id |= fr->src<<18;
+    /* 5 bit dst */
+    raw->id |= fr->dst<<23;
+    /* 1 bit priority */
+    raw->id |= fr->pri<<28;
+    /* 0-8 bytes of data */
+    if (fr->object >= 3) { // extended object id
+        raw->data[0] = fr->object - 3;
+        raw->dlen = fr->dlen + 1;
+        memcpy (&raw->data[1], fr->data, fr->dlen);
+    } else {
+        raw->dlen = fr->dlen;
+        memcpy (raw->data, fr->data, fr->dlen);
+    }
     return 0;
 }
 
+int canmgr_maxdata (int object)
+{
+    return (object >= 3) ? 7 : 8;
+}
 
 /*
  * vi:tabstop=4 shiftwidth=4 expandtab

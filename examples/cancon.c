@@ -9,48 +9,43 @@
 #include "canmgr_dump.h"
 #include "lxcan.h"
 
-static const uint8_t myaddr = 0; // lie
+static const uint8_t mynode = 0; // lie
 static const uint8_t mymod = 0; // lie
-static struct canmgr_hdr cons;
+static int object = CANOBJ_TARGET_CONSOLESEND;
 static int s;
 static int m, n;
 
-void canmgr_ack (struct canmgr_frame *fr, int type, uint8_t *data, int len)
+void canmgr_ack (struct canmgr_frame *fr, int type)
 {
-    struct canmgr_frame ack;
+    int tmpaddr = fr->src;
+    fr->src = fr->dst;
+    fr->dst = tmpaddr;
+    fr->type = type;
+    fr->pri = 0; // acks are high priority
+    fr->dlen = 0;
 
-    ack.id.src = fr->id.dst;
-    ack.id.dst = fr->id.src;
-    ack.id.pri = fr->id.pri;
-
-    ack.hdr = fr->hdr;
-    ack.hdr.type = type;
-    memcpy (&ack.data[0], data, len);
-    ack.dlen = len;
-
-    if (lxcan_send (s, &ack) < 0) {
+    if (lxcan_send (s, fr) < 0) {
         fprintf (stderr, "lxcan_send: %m\n");
         exit (1);
     }
 }
 
-void console_connect (void)
+void console_request (int obj)
 {
     struct canmgr_frame in;
     
-    in.id.pri = 1;
-    in.id.dst = n | 0x10;
-    in.id.src = myaddr;
+    in.pri = 1;
+    in.dst = n | 0x10;
+    in.src = mynode;
 
-    in.hdr.pri = 1;
-    in.hdr.type = CANMGR_TYPE_WO;
-    in.hdr.node = in.id.dst;
-    in.hdr.module = m;
-    in.hdr.object = CANOBJ_TARGET_CONSOLECONN;
-    if (canmgr_encode_hdr (&cons, &in.data[0], 3) < 0) {
-        fprintf (stderr, "error encoding console object\n");
-        exit (1);
-    }
+    in.xpri = 1;
+    in.type = CANMGR_TYPE_WO;
+    in.node = in.dst;
+    in.module = m;
+    in.object = obj;
+    in.data[0] = mymod;
+    in.data[1] = mynode;
+    in.data[2] = object;
     in.dlen = 3;
     if (lxcan_send (s, &in) < 0) {
         fprintf (stderr, "lxcan_send: %m\n");
@@ -59,53 +54,28 @@ void console_connect (void)
     /* FIXME collect ack */
 }
 
-void console_disconnect (void)
-{
-    struct canmgr_frame in;
-    
-    in.id.pri = 1;
-    in.id.dst = n | 0x10;
-    in.id.src = myaddr;
-
-    in.hdr.pri = 1;
-    in.hdr.type = CANMGR_TYPE_WO;
-    in.hdr.node = in.id.dst;
-    in.hdr.module = m;
-    in.hdr.object = CANOBJ_TARGET_CONSOLEDISC;
-    if (canmgr_encode_hdr (&cons, &in.data[0], 3) < 0) {
-        fprintf (stderr, "error encoding console object\n");
-        exit (1);
-    }
-    in.dlen = 3;
-    if (lxcan_send (s, &in) < 0) {
-        fprintf (stderr, "lxcan_send: %m\n");
-        exit (1);
-    }
-    /* FIXME: collect ack */
-}
-
 void canobj_console_recv (struct canmgr_frame *fr)
 {
-    switch (fr->hdr.type) {
+    switch (fr->type) {
         case CANMGR_TYPE_WO:
         case CANMGR_TYPE_RO:
             goto nak;
         case CANMGR_TYPE_DAT:
             printf ("%.*s", fr->dlen, fr->data);
             fflush (stdout); // FIXME
-            canmgr_ack (fr, CANMGR_TYPE_ACK, NULL, 0);
+            canmgr_ack (fr, CANMGR_TYPE_ACK);
             break;
         default:
             break;
     }
     return;
 nak:
-    canmgr_ack (fr, CANMGR_TYPE_NAK, NULL, 0);
+    canmgr_ack (fr, CANMGR_TYPE_NAK);
 }
 
 void sigint_handler (int arg)
 {
-    console_disconnect ();
+    console_request (CANOBJ_TARGET_CONSOLEDISC);
     exit (0);
 }
 
@@ -124,17 +94,16 @@ int main (int argc, char *argv[])
     }
     /* construct console object (payload)
      */
-    cons.pri = 1;
-    cons.type = CANMGR_TYPE_DAT;
-    cons.node = myaddr;
-    cons.module = mymod;
-    cons.object = CANOBJ_TARGET_CONSOLEBASE; // FIXME: make it unique
+
+    // FIXME: object should be unique
+    // Use CANOBJ_TARGET_CONSOLESEND for the common case,
+    // but if that's in use, select from range CANOBJ_TARGET_CONSOLEBASE - 0xff
 
     if ((s = lxcan_open ("can0")) < 0) {
         fprintf (stderr, "lxcan_open: %m\n");
         exit (1);
     }
-    console_connect ();
+    console_request (CANOBJ_TARGET_CONSOLECONN);
 
     signal (SIGINT, sigint_handler);
 
@@ -143,18 +112,18 @@ int main (int argc, char *argv[])
             fprintf (stderr, "lxcan_recv: %m\n");
             exit (1);
         }
-        if (out.id.dst != myaddr)
+        if (out.dst != mynode)
             continue;
-        switch (out.hdr.object) {
+        switch (out.object) {
             default:
-                if (out.hdr.object == cons.object) {
+                if (out.object == object) {
                     canobj_console_recv (&out);
                     break;
                 }
                 break;
         }
     }
-    console_disconnect ();
+    console_request (CANOBJ_TARGET_CONSOLEDISC);
     lxcan_close (s);
 
     exit (0);

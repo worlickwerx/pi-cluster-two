@@ -27,15 +27,15 @@ int main (int argc, char *argv[])
     /* construct request
      * for now, no routing - cluster and module are ignored
      */
-    in.id.pri = 1;
-    in.id.dst = n | 0x10;
-    in.id.src = myaddr;
+    in.pri = 1;
+    in.dst = n | 0x10;
+    in.src = myaddr;
 
-    in.hdr .pri = 1;
-    in.hdr.type = CANMGR_TYPE_WO;
-    in.hdr.node = in.id.dst;
-    in.hdr.module = m;
-    in.hdr.object = CANOBJ_TARGET_POWER;
+    in.xpri = 1;
+    in.type = CANMGR_TYPE_WO;
+    in.node = in.dst;
+    in.module = m;
+    in.object = CANOBJ_TARGET_POWER;
     in.data[0] = strtoul (argv[2], NULL, 10); /* 0=off, 1=on */
     in.dlen = 1;
 
@@ -60,17 +60,17 @@ int main (int argc, char *argv[])
         }
         canmgr_dump (&out, dump, sizeof (dump));
         printf ("%s\n", dump);
-        if (out.id.src != in.id.dst || out.id.dst != in.id.src)
+        if (out.src != in.dst || out.dst != in.src)
             continue;
-        if (out.hdr.object != CANOBJ_TARGET_POWER)
+        if (out.object != CANOBJ_TARGET_POWER)
             continue;
-        if (out.hdr.module != in.hdr.module || out.hdr.node != in.hdr.node)
+        if (out.module != in.module || out.node != in.node)
             continue;
-        if (out.hdr.type == CANMGR_TYPE_ACK) {
+        if (out.type == CANMGR_TYPE_ACK) {
             fprintf (stderr, "OK\n");
             exit (0);
         }
-        if (out.hdr.type == CANMGR_TYPE_NAK) {
+        if (out.type == CANMGR_TYPE_NAK) {
             fprintf (stderr, "Received NAK response\n");
             exit (1);
         }

@@ -8,30 +8,22 @@
 // compute mgr:   10 11 12 13 14 15 16 17 18 19 1a 1b
 // module mgr:    1d
 
-// CAN id (11 byte):
-//   pri:1 dst:5 src:5
-struct canmgr_id {
+#define CANMGR_DST_SHIFT  (23)
+#define CANMGR_DST_MASK (0x1f<<CANMGR_DST_SHIFT)
+
+// header uses first byte of CAN payload (optionally)
+struct canmgr_frame {
+    /* 29 byte header */
     uint16_t pri:1; // 0=high, 1=low
     uint16_t dst:5;
     uint16_t src:5;
-};
-#define CANMGR_DST_MASK (0b01111100000)
-
-// header uses first 3 bytes of CAN payload
-//   pri:1 type:3 module:6 node:6 object:8
-struct canmgr_hdr {
-    uint32_t pri:1; // 0=high, 1=low
+    uint32_t xpri:1; // 0=high, 1=low
     uint32_t type:3;
     uint32_t module:6;
     uint32_t node:6;
-    uint32_t object:8;
-};
-
-struct canmgr_frame {
-    struct canmgr_id id;
-    struct canmgr_hdr hdr;
+    uint32_t object:10; // uses data[0] if >= 3
     uint8_t dlen;
-    uint8_t data[5];
+    uint8_t data[8];
 };
 
 struct rawcan_frame {
@@ -59,22 +51,19 @@ enum {
 
 // canmgr objects
 enum {
-    CANOBJ_LED_IDENTIFY = 0,    // 1 byte (0=LED Off, 1=LED blinking)
-    CANOBJ_TARGET_POWER = 1,    // 1 byte (0=5V off, 1=5V on)
-    CANOBJ_TARGET_SHUTDOWN = 2, // 1 byte (0=normal, 1=begin shutdown sequence)
-    CANOBJ_TARGET_RESET = 3,    // 1 byte (0=run, 1=hold in reset, 2=toggle)
+    CANOBJ_HEARTBEAT = 0,
+    CANOBJ_TARGET_CONSOLERECV = 1, // data from cancon
+    CANOBJ_TARGET_CONSOLESEND = 2, // data to cancon
 
-    CANOBJ_TARGET_CONSOLECONN = 4, // 4 bytes: canmgr_hdr
-    CANOBJ_TARGET_CONSOLEDISC = 5, // 4 bytes: canmgr_hdr
-    CANOBJ_TARGET_CONSOLERECV = 6, // 1-4 bytes of data
+    CANOBJ_LED_IDENTIFY = 3,    // 1 byte (0=LED Off, 1=LED blinking)
+    CANOBJ_TARGET_POWER = 4,    // 1 byte (0=5V off, 1=5V on)
+    CANOBJ_TARGET_SHUTDOWN = 5, // 1 byte (0=normal, 1=begin shutdown sequence)
+    CANOBJ_TARGET_RESET = 6,    // 1 byte (0=run, 1=hold in reset, 2=toggle)
 
-    // todo:
+    CANOBJ_TARGET_CONSOLECONN = 7, // 3 bytes: m, n, obj_offset
+    CANOBJ_TARGET_CONSOLEDISC = 8, // 3 bytes: m, n, obj_offset
 
-    // heartbeat
-
-    // jtag/openocd protocol for remote gdb, etc..
-
-    CANOBJ_TARGET_CONSOLEBASE = 0x80, // 0x80 - 0xff reserved for cancon
+    CANOBJ_TARGET_CONSOLEBASE = 0x80, // 0x80 - 0xff reserved for SEND objects
 };
 
 #define CONSOLE_UNCONNECTED(h) \
@@ -82,10 +71,7 @@ enum {
 int canmgr_decode (struct canmgr_frame *fr, struct rawcan_frame *raw);
 int canmgr_encode (struct canmgr_frame *fr, struct rawcan_frame *raw);
 
-int canmgr_decode_hdr (struct canmgr_hdr *hdr, uint8_t *data, int len);
-int canmgr_encode_hdr (struct canmgr_hdr *hdr, uint8_t *data, int len);
-
-int canmgr_compare_hdr (struct canmgr_hdr *hdr1, struct canmgr_hdr *hdr2);
+int canmgr_maxdata (int object);
 
 #endif /* _CANMGR_PROTO_H */
 
