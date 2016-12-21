@@ -32,6 +32,8 @@ void canmgr_dump (struct canmgr_frame *fr, char *buf, int len)
         case CANOBJ_TARGET_CONSOLERECV: objstr = "CONSOLERECV"; break;
         case CANOBJ_TARGET_CONSOLERING: objstr = "CONSOLERING"; break;
         case CANOBJ_TARGET_POWER:       objstr = "POWER"; break;
+        case CANOBJ_TARGET_RESET:       objstr = "RESET"; break;
+        case CANOBJ_LED_IDENTIFY:       objstr = "IDENTIFY"; break;
         default:
             if (fr->object >= CANOBJ_TARGET_CONSOLEBASE)
                 snprintf (s, sizeof (s), "CONSEND/%02x",
