@@ -170,11 +170,15 @@ nak:
     canmgr_ack (fr, CANMGR_TYPE_NAK);
 }
 
-
+#define ISCRNL(c)   ((c)=='\n'||(c)=='\r')
 static void stdin_cb (EV_P_ ev_io *w, int revents)
 {
+    static uint8_t hist[2] = "\r\r"; /* input history for escpes */
     struct canmgr_frame in;
-    int len, max = canmgr_maxdata (CANOBJ_TARGET_CONSOLERECV);
+    char c;
+    uint8_t buf[8];
+    int max = canmgr_maxdata (CANOBJ_TARGET_CONSOLERECV) - 1; // stored & char
+    int i, len;
 
     in.pri = 1;
     in.dst = n | 0x10;
@@ -186,10 +190,29 @@ static void stdin_cb (EV_P_ ev_io *w, int revents)
     in.module = m;
     in.object = CANOBJ_TARGET_CONSOLERECV;
 
-    if ((len = read (0, in.data, max)) <= 0)
-        return; // FIXME handle EOF/error
-    in.dlen = len;
-
+    if ((len = read (0, buf, max)) <= 0)
+        return;
+    in.dlen = 0;
+    for (i = 0; i < len; i++) {
+        if (ISCRNL (hist[0]) && hist[1] == '&') {
+            switch (buf[i]) {
+                case '.':
+                    console_request (CANOBJ_TARGET_CONSOLEDISC);
+                    ev_io_stop (loop, &stdin_watcher);
+                    break;
+                default:
+                    in.data[in.dlen++] = '&';
+                    in.data[in.dlen++] = buf[i];
+                    break;
+            }
+        } else if (buf[i] != '&' || !ISCRNL (hist[1])) {
+            in.data[in.dlen++] = buf[i];
+        }
+        hist[0] = hist[1];
+        hist[1] = buf[i];
+    }
+    if (in.dlen == 0)
+        return;
     if (lxcan_send (s, &in) < 0)  {
         fprintf (stderr, "lxcan_send: %m\n");
         exit (1);
@@ -229,12 +252,6 @@ static void can_cb (EV_P_ ev_io *w, int revents)
             break;
     }
 
-}
-
-void sigint_handler (int arg)
-{
-    console_request (CANOBJ_TARGET_CONSOLEDISC);
-    ev_io_stop (loop, &stdin_watcher);
 }
 
 int main (int argc, char *argv[])
@@ -279,8 +296,6 @@ int main (int argc, char *argv[])
 
     console_request (CANOBJ_TARGET_CONSOLECONN);
     expecting_ack = 1;
-
-    signal (SIGINT, sigint_handler);
 
     ev_run (loop, 0);
     lxcan_close (s);
