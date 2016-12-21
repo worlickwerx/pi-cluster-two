@@ -44,7 +44,7 @@ void canmgr_ack (struct canmgr_frame *fr, int type)
 void console_request (int obj)
 {
     struct canmgr_frame in;
-    
+
     in.pri = 1;
     in.dst = n | 0x10;
     in.src = mynode;
@@ -74,7 +74,16 @@ void canobj_consoleconn (struct canmgr_frame *fr)
         case CANMGR_TYPE_NAK:
             fprintf (stderr, "Got NAK to CONSOLECONN\n");
         case CANMGR_TYPE_ACK:
+            fprintf (stderr, "Connected, Type `&?' to list escapes.\n");
             expecting_ack = 0;
+            new_tio = saved_tio;
+            cfmakeraw(&new_tio);
+            new_tio.c_cc[VMIN] = 1;
+            new_tio.c_cc[VTIME] = 0;
+            if (tcsetattr (0, TCSAFLUSH, &new_tio) < 0) {
+                fprintf (stderr, "tcsetattr: %m\n");
+                exit (1);
+            }
             ev_io_start (loop, &stdin_watcher);
             break;
         default:
@@ -196,8 +205,20 @@ static void stdin_cb (EV_P_ ev_io *w, int revents)
     for (i = 0; i < len; i++) {
         if (ISCRNL (hist[0]) && hist[1] == '&') {
             switch (buf[i]) {
-                case '.':
+                case '?': // help
+                    fprintf (stderr, "Type `&' at beginning of a line "
+                                     "followed by:\r\n");
+                    fprintf (stderr, "    .   Exit cancon session\r\n");
+                    fprintf (stderr, "    r   Dump ring buffer\r\n");
+                    fprintf (stderr, "    ?   Print this help\r\n");
+                    break;
+                case '.': // exit
                     console_request (CANOBJ_TARGET_CONSOLEDISC);
+                    ev_io_stop (loop, &stdin_watcher);
+                    break;
+                case 'r': // ring buffer dump
+                    console_request (CANOBJ_TARGET_CONSOLERING);
+                    expecting_ack = 1;
                     ev_io_stop (loop, &stdin_watcher);
                     break;
                 default:
@@ -217,7 +238,7 @@ static void stdin_cb (EV_P_ ev_io *w, int revents)
         fprintf (stderr, "lxcan_send: %m\n");
         exit (1);
     }
-    expecting_ack = 1; 
+    expecting_ack = 1;
     ev_io_stop (loop, &stdin_watcher);
 }
 
@@ -278,14 +299,6 @@ int main (int argc, char *argv[])
     }
     if (tcgetattr (0, &saved_tio) < 0) {
         fprintf (stderr, "tcgetattr: %m\n");
-        exit (1);
-    }
-    new_tio = saved_tio;
-    cfmakeraw(&new_tio);
-    new_tio.c_cc[VMIN] = 1;
-    new_tio.c_cc[VTIME] = 0;
-    if (tcsetattr (0, TCSAFLUSH, &new_tio) < 0) {
-        fprintf (stderr, "tcsetattr: %m\n");
         exit (1);
     }
 
