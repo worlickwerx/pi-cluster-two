@@ -37,6 +37,8 @@ int can_recv (struct canmgr_frame *fr, uint16_t timeout_ms)
         return -1;
     if (canmgr_decode (fr, &raw) < 0)
         return -1;
+    if (fr->dst != myaddr)
+        return -1;
     return 0;
 }
 

@@ -1,6 +1,5 @@
-# Prereqs:
-# - install cross CC, CXX, OBJCOPY, SIZE (apt get install arm-none-eabi-gcc)
-# - https://github.com/PaulStoffregen/teensy_loader_cli install in PATH
+# - install gcc-arm-none-eabi
+# - install https://github.com/PaulStoffregen/teensy_loader_cli (in PATH)
 # - install/configure udev 49-teensy.rules
 
 MCU=MK20DX256
