@@ -187,6 +187,7 @@ static void stdin_cb (EV_P_ ev_io *w, int revents)
     in.dlen = 0;
     for (i = 0; i < len; i++) {
         if (ISCRNL (hist[0]) && hist[1] == '&') {
+            int match = 1;
             switch (buf[i]) {
                 case '?': // help
                     fprintf (stderr, "Type `&' at beginning of a line "
@@ -217,8 +218,11 @@ static void stdin_cb (EV_P_ ev_io *w, int revents)
                 default:
                     in.data[in.dlen++] = '&';
                     in.data[in.dlen++] = buf[i];
+                    match = 0;
                     break;
             }
+            if (match)
+                buf[i] = '\r'; // allow back to back commands
         } else if (buf[i] != '&' || !ISCRNL (hist[1])) {
             in.data[in.dlen++] = buf[i];
         }
