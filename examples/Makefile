@@ -1,7 +1,9 @@
+# install libev-dev
+
 PROGS = canpower cancon cansnoop
 CANMGRDIR := $(shell pwd)/../libcanmgr
 CFLAGS = -I$(CANMGRDIR)
-LIBADD = -L$(CANMGRDIR) -lcanmgr
+LIBADD = -L$(CANMGRDIR) -lcanmgr -lev
 
 all: $(PROGS)
 
