@@ -13,7 +13,7 @@
 
 // header uses first byte of CAN payload (optionally)
 struct canmgr_frame {
-    /* 29 byte header */
+    /* 29 byte id */
     uint16_t pri:1; // 0=high, 1=low
     uint16_t dst:5;
     uint16_t src:5;
@@ -21,7 +21,8 @@ struct canmgr_frame {
     uint32_t type:3;
     uint32_t module:6;
     uint32_t node:6;
-    uint32_t object:10; // uses data[0] if >= 3
+    uint32_t object:8; // only 2 bits in id; if >= uses data[0]
+    /* 8 byte payload */
     uint8_t dlen;
     uint8_t data[8];
 };
@@ -51,9 +52,10 @@ enum {
 
 // canmgr objects
 enum {
+   // N.B. objects 0, 1, 2 are encoded in the id, thus allow 8 bytes of payload
     CANOBJ_HEARTBEAT = 0,
-    CANOBJ_TARGET_CONSOLERECV = 1, // data from cancon
-    CANOBJ_TARGET_CONSOLESEND = 2, // data to cancon
+    CANOBJ_TARGET_CONSOLERECV = 1, // recv 0-8 bytes of data from cancon
+    CANOBJ_TARGET_CONSOLESEND = 2, // send 0-8 bytes of data to cancon
 
     CANOBJ_LED_IDENTIFY = 3,    // 1 byte (0=LED Off, 1=LED blinking)
     CANOBJ_TARGET_POWER = 4,    // 1 byte (0=5V off, 1=5V on)
@@ -63,7 +65,9 @@ enum {
     CANOBJ_TARGET_CONSOLECONN = 7, // 3 bytes: m, n, obj_offset
     CANOBJ_TARGET_CONSOLEDISC = 8, // 3 bytes: m, n, obj_offset
 
-    CANOBJ_TARGET_CONSOLEBASE = 0x80, // 0x80 - 0xff reserved for SEND objects
+    CANOBJ_TARGET_CONSOLEBASE = 0x80,
+    // 0x80 - 0xff reserved fro more CONSOLESEND objects
+    // these should be unique on the sending node
 };
 
 #define CONSOLE_UNCONNECTED(h) \
