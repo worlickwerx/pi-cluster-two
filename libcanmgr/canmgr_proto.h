@@ -64,6 +64,7 @@ enum {
 
     CANOBJ_TARGET_CONSOLECONN = 7, // 3 bytes: m, n, obj_offset
     CANOBJ_TARGET_CONSOLEDISC = 8, // 3 bytes: m, n, obj_offset
+    CANOBJ_TARGET_CONSOLERING = 9, // 3 bytes: m, n, obj_offset
 
     CANOBJ_TARGET_CONSOLEBASE = 0x80,
     // 0x80 - 0xff reserved fro more CONSOLESEND objects

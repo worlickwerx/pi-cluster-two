@@ -30,6 +30,7 @@ void canmgr_dump (struct canmgr_frame *fr, char *buf, int len)
         case CANOBJ_TARGET_CONSOLEDISC: objstr = "CONSOLEDISC"; break;
         case CANOBJ_TARGET_CONSOLESEND: objstr = "CONSOLESEND"; break;
         case CANOBJ_TARGET_CONSOLERECV: objstr = "CONSOLERECV"; break;
+        case CANOBJ_TARGET_CONSOLERING: objstr = "CONSOLERING"; break;
         case CANOBJ_TARGET_POWER:       objstr = "POWER"; break;
         default:
             if (fr->object >= CANOBJ_TARGET_CONSOLEBASE)

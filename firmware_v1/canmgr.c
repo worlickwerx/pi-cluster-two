@@ -17,6 +17,7 @@ static struct canmgr_frame console_connected = {
     .node = CANMGR_ADDR_NOROUTE,
 };
 static int console_lastsent_needack = 0;
+static int console_ringdump = 0;
 
 void canmgr_setup (uint8_t can_addr)
 {
@@ -190,6 +191,7 @@ void canobj_target_consoleconn (struct canmgr_frame *fr)
             console_connected.module = fr->data[0];
             console_connected.node = fr->data[1];
             console_connected.object = fr->data[2];
+            target_console_reset (); // dump only new data
             canmgr_ack (fr, CANMGR_TYPE_ACK, NULL, 0);
             break;
         case CANMGR_TYPE_RO:
@@ -222,6 +224,29 @@ void canobj_target_consoledisc (struct canmgr_frame *fr)
             console_connected.module = CANMGR_ADDR_NOROUTE;
             canmgr_ack (fr, CANMGR_TYPE_ACK, NULL, 0);
             console_lastsent_needack = 0;
+            break;
+        case CANMGR_TYPE_RO:
+        case CANMGR_TYPE_DAT:
+            goto nak;
+        default:
+            break;
+    }
+    return;
+nak:
+    canmgr_ack (fr, CANMGR_TYPE_NAK, NULL, 0);
+}
+
+void canobj_target_consolering (struct canmgr_frame *fr)
+{
+    switch (fr->type) {
+        case CANMGR_TYPE_WO:
+            if (fr->dlen != 3 || console_connected.module != fr->data[0]
+                              || console_connected.node != fr->data[1]
+                              || console_connected.object != fr->data[2])
+                goto nak;
+            target_console_history_reset ();
+            console_ringdump = 1;
+            canmgr_ack (fr, CANMGR_TYPE_ACK, NULL, 0);
             break;
         case CANMGR_TYPE_RO:
         case CANMGR_TYPE_DAT:
@@ -305,6 +330,9 @@ void canmgr_dispatch (struct canmgr_frame *fr)
         case CANOBJ_TARGET_CONSOLERECV:
             canobj_target_consolerecv (fr);
             break;
+        case CANOBJ_TARGET_CONSOLERING:
+            canobj_target_consolering (fr);
+            break;
         default:
             if (fr->object == console_connected.object) {
                 canobj_target_consolesend (fr);
@@ -324,14 +352,23 @@ void canmgr_update (void)
         if (can_recv (&fr, 0) == 0)
             canmgr_dispatch (&fr);
     }
-    if (target_console_available () && canmgr_console_send_ready ()) {
+    if (canmgr_console_send_ready ()) {
         uint8_t buf[8];
         int max = canmgr_maxdata (console_connected.object);
+        int len = 0;
+
         if (max > sizeof (buf))
             max = sizeof (buf);
-        int len = target_console_recv (buf, max);
-        activity_pulse ();
-        canmgr_console_send (buf, len);
+        if (console_ringdump) {
+            if ((len = target_console_history_next (buf, max)) == 0)
+                console_ringdump = 0; // EOF
+        } else {
+            len = target_console_recv (buf, max);
+        }
+        if (len > 0) {
+            activity_pulse ();
+            canmgr_console_send (buf, len);
+        }
     }
 }
 
