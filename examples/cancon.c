@@ -17,7 +17,7 @@ static int myobject = CANOBJ_TARGET_CONSOLESEND;
 static int s;
 static int m, n;
 
-static int expecting_ack = 0;
+static int expecting_recv_ack = 0;
 
 static struct termios saved_tio;
 static struct termios new_tio;
@@ -64,79 +64,75 @@ void console_request (int obj)
     }
 }
 
-void canobj_consoleconn (struct canmgr_frame *fr)
+void identify_request (uint8_t state)
 {
-    switch (fr->type) {
-        case CANMGR_TYPE_WO:
-        case CANMGR_TYPE_RO:
-        case CANMGR_TYPE_DAT:
-            goto nak;
-        case CANMGR_TYPE_NAK:
-            fprintf (stderr, "Got NAK to CONSOLECONN\n");
-        case CANMGR_TYPE_ACK:
-            fprintf (stderr, "Connected, Type `&?' to list escapes.\n");
-            expecting_ack = 0;
-            new_tio = saved_tio;
-            cfmakeraw(&new_tio);
-            new_tio.c_cc[VMIN] = 1;
-            new_tio.c_cc[VTIME] = 0;
-            if (tcsetattr (0, TCSAFLUSH, &new_tio) < 0) {
-                fprintf (stderr, "tcsetattr: %m\n");
-                exit (1);
-            }
-            ev_io_start (loop, &stdin_watcher);
-            break;
-        default:
-            break;
+    struct canmgr_frame in;
+
+    in.pri = 1;
+    in.dst = n | 0x10;
+    in.src = mynode;
+
+    in.xpri = 1;
+    in.type = CANMGR_TYPE_WO;
+    in.node = in.dst;
+    in.module = m;
+    in.object = CANOBJ_LED_IDENTIFY;
+    in.data[0] = state;
+    in.dlen = 1;
+    if (lxcan_send (s, &in) < 0) {
+        fprintf (stderr, "lxcan_send: %m\n");
+        exit (1);
     }
-    return;
-nak:
-    canmgr_ack (fr, CANMGR_TYPE_NAK);
 }
 
-void canobj_consoledisc (struct canmgr_frame *fr)
+void reset_request (uint8_t val)
 {
-    switch (fr->type) {
-        case CANMGR_TYPE_WO:
-        case CANMGR_TYPE_RO:
-        case CANMGR_TYPE_DAT:
-            goto nak;
-        case CANMGR_TYPE_NAK:
-            fprintf (stderr, "Got NAK to CONSOLEDISC\n");
-        case CANMGR_TYPE_ACK:
-            if (tcsetattr (0, TCSAFLUSH, &saved_tio) < 0) {
-                fprintf (stderr, "tcsetattr: %m\n");
-                exit (1);
-            }
-            exit (0);
-            break;
-        default:
-            break;
+    struct canmgr_frame in;
+
+    in.pri = 1;
+    in.dst = n | 0x10;
+    in.src = mynode;
+
+    in.xpri = 1;
+    in.type = CANMGR_TYPE_WO;
+    in.node = in.dst;
+    in.module = m;
+    in.object = CANOBJ_TARGET_RESET;
+    in.data[0] = val;
+    in.dlen = 1;
+    if (lxcan_send (s, &in) < 0) {
+        fprintf (stderr, "lxcan_send: %m\n");
+        exit (1);
     }
-    return;
-nak:
-    canmgr_ack (fr, CANMGR_TYPE_NAK);
 }
 
-void canobj_consolering (struct canmgr_frame *fr)
+void canobj_consoleconn_ack (struct canmgr_frame *fr)
 {
-    switch (fr->type) {
-        case CANMGR_TYPE_WO:
-        case CANMGR_TYPE_RO:
-        case CANMGR_TYPE_DAT:
-            goto nak;
-        case CANMGR_TYPE_NAK:
-            fprintf (stderr, "Got NAK to CONSOLERING\n");
-        case CANMGR_TYPE_ACK:
-            expecting_ack = 0;
-            ev_io_start (loop, &stdin_watcher);
-            break;
-        default:
-            break;
+    if (fr->type == CANMGR_TYPE_NAK) {
+        fprintf (stderr, "Got NAK to CONSOLECONN\n");
+        exit (1);
     }
-    return;
-nak:
-    canmgr_ack (fr, CANMGR_TYPE_NAK);
+    fprintf (stderr, "Connected, Type `&?' to list escapes.\n");
+    new_tio = saved_tio;
+    cfmakeraw(&new_tio);
+    new_tio.c_cc[VMIN] = 1;
+    new_tio.c_cc[VTIME] = 0;
+    if (tcsetattr (0, TCSAFLUSH, &new_tio) < 0) {
+        fprintf (stderr, "tcsetattr: %m\n");
+        exit (1);
+    }
+    ev_io_start (loop, &stdin_watcher);
+}
+
+void canobj_consoledisc_ack (struct canmgr_frame *fr)
+{
+    if (fr->type == CANMGR_TYPE_NAK)
+        fprintf (stderr, "Got NAK to CONSOLEDISC\n");
+    ev_io_stop (loop, &can_watcher);
+    if (tcsetattr (0, TCSAFLUSH, &saved_tio) < 0) {
+        fprintf (stderr, "tcsetattr: %m\n");
+        exit (1);
+    }
 }
 
 void canobj_consolesend (struct canmgr_frame *fr)
@@ -158,25 +154,12 @@ nak:
     canmgr_ack (fr, CANMGR_TYPE_NAK);
 }
 
-void canobj_consolerecv (struct canmgr_frame *fr)
+void canobj_consolerecv_ack (struct canmgr_frame *fr)
 {
-    switch (fr->type) {
-        case CANMGR_TYPE_WO:
-        case CANMGR_TYPE_RO:
-        case CANMGR_TYPE_DAT:
-            goto nak;
-        case CANMGR_TYPE_NAK:
-            fprintf (stderr, "Got NAK to CONSOLERECV\n");
-        case CANMGR_TYPE_ACK:
-            expecting_ack = 0;
-            ev_io_start (loop, &stdin_watcher);
-            break;
-        default:
-            break;
-    }
-    return;
-nak:
-    canmgr_ack (fr, CANMGR_TYPE_NAK);
+    if (fr->type == CANMGR_TYPE_NAK)
+        fprintf (stderr, "Got NAK to CONSOLERECV\n");
+    expecting_recv_ack = 0;
+    ev_io_start (loop, &stdin_watcher);
 }
 
 #define ISCRNL(c)   ((c)=='\n'||(c)=='\r')
@@ -211,6 +194,9 @@ static void stdin_cb (EV_P_ ev_io *w, int revents)
                     fprintf (stderr, "    .   Exit cancon session\r\n");
                     fprintf (stderr, "    r   Dump ring buffer\r\n");
                     fprintf (stderr, "    ?   Print this help\r\n");
+                    fprintf (stderr, "    I   Turn identify LED on\r\n");
+                    fprintf (stderr, "    i   Turn identify LED off\r\n");
+                    fprintf (stderr, "    R   Pulse hardware reset line\r\n");
                     break;
                 case '.': // exit
                     console_request (CANOBJ_TARGET_CONSOLEDISC);
@@ -218,8 +204,15 @@ static void stdin_cb (EV_P_ ev_io *w, int revents)
                     break;
                 case 'r': // ring buffer dump
                     console_request (CANOBJ_TARGET_CONSOLERING);
-                    expecting_ack = 1;
-                    ev_io_stop (loop, &stdin_watcher);
+                    break;
+                case 'i': // identify=off
+                    identify_request (0);
+                    break;
+                case 'I': // identify=on
+                    identify_request (1);
+                    break;
+                case 'R': // reset=3 (pulse)
+                    reset_request (3);
                     break;
                 default:
                     in.data[in.dlen++] = '&';
@@ -238,7 +231,7 @@ static void stdin_cb (EV_P_ ev_io *w, int revents)
         fprintf (stderr, "lxcan_send: %m\n");
         exit (1);
     }
-    expecting_ack = 1;
+    expecting_recv_ack = 1;
     ev_io_stop (loop, &stdin_watcher);
 }
 
@@ -252,27 +245,30 @@ static void can_cb (EV_P_ ev_io *w, int revents)
     }
     if (fr.dst != mynode)
         return; // not addressed to me
+    if (fr.object == myobject) {
+        canobj_consolesend (&fr);
+        return;
+    }
+    if (fr.type != CANMGR_TYPE_ACK && fr.type != CANMGR_TYPE_NAK)
+        return;
+
     switch (fr.object) {
         case CANOBJ_TARGET_CONSOLECONN:
-            canobj_consoleconn (&fr);
+            canobj_consoleconn_ack (&fr);
             break;
         case CANOBJ_TARGET_CONSOLEDISC:
-            canobj_consoledisc (&fr);
-            break;
-        case CANOBJ_TARGET_CONSOLERING:
-            canobj_consolering (&fr);
+            canobj_consoledisc_ack (&fr);
             break;
         case CANOBJ_TARGET_CONSOLERECV:
-            canobj_consolerecv (&fr);
+            canobj_consolerecv_ack (&fr);
             break;
-        default:
-            if (fr.object == myobject) {
-                canobj_consolesend (&fr);
-                break;
-            }
+        case CANOBJ_TARGET_CONSOLERING:
+        case CANOBJ_LED_IDENTIFY:
+        case CANOBJ_TARGET_RESET:
+            if (fr.type == CANMGR_TYPE_NAK) 
+                fprintf (stderr, "Got a NAK response to obj %d\n", fr.object);
             break;
     }
-
 }
 
 int main (int argc, char *argv[])
@@ -308,9 +304,9 @@ int main (int argc, char *argv[])
     ev_io_start (loop, &can_watcher);
 
     console_request (CANOBJ_TARGET_CONSOLECONN);
-    expecting_ack = 1;
 
     ev_run (loop, 0);
+
     lxcan_close (s);
 
     exit (0);
