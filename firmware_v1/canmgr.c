@@ -321,7 +321,7 @@ void canmgr_dispatch (struct canmgr_frame *fr)
             canobj_target_power (fr);
             break;
         case CANOBJ_TARGET_RESET:
-            canobj_target_power (fr);
+            canobj_target_reset (fr);
             break;
         case CANOBJ_TARGET_CONSOLECONN:
             canobj_target_consoleconn (fr);
