@@ -1,0 +1,2 @@
+SUBSYSTEM=="input", KERNEL=="event*", ENV{ID_PATH}=="platform-soc:keypad", ATTRS{keys}=="*116*", TAG+="power-switch"
+
