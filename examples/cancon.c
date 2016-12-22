@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <signal.h>
 #include <termios.h>
+#include <unistd.h>
 #include <ev.h>
 #include "canmgr_proto.h"
 #include "canmgr_dump.h"
@@ -112,7 +113,7 @@ void canobj_consoleconn_ack (struct canmgr_frame *fr)
         fprintf (stderr, "Got NAK to CONSOLECONN\n");
         exit (1);
     }
-    fprintf (stderr, "Connected, Type `&?' to list escapes.\n");
+    fprintf (stderr, "Connected, type `&?' to list escapes.\n");
     new_tio = saved_tio;
     cfmakeraw(&new_tio);
     new_tio.c_cc[VMIN] = 1;
@@ -137,13 +138,20 @@ void canobj_consoledisc_ack (struct canmgr_frame *fr)
 
 void canobj_consolesend (struct canmgr_frame *fr)
 {
+    uint8_t *p;
+    int rc, n = 0;
     switch (fr->type) {
         case CANMGR_TYPE_WO:
         case CANMGR_TYPE_RO:
             goto nak;
         case CANMGR_TYPE_DAT:
-            printf ("%.*s", fr->dlen, fr->data);
-            fflush (stdout); // FIXME
+            do {
+                if ((rc = write (STDOUT_FILENO, fr->data+n, fr->dlen-n)) < 0) {
+                    fprintf (stderr, "stdout write error: %m\r\n");
+                    break;
+                }
+                n += rc;
+            } while (n < fr->dlen);
             canmgr_ack (fr, CANMGR_TYPE_ACK);
             break;
         default:
@@ -190,8 +198,8 @@ static void stdin_cb (EV_P_ ev_io *w, int revents)
             int match = 1;
             switch (buf[i]) {
                 case '?': // help
-                    fprintf (stderr, "Type `&' at beginning of a line "
-                                     "followed by:\r\n");
+                    fprintf (stderr,
+                            "Type `&' at beginning of a line followed by:\r\n");
                     fprintf (stderr, "    .   Exit cancon session\r\n");
                     fprintf (stderr, "    r   Dump ring buffer\r\n");
                     fprintf (stderr, "    ?   Print this help\r\n");
@@ -269,7 +277,7 @@ static void can_cb (EV_P_ ev_io *w, int revents)
         case CANOBJ_TARGET_CONSOLERING:
         case CANOBJ_LED_IDENTIFY:
         case CANOBJ_TARGET_RESET:
-            if (fr.type == CANMGR_TYPE_NAK) 
+            if (fr.type == CANMGR_TYPE_NAK)
                 fprintf (stderr, "Got a NAK response to obj %d\n", fr.object);
             break;
     }
