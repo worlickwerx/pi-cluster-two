@@ -59,7 +59,7 @@ enum {
 
     CANOBJ_LED_IDENTIFY = 3,    // 1 byte (0=LED Off, 1=LED blinking)
     CANOBJ_TARGET_POWER = 4,    // 1 byte (0=5V off, 1=5V on)
-    CANOBJ_TARGET_SHUTDOWN = 5, // 1 byte (0=normal, 1=begin shutdown sequence)
+    CANOBJ_TARGET_SHUTDOWN = 5, // 1 byte (0=run, 1=hold in shut, 2=toggle)
     CANOBJ_TARGET_RESET = 6,    // 1 byte (0=run, 1=hold in reset, 2=toggle)
 
     CANOBJ_TARGET_CONSOLECONN = 7, // 3 bytes: m, n, obj_offset

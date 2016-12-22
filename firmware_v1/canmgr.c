@@ -6,6 +6,7 @@
 #include "identify.h"
 #include "target_power.h"
 #include "target_reset.h"
+#include "target_shutdown.h"
 #include "target_console.h"
 
 static uint8_t myaddr;
@@ -39,6 +40,7 @@ int can_recv (struct canmgr_frame *fr, uint16_t timeout_ms)
         return -1;
     if (fr->dst != myaddr)
         return -1;
+    activity_pulse ();
     return 0;
 }
 
@@ -50,6 +52,7 @@ int can_send (struct canmgr_frame *fr, uint16_t timeout_ms)
         return -1;
     if (!can0_write (raw.id, raw.dlen, &raw.data[0], timeout_ms))
         return -1;
+    activity_pulse ();
     return 0;
 }
 
@@ -163,6 +166,36 @@ void canobj_target_reset (struct canmgr_frame *fr)
             if (fr->dlen != 0)
                 goto nak;
             target_reset_get (&val);
+            canmgr_ack (fr, CANMGR_TYPE_ACK, &val, 1);
+            break;
+        case CANMGR_TYPE_DAT:
+            goto nak;
+        default:
+            break;
+    }
+    return;
+nak:
+    canmgr_ack (fr, CANMGR_TYPE_NAK, NULL, 0);
+}
+
+void canobj_target_shutdown (struct canmgr_frame *fr)
+{
+    uint8_t val;
+
+    switch (fr->type) {
+        case CANMGR_TYPE_WO:
+            if (fr->dlen != 1)
+                goto nak;
+            if (fr->data[0] == 1 || fr->data[0] == 0)
+                target_shutdown_set (fr->data[0]);
+            else
+                target_shutdown_pulse ();
+            canmgr_ack (fr, CANMGR_TYPE_ACK, NULL, 0);
+            break;
+        case CANMGR_TYPE_RO:
+            if (fr->dlen != 0)
+                goto nak;
+            target_shutdown_get (&val);
             canmgr_ack (fr, CANMGR_TYPE_ACK, &val, 1);
             break;
         case CANMGR_TYPE_DAT:
@@ -323,6 +356,9 @@ void canmgr_dispatch (struct canmgr_frame *fr)
         case CANOBJ_TARGET_RESET:
             canobj_target_reset (fr);
             break;
+        case CANOBJ_TARGET_SHUTDOWN:
+            canobj_target_shutdown (fr);
+            break;
         case CANOBJ_TARGET_CONSOLECONN:
             canobj_target_consoleconn (fr);
             break;
@@ -350,7 +386,6 @@ void canmgr_update (void)
     struct canmgr_frame fr;
 
     if (can0_available ()) {
-        activity_pulse ();
         if (can_recv (&fr, 0) == 0)
             canmgr_dispatch (&fr);
     }
@@ -368,7 +403,6 @@ void canmgr_update (void)
             len = target_console_recv (buf, max);
         }
         if (len > 0) {
-            activity_pulse ();
             canmgr_console_send (buf, len);
         }
     }

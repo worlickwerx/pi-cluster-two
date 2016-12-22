@@ -39,6 +39,7 @@ SRCS_CXX = \
 	identify.cpp \
 	activity.cpp \
 	target_reset.cpp \
+	target_shutdown.cpp \
 	target_console.cpp \
 
 CANMGR_DIR := $(shell pwd)/../libcanmgr
