@@ -107,6 +107,27 @@ void reset_request (uint8_t val)
     }
 }
 
+void shutdown_request (uint8_t val)
+{
+    struct canmgr_frame in;
+
+    in.pri = 1;
+    in.dst = n | 0x10;
+    in.src = mynode;
+
+    in.xpri = 1;
+    in.type = CANMGR_TYPE_WO;
+    in.node = in.dst;
+    in.module = m;
+    in.object = CANOBJ_TARGET_SHUTDOWN;
+    in.data[0] = val;
+    in.dlen = 1;
+    if (lxcan_send (s, &in) < 0) {
+        fprintf (stderr, "lxcan_send: %m\n");
+        exit (1);
+    }
+}
+
 void canobj_consoleconn_ack (struct canmgr_frame *fr)
 {
     if (fr->type == CANMGR_TYPE_NAK) {
@@ -206,6 +227,7 @@ static void stdin_cb (EV_P_ ev_io *w, int revents)
                     fprintf (stderr, "    I   Turn identify LED on\r\n");
                     fprintf (stderr, "    i   Turn identify LED off\r\n");
                     fprintf (stderr, "    R   Pulse hardware reset line\r\n");
+                    fprintf (stderr, "    S   Press shutdown button\r\n");
                     break;
                 case '.': // exit
                     console_request (CANOBJ_TARGET_CONSOLEDISC);
@@ -222,6 +244,9 @@ static void stdin_cb (EV_P_ ev_io *w, int revents)
                     break;
                 case 'R': // reset=3 (pulse)
                     reset_request (3);
+                    break;
+                case 'S': // shutdown=3 (pulse)
+                    shutdown_request (3);
                     break;
                 default:
                     in.data[in.dlen++] = '&';
@@ -277,6 +302,7 @@ static void can_cb (EV_P_ ev_io *w, int revents)
         case CANOBJ_TARGET_CONSOLERING:
         case CANOBJ_LED_IDENTIFY:
         case CANOBJ_TARGET_RESET:
+        case CANOBJ_TARGET_SHUTDOWN:
             if (fr.type == CANMGR_TYPE_NAK)
                 fprintf (stderr, "Got a NAK response to obj %d\n", fr.object);
             break;
