@@ -7,7 +7,7 @@
         target-path = "/soc/gpio";
         __overlay__ {
             keypad_pins: keypad_pins {
-                brcm,pins = <4>;
+                brcm,pins = <20>;
                 brcm,function = <0>;
                 brcm,pull = <2>;
             };
@@ -24,10 +24,10 @@
             pinctrl-names = "default";
             pinctrl-0 = <&keypad_pins>;
             autorepeat;
-            button@4 {
+            button@20 {
                label = "Shutdown";
                linux,code = <116>;
-               gpios = <&gpio 4 1>;
+               gpios = <&gpio 20 1>;
             };
          };
       };
