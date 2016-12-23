@@ -107,7 +107,7 @@ void reset_request (uint8_t val)
     }
 }
 
-void shutdown_request (uint8_t val)
+void shutdown_request (void)
 {
     struct canmgr_frame in;
 
@@ -120,8 +120,7 @@ void shutdown_request (uint8_t val)
     in.node = in.dst;
     in.module = m;
     in.object = CANOBJ_TARGET_SHUTDOWN;
-    in.data[0] = val;
-    in.dlen = 1;
+    in.dlen = 0;
     if (lxcan_send (s, &in) < 0) {
         fprintf (stderr, "lxcan_send: %m\n");
         exit (1);
@@ -245,8 +244,8 @@ static void stdin_cb (EV_P_ ev_io *w, int revents)
                 case 'R': // reset=3 (pulse)
                     reset_request (3);
                     break;
-                case 'S': // shutdown=3 (pulse)
-                    shutdown_request (3);
+                case 'S': // shutdown
+                    shutdown_request ();
                     break;
                 default:
                     in.data[in.dlen++] = '&';

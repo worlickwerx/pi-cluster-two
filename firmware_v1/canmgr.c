@@ -180,24 +180,14 @@ nak:
 
 void canobj_target_shutdown (struct canmgr_frame *fr)
 {
-    uint8_t val;
-
     switch (fr->type) {
         case CANMGR_TYPE_WO:
-            if (fr->dlen != 1)
+            if (fr->dlen != 0)
                 goto nak;
-            if (fr->data[0] == 1 || fr->data[0] == 0)
-                target_shutdown_set (fr->data[0]);
-            else
-                target_shutdown_pulse ();
+            target_shutdown_pulse ();
             canmgr_ack (fr, CANMGR_TYPE_ACK, NULL, 0);
             break;
         case CANMGR_TYPE_RO:
-            if (fr->dlen != 0)
-                goto nak;
-            target_shutdown_get (&val);
-            canmgr_ack (fr, CANMGR_TYPE_ACK, &val, 1);
-            break;
         case CANMGR_TYPE_DAT:
             goto nak;
         default:
