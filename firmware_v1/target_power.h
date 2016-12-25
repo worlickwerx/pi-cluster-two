@@ -1,8 +1,15 @@
-void target_power_setup (void);
-void target_power_finalize (void);
+#ifdef __cplusplus
+#define EXTERNC extern "C"
+#else
+#define EXTERNC
+#endif
 
-void target_power_set (uint8_t val);
-void target_power_get (uint8_t *val);
+EXTERNC void target_power_setup (void);
+EXTERNC void target_power_finalize (void);
+
+EXTERNC void target_power_update (void);
+EXTERNC void target_power_set (uint8_t val);
+EXTERNC void target_power_get (uint8_t *val);
 
 
 /*

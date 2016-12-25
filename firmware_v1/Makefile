@@ -24,7 +24,6 @@ SRCS_C = \
 	teensy3/usb_desc.c \
 	main.c \
 	canmgr.c \
-	target_power.c \
 	address.c \
 	canmgr_proto.c
 
@@ -39,7 +38,7 @@ SRCS_CXX = \
 	identify.cpp \
 	activity.cpp \
 	target_reset.cpp \
-	target_shutdown.cpp \
+	target_power.cpp \
 	target_console.cpp \
 
 CANMGR_DIR := $(shell pwd)/../libcanmgr

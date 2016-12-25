@@ -6,7 +6,6 @@
 #include "identify.h"
 #include "target_power.h"
 #include "target_reset.h"
-#include "target_shutdown.h"
 #include "target_console.h"
 
 static uint8_t myaddr;
@@ -178,26 +177,6 @@ nak:
     canmgr_ack (fr, CANMGR_TYPE_NAK, NULL, 0);
 }
 
-void canobj_target_shutdown (struct canmgr_frame *fr)
-{
-    switch (fr->type) {
-        case CANMGR_TYPE_WO:
-            if (fr->dlen != 0)
-                goto nak;
-            target_shutdown_pulse ();
-            canmgr_ack (fr, CANMGR_TYPE_ACK, NULL, 0);
-            break;
-        case CANMGR_TYPE_RO:
-        case CANMGR_TYPE_DAT:
-            goto nak;
-        default:
-            break;
-    }
-    return;
-nak:
-    canmgr_ack (fr, CANMGR_TYPE_NAK, NULL, 0);
-}
-
 void canobj_target_consoleconn (struct canmgr_frame *fr)
 {
     uint8_t val[3];
@@ -345,9 +324,6 @@ void canmgr_dispatch (struct canmgr_frame *fr)
             break;
         case CANOBJ_TARGET_RESET:
             canobj_target_reset (fr);
-            break;
-        case CANOBJ_TARGET_SHUTDOWN:
-            canobj_target_shutdown (fr);
             break;
         case CANOBJ_TARGET_CONSOLECONN:
             canobj_target_consoleconn (fr);
