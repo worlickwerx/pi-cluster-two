@@ -16,7 +16,7 @@ int main (int argc, char *argv[])
     char dump[80]; 
 
     if (argc != 3) {
-        fprintf (stderr, "Usage: canpower m,n 0|1\n");
+        fprintf (stderr, "Usage: canpower m,n 0|1|2\n");
         exit (1);
     }
     if (sscanf (argv[1], "%d,%d", &m, &n) != 2
@@ -36,7 +36,7 @@ int main (int argc, char *argv[])
     in.node = in.dst;
     in.module = m;
     in.object = CANOBJ_TARGET_POWER;
-    in.data[0] = strtoul (argv[2], NULL, 10); /* 0=off, 1=on */
+    in.data[0] = strtoul (argv[2], NULL, 10); /* 0=off, 1=on, 2=shutdown */
     in.dlen = 1;
 
     /* send frame on can0
@@ -46,8 +46,6 @@ int main (int argc, char *argv[])
         fprintf (stderr, "lxcan_open: %m\n");
         exit (1);
     }
-    canmgr_dump (&in, dump, sizeof (dump));
-    printf ("%s\n", dump);
     if (lxcan_send (s, &in) < 0) {
         fprintf (stderr, "lxcan_send: %m\n");
         exit (1);
@@ -58,8 +56,6 @@ int main (int argc, char *argv[])
             fprintf (stderr, "lxcan_recv: %m\n");
             exit (1);
         }
-        canmgr_dump (&out, dump, sizeof (dump));
-        printf ("%s\n", dump);
         if (out.src != in.dst || out.dst != in.src)
             continue;
         if (out.object != CANOBJ_TARGET_POWER)
