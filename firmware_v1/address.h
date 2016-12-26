@@ -1,7 +1,7 @@
 void address_setup (void);
 void address_finalize (void);
 
-void address_get (uint8_t *val);
+void address_get (uint8_t *mod, uint8_t *node);
 
 
 /*

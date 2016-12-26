@@ -8,7 +8,8 @@
 #include "target_reset.h"
 #include "target_console.h"
 
-static uint8_t myaddr;
+static uint8_t addr_mod;
+static uint8_t addr_node;
 
 /* Console state
  */
@@ -19,14 +20,14 @@ static struct canmgr_frame console_connected = {
 static int console_lastsent_needack = 0;
 static int console_ringdump = 0;
 
-void canmgr_setup (uint8_t can_addr)
+void canmgr_setup (uint8_t mod, uint8_t node)
 {
     int i;
+    addr_node = node;
+    addr_mod = mod;
     can0_begin (CANMGR_DST_MASK);
-    // receive dst=can_addr
     for (i = 0; i < 8; i++)
-        can0_setfilter (can_addr<<CANMGR_DST_SHIFT, i);
-    myaddr = can_addr;
+        can0_setfilter ((addr_node|0x10)<<CANMGR_DST_SHIFT, i);
 }
 
 int can_recv (struct canmgr_frame *fr, uint16_t timeout_ms)
@@ -37,7 +38,7 @@ int can_recv (struct canmgr_frame *fr, uint16_t timeout_ms)
         return -1;
     if (canmgr_decode (fr, &raw) < 0)
         return -1;
-    if (fr->dst != myaddr)
+    if (fr->dst != (addr_node | 0x10))
         return -1;
     activity_pulse ();
     return 0;
@@ -189,7 +190,7 @@ void canobj_target_consoleconn (struct canmgr_frame *fr)
              */
             console_connected.pri = 1;
             console_connected.dst = fr->data[1];
-            console_connected.src = myaddr;
+            console_connected.src = addr_node | 0x10;;
             console_connected.xpri = 1;
             console_connected.type = CANMGR_TYPE_DAT;
             console_connected.module = fr->data[0];

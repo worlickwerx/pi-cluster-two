@@ -9,7 +9,7 @@
 
 int main (void)
 {
-    uint8_t addr;
+    uint8_t mod, node;
 
     identify_setup ();
     activity_setup ();
@@ -17,8 +17,8 @@ int main (void)
     target_power_setup ();
     target_console_setup ();
     address_setup ();
-    address_get (&addr);
-    canmgr_setup (addr | 0x10);
+    address_get (&mod, &node);
+    canmgr_setup (mod, node);
 
     while (1) {
         canmgr_update ();
