@@ -23,7 +23,7 @@ void target_reset_pulse (void)
 {
     target_reset_state = LOW;
     digitalWriteFast (target_reset_pin, target_reset_state);
-    target_reset_since -= target_reset_since;
+    target_reset_since = 0;
 }
 
 void target_reset_set (uint8_t val)
@@ -45,7 +45,7 @@ void target_reset_set (uint8_t val)
             return;
     }
     digitalWriteFast (target_reset_pin, target_reset_state);
-    target_reset_since -= target_reset_since;
+    target_reset_since = 0;
 }
 
 void target_reset_get (uint8_t *val)
@@ -60,7 +60,7 @@ void target_reset_update (void)
             target_reset_state = HIGH;
             digitalWriteFast (target_reset_pin, target_reset_state);
         }
-        target_reset_since -= target_reset_period;
+        target_reset_since = 0;
     }
 }
 
