@@ -119,8 +119,9 @@ void shutdown_request (void)
     in.type = CANMGR_TYPE_WO;
     in.node = in.dst;
     in.module = m;
-    in.object = CANOBJ_TARGET_SHUTDOWN;
-    in.dlen = 0;
+    in.object = CANOBJ_TARGET_POWER;
+    in.dlen = 1;
+    in.data[0] = 2;
     if (lxcan_send (s, &in) < 0) {
         fprintf (stderr, "lxcan_send: %m\n");
         exit (1);
@@ -301,7 +302,7 @@ static void can_cb (EV_P_ ev_io *w, int revents)
         case CANOBJ_TARGET_CONSOLERING:
         case CANOBJ_LED_IDENTIFY:
         case CANOBJ_TARGET_RESET:
-        case CANOBJ_TARGET_SHUTDOWN:
+        case CANOBJ_TARGET_POWER:
             if (fr.type == CANMGR_TYPE_NAK)
                 fprintf (stderr, "Got a NAK response to obj %d\n", fr.object);
             break;
