@@ -301,6 +301,23 @@ nak:
     canmgr_ack (fr, CANMGR_TYPE_NAK, NULL, 0);
 }
 
+void canobj_echo (struct canmgr_frame *fr)
+{
+    switch (fr->type) {
+        case CANMGR_TYPE_WO:
+        case CANMGR_TYPE_RO:
+        case CANMGR_TYPE_DAT:
+            canmgr_ack (fr, CANMGR_TYPE_ACK, fr->data, fr->dlen);
+            break;
+        case CANMGR_TYPE_ACK:
+        case CANMGR_TYPE_NAK:
+            break;
+        default:
+            break;
+    }
+}
+
+
 void canobj_unknown (struct canmgr_frame *fr)
 {
     switch (fr->type) {
@@ -317,6 +334,9 @@ void canobj_unknown (struct canmgr_frame *fr)
 void canmgr_dispatch (struct canmgr_frame *fr)
 {
     switch (fr->object) {
+        case CANOBJ_ECHO:
+            canobj_echo (fr);
+            break;
         case CANOBJ_LED_IDENTIFY:
             canobj_led_identify (fr);
             break;
