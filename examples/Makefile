@@ -1,17 +1,20 @@
 # install libev-dev
 
-PROGS = canpower cancon cansnoop
+PROGS = canpower cancon cansnoop canaddr
 CANMGRDIR := $(shell pwd)/../libcanmgr
 CFLAGS = -I$(CANMGRDIR)
 LIBADD = -L$(CANMGRDIR) -lcanmgr -lev
 
 all: $(PROGS)
 
-canpower: canpower.o lxcan.o
+canpower: canpower.o lxcan.o address.o
 	$(CC) -o $@ $^ $(LIBADD)
 
-cancon: cancon.o lxcan.o
+cancon: cancon.o lxcan.o address.o
 	$(CC) -o $@ $^ $(LIBADD)
+
+canaddr: canaddr.o address.o
+	$(CC) -o $@ $^
 
 cansnoop: cansnoop.o lxcan.o monotime.o
 	$(CC) -o $@ $^ $(LIBADD)
