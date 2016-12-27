@@ -34,11 +34,11 @@ static void can_cb (EV_P_ ev_io *w, int revents)
         return;
     if (fr.type == CANMGR_TYPE_NAK) {
         printf ("%.2x,%.2x: NAK to power request\n",
-                fr.dlen, fr.module, fr.node);
+                fr.module, fr.node);
         ev_break (EV_A_ EVBREAK_ONE);
     } else {
         printf ("%.2x,%.2x: power request successful\n",
-                fr.dlen, fr.module, fr.node);
+                fr.module, fr.node);
         ev_break (EV_A_ EVBREAK_ONE);
     }
 }

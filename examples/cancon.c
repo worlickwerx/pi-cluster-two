@@ -11,9 +11,10 @@
 #include "canmgr_proto.h"
 #include "canmgr_dump.h"
 #include "lxcan.h"
+#include "address.h"
 
-static const uint8_t mynode = 0; // lie
-static const uint8_t mymod = 0; // lie
+static uint8_t addr_node;
+static uint8_t addr_mod;
 static int myobject = CANOBJ_TARGET_CONSOLESEND;
 static int s;
 static int m, n;
@@ -48,15 +49,15 @@ void console_request (int obj)
 
     in.pri = 1;
     in.dst = n | 0x10;
-    in.src = mynode;
+    in.src = addr_node;
 
     in.xpri = 1;
     in.type = CANMGR_TYPE_WO;
     in.node = in.dst;
     in.module = m;
     in.object = obj;
-    in.data[0] = mymod;
-    in.data[1] = mynode;
+    in.data[0] = addr_mod;
+    in.data[1] = addr_node;
     in.data[2] = myobject;
     in.dlen = 3;
     if (lxcan_send (s, &in) < 0) {
@@ -71,7 +72,7 @@ void identify_request (uint8_t state)
 
     in.pri = 1;
     in.dst = n | 0x10;
-    in.src = mynode;
+    in.src = addr_node;
 
     in.xpri = 1;
     in.type = CANMGR_TYPE_WO;
@@ -92,7 +93,7 @@ void reset_request (uint8_t val)
 
     in.pri = 1;
     in.dst = n | 0x10;
-    in.src = mynode;
+    in.src = addr_node;
 
     in.xpri = 1;
     in.type = CANMGR_TYPE_WO;
@@ -113,7 +114,7 @@ void shutdown_request (void)
 
     in.pri = 1;
     in.dst = n | 0x10;
-    in.src = mynode;
+    in.src = addr_node;
 
     in.xpri = 1;
     in.type = CANMGR_TYPE_WO;
@@ -203,7 +204,7 @@ static void stdin_cb (EV_P_ ev_io *w, int revents)
 
     in.pri = 1;
     in.dst = n | 0x10;
-    in.src = mynode;
+    in.src = addr_node;
 
     in.xpri = 1;
     in.type = CANMGR_TYPE_DAT;
@@ -280,7 +281,7 @@ static void can_cb (EV_P_ ev_io *w, int revents)
         fprintf (stderr, "lxcan_recv: %m\n");
         return;
     }
-    if (fr.dst != mynode)
+    if (fr.dst != addr_node)
         return; // not addressed to me
     if (fr.object == myobject) {
         canobj_consolesend (&fr);
@@ -317,12 +318,15 @@ int main (int argc, char *argv[])
         fprintf (stderr, "Usage: cancon m,n\n");
         exit (1);
     }
-    if (sscanf (argv[1], "%d,%d", &m, &n) != 2
+    if (sscanf (argv[1], "%x,%x", &m, &n) != 2
             || m < 0 || m >= 0x10 || n < 0 || n >= 0x10) {
         fprintf (stderr, "improperly specified target\n");
         exit (1);
     }
-
+    if (can_address_get (&addr_mod, &addr_node) < 0) {
+        fprintf (stderr, "could not read GPIO lines: %m\n");
+        exit (1);
+    }
     // FIXME: object should be unique
     // Use CANOBJ_TARGET_CONSOLESEND for the common case,
     // but if that's in use, select from range CANOBJ_TARGET_CONSOLEBASE - 0xff
