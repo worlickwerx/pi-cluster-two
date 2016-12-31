@@ -53,29 +53,28 @@ static void can_cb (EV_P_ ev_io *w, int revents)
 
 static void timeout_cb (EV_P_ ev_timer *w, int revents)
 {
-    struct canmgr_frame in;
+    struct canmgr_frame fr;
     uint32_t nseq = htonl (seq);
 
-    in.pri = 1;
-    in.dst = targ_node;
-    in.src = addr_node;
+    fr.pri = 1;
+    fr.dst = targ_mod == addr_mod ? targ_node : CANMGR_MODULE_CTRL;
+    fr.src = addr_node;
 
-    in.xpri = 1;
-    in.type = CANMGR_TYPE_WO;
-    in.node = in.dst;
-    in.module = targ_mod;
-    in.object = CANOBJ_ECHO;
-    memcpy (&in.data[0], &nseq, 4);
-    memset (&in.data[4], 0xff, 3);
-    in.dlen = 7;
+    fr.xpri = 1;
+    fr.type = CANMGR_TYPE_WO;
+    fr.node = targ_node;
+    fr.module = targ_mod;
+    fr.object = CANOBJ_ECHO;
+    memcpy (&fr.data[0], &nseq, 4);
+    memset (&fr.data[4], 0xff, 3);
+    fr.dlen = 7;
 
     timestamp[seq++ % nslots]= monotime ();
-    if (lxcan_send (s, &in) < 0) {
+    if (lxcan_send (s, &fr) < 0) {
         fprintf (stderr, "lxcan_send: %m\n");
         exit (1);
     }
 }
-
 
 int main (int argc, char *argv[])
 {

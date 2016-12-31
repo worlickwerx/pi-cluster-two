@@ -11,6 +11,8 @@
 #define CANMGR_DST_SHIFT  (23)
 #define CANMGR_DST_MASK (0x1f<<CANMGR_DST_SHIFT)
 
+#define CANMGR_MODULE_CTRL  (0x1d)
+
 // header uses first byte of CAN payload (optionally)
 struct canmgr_frame {
     /* 29 byte id */
