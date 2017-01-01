@@ -53,13 +53,15 @@ static void send_power_request (uint8_t mod, uint8_t node, uint8_t val)
 {
     struct canmgr_frame fr;
 
+    node |= 0x10; // select board controller;
+
     fr.pri = 1;
-    fr.dst = node | 0x10;
+    fr.dst = mod == addr_mod ? node : CANMGR_MODULE_CTRL;
     fr.src = addr_node;
 
     fr.xpri = 1;
     fr.type = CANMGR_TYPE_WO;
-    fr.node = fr.dst;
+    fr.node = node;
     fr.module = mod;
     fr.object = CANOBJ_TARGET_POWER;
     fr.data[0] = val;

@@ -48,12 +48,12 @@ void console_request (int obj)
     struct canmgr_frame in;
 
     in.pri = 1;
-    in.dst = n | 0x10;
+    in.dst = m == addr_mod ? n : CANMGR_MODULE_CTRL;
     in.src = addr_node;
 
     in.xpri = 1;
     in.type = CANMGR_TYPE_WO;
-    in.node = in.dst;
+    in.node = n;
     in.module = m;
     in.object = obj;
     in.data[0] = addr_mod;
@@ -71,12 +71,12 @@ void identify_request (uint8_t state)
     struct canmgr_frame in;
 
     in.pri = 1;
-    in.dst = n | 0x10;
+    in.dst = m == addr_mod ? n : CANMGR_MODULE_CTRL;
     in.src = addr_node;
 
     in.xpri = 1;
     in.type = CANMGR_TYPE_WO;
-    in.node = in.dst;
+    in.node = n;
     in.module = m;
     in.object = CANOBJ_LED_IDENTIFY;
     in.data[0] = state;
@@ -92,12 +92,12 @@ void reset_request (uint8_t val)
     struct canmgr_frame in;
 
     in.pri = 1;
-    in.dst = n | 0x10;
+    in.dst = m == addr_mod ? n : CANMGR_MODULE_CTRL;
     in.src = addr_node;
 
     in.xpri = 1;
     in.type = CANMGR_TYPE_WO;
-    in.node = in.dst;
+    in.node = n;
     in.module = m;
     in.object = CANOBJ_TARGET_RESET;
     in.data[0] = val;
@@ -113,12 +113,12 @@ void shutdown_request (void)
     struct canmgr_frame in;
 
     in.pri = 1;
-    in.dst = n | 0x10;
+    in.dst = m == addr_mod ? n : CANMGR_MODULE_CTRL;
     in.src = addr_node;
 
     in.xpri = 1;
     in.type = CANMGR_TYPE_WO;
-    in.node = in.dst;
+    in.node = n;
     in.module = m;
     in.object = CANOBJ_TARGET_POWER;
     in.dlen = 1;
@@ -203,12 +203,12 @@ static void stdin_cb (EV_P_ ev_io *w, int revents)
     int i, len;
 
     in.pri = 1;
-    in.dst = n | 0x10;
+    in.dst = m == addr_mod ? n : CANMGR_MODULE_CTRL;
     in.src = addr_node;
 
     in.xpri = 1;
     in.type = CANMGR_TYPE_DAT;
-    in.node = in.dst;
+    in.node = n;
     in.module = m;
     in.object = CANOBJ_TARGET_CONSOLERECV;
 
@@ -323,6 +323,7 @@ int main (int argc, char *argv[])
         fprintf (stderr, "improperly specified target\n");
         exit (1);
     }
+    n |= 0x10; // select board controller
     if (can_address_get (&addr_mod, &addr_node) < 0) {
         fprintf (stderr, "could not read GPIO lines: %m\n");
         exit (1);
