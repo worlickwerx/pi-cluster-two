@@ -1,24 +1,23 @@
 ## pi-compute-board
 
-pi-compute-board is a Pi add-on hardware for remote control of some aspects
-of a Raspberry Pi that become very convenient in clusters of more than a
-dozen or so nodes:
+pi-compute-board is add-on hardware for a Raspberry Pi for remote monitoring
+and control in a cluster context.  It provides:
 
-* Power
-* Reset
-* Serial console
-* Power monitoring
-* Beacon LED
+* Remote Power/Reset
+* Remote Serial console
+* Remote Power monitoring
+* Remote Beacon LED
 
-This is accomplished over a management CAN bus, similar to that used
-on the [Meiko CS/2](https://github.com/garlick/meiko-cs2).
+This is accomplished using management processors and a two-level CAN bus
+network, somewhat similar to the CAN bus architecture of the
+[Meiko CS/2](https://github.com/garlick/meiko-cs2).
 
 ### v1 Prototype
 
 The initial prototype is a 3U eurocard with the Pi 3 on standoffs, and
 some other hardware including a
 [teensy3.2](https://www.pjrc.com/store/teensy32.html) as a management
-controller.  The teensy is attached to the L-CAN bus via a
+controller.  The teensy is attached to the local (L-CAN) CAN bus via a
 [MCP2551 CAN transceiver](http://www.microchip.com/wwwproducts/en/en010405).
 The teensy can
 * pull down the Pi reset line with one of its GPIO's
