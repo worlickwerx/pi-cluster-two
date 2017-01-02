@@ -1,4 +1,4 @@
-## pi-copmute-board
+## pi-compute-board
 
 pi-compute-board is a Pi add-on hardware for remote control of some aspects
 of a Raspberry Pi that become very convenient in clusters of more than a
@@ -18,7 +18,7 @@ on the [Meiko CS/2](https://github.com/garlick/meiko-cs2).
 The initial prototype is a 3U eurocard with the Pi 3 on standoffs, and
 some other hardware including a
 [teensy3.2](https://www.pjrc.com/store/teensy32.html) as a management
-controller.  The teensy is attached to the CAN bus via a
+controller.  The teensy is attached to the L-CAN bus via a
 [MCP2551 CAN transceiver](http://www.microchip.com/wwwproducts/en/en010405).
 The teensy can
 * pull down the Pi reset line with one of its GPIO's
@@ -32,9 +32,9 @@ The teensy can
 * read X-CAN address from DIN backplane.
 * answer CAN queries
 
-The Pi itself also gets a CAN interface through a
+The Pi itself also gets a L-CAN interface through a
 [MCP2515 SPI CAN controller](http://www.microchip.com/wwwproducts/en/en010406)
 and reads the L-CAN and X-CAN addresses via GPIO.
 
 The Eurocard plugs into a DIN backplane which supplies power and interconnects
-the CAN endpoints.
+L-CAN endpoints.
