@@ -6629,6 +6629,7 @@ Source: http://focus.ti.com/lit/ds/symlink/ths4211.pdf</description>
 <text x="93.98" y="30.48" size="1.778" layer="91">(open collector)</text>
 <text x="137.16" y="210.82" size="1.778" layer="91">L-CAN address this board</text>
 <text x="2.54" y="43.18" size="1.778" layer="91">120 ohm bus term</text>
+<text x="175.26" y="33.02" size="1.778" layer="91">Raspberry Pi Power Control</text>
 </plain>
 <instances>
 <instance part="K1" gate="G$1" x="50.8" y="152.4" rot="R180"/>
