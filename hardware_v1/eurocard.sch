@@ -6806,8 +6806,8 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <text x="233.68" y="220.98" size="1.778" layer="94">green L-CAN activity</text>
 <text x="233.68" y="210.82" size="1.778" layer="94">amber identify</text>
 <text x="307.34" y="116.84" size="1.778" layer="94">CAN interface for Raspberry Pi</text>
-<text x="76.2" y="22.86" size="1.778" layer="94">X-CAN address from module controller</text>
-<text x="76.2" y="20.32" size="1.778" layer="94">(open collector)</text>
+<text x="7.62" y="68.58" size="1.778" layer="94">X-CAN address</text>
+<text x="7.62" y="66.04" size="1.778" layer="94">(open collector)</text>
 <text x="137.16" y="210.82" size="1.778" layer="94">L-CAN address this board</text>
 <text x="172.72" y="132.08" size="1.778" layer="94">Raspberry Pi Power Control</text>
 <text x="83.82" y="99.06" size="1.778" layer="94">+5V regulated from bus</text>
@@ -7170,26 +7170,19 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="55.88" y1="20.32" x2="68.58" y2="20.32" width="0.1524" layer="91"/>
 <pinref part="GND13" gate="1" pin="GND"/>
 <wire x1="68.58" y1="20.32" x2="68.58" y2="17.78" width="0.1524" layer="91"/>
-<wire x1="68.58" y1="66.04" x2="68.58" y2="20.32" width="0.1524" layer="91"/>
+<wire x1="68.58" y1="99.06" x2="68.58" y2="20.32" width="0.1524" layer="91"/>
 <junction x="68.58" y="20.32"/>
-<wire x1="68.58" y1="99.06" x2="68.58" y2="66.04" width="0.1524" layer="91"/>
-<junction x="68.58" y="66.04"/>
 <wire x1="35.56" y1="99.06" x2="68.58" y2="99.06" width="0.1524" layer="91"/>
-<wire x1="35.56" y1="66.04" x2="68.58" y2="66.04" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="P1" gate="-A32" pin="S"/>
 <wire x1="33.02" y1="20.32" x2="30.48" y2="20.32" width="0.1524" layer="91"/>
 <wire x1="30.48" y1="20.32" x2="30.48" y2="17.78" width="0.1524" layer="91"/>
 <pinref part="GND14" gate="1" pin="GND"/>
-<pinref part="P1" gate="-A14" pin="S"/>
-<wire x1="33.02" y1="66.04" x2="30.48" y2="66.04" width="0.1524" layer="91"/>
-<wire x1="30.48" y1="66.04" x2="30.48" y2="20.32" width="0.1524" layer="91"/>
+<wire x1="30.48" y1="99.06" x2="30.48" y2="20.32" width="0.1524" layer="91"/>
 <junction x="30.48" y="20.32"/>
 <pinref part="P1" gate="-A1" pin="S"/>
 <wire x1="33.02" y1="99.06" x2="30.48" y2="99.06" width="0.1524" layer="91"/>
-<wire x1="30.48" y1="99.06" x2="30.48" y2="66.04" width="0.1524" layer="91"/>
-<junction x="30.48" y="66.04"/>
 </segment>
 <segment>
 <pinref part="S1" gate="G$1" pin="1"/>
@@ -7576,13 +7569,14 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <label x="86.36" y="162.56" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="55.88" y1="35.56" x2="88.9" y2="35.56" width="0.1524" layer="91"/>
-<label x="78.74" y="35.56" size="1.778" layer="95"/>
-</segment>
-<segment>
 <pinref part="U5" gate="G$1" pin="6/PWM"/>
 <wire x1="187.96" y1="81.28" x2="157.48" y2="81.28" width="0.1524" layer="91"/>
 <label x="157.48" y="81.28" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="P1" gate="-A8" pin="S"/>
+<wire x1="33.02" y1="81.28" x2="12.7" y2="81.28" width="0.1524" layer="91"/>
+<label x="12.7" y="81.28" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="ID-SD" class="0">
@@ -7610,13 +7604,14 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <label x="15.24" y="139.7" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="55.88" y1="30.48" x2="88.9" y2="30.48" width="0.1524" layer="91"/>
-<label x="78.74" y="30.48" size="1.778" layer="95"/>
-</segment>
-<segment>
 <pinref part="U5" gate="G$1" pin="8/TX3"/>
 <wire x1="187.96" y1="76.2" x2="157.48" y2="76.2" width="0.1524" layer="91"/>
 <label x="157.48" y="76.2" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="P1" gate="-A10" pin="S"/>
+<wire x1="33.02" y1="76.2" x2="12.7" y2="76.2" width="0.1524" layer="91"/>
+<label x="12.7" y="76.2" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="MOD-A0" class="0">
@@ -7626,13 +7621,14 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <label x="15.24" y="137.16" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="55.88" y1="27.94" x2="88.9" y2="27.94" width="0.1524" layer="91"/>
-<label x="78.74" y="27.94" size="1.778" layer="95"/>
-</segment>
-<segment>
 <pinref part="U5" gate="G$1" pin="9/RX2/PWM"/>
 <wire x1="187.96" y1="73.66" x2="157.48" y2="73.66" width="0.1524" layer="91"/>
 <label x="157.48" y="73.66" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="P1" gate="-A11" pin="S"/>
+<wire x1="33.02" y1="73.66" x2="12.7" y2="73.66" width="0.1524" layer="91"/>
+<label x="12.7" y="73.66" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="NODE-A3" class="0">
@@ -7738,13 +7734,13 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <label x="15.24" y="162.56" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="55.88" y1="33.02" x2="88.9" y2="33.02" width="0.1524" layer="91"/>
-<label x="78.74" y="33.02" size="1.778" layer="95"/>
-</segment>
-<segment>
 <pinref part="U5" gate="G$1" pin="7/RX3"/>
 <wire x1="187.96" y1="78.74" x2="157.48" y2="78.74" width="0.1524" layer="91"/>
 <label x="157.48" y="78.74" size="1.778" layer="95"/>
+</segment>
+<segment>
+<wire x1="35.56" y1="78.74" x2="12.7" y2="78.74" width="0.1524" layer="91"/>
+<label x="12.7" y="78.74" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$1" class="0">
@@ -7844,16 +7840,6 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <pinref part="U5" gate="G$1" pin="14/A0"/>
 <wire x1="187.96" y1="60.96" x2="157.48" y2="60.96" width="0.1524" layer="91"/>
 <label x="157.48" y="60.96" size="1.778" layer="95"/>
-</segment>
-</net>
-<net name="N$12" class="0">
-<segment>
-<wire x1="35.56" y1="60.96" x2="53.34" y2="60.96" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="N$13" class="0">
-<segment>
-<wire x1="35.56" y1="22.86" x2="53.34" y2="22.86" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$16" class="0">
