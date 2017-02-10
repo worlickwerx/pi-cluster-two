@@ -72,6 +72,21 @@ void canmgr_ack (struct canmgr_frame *fr, int type, uint8_t *data, int len)
     can_send (fr, 100);
 }
 
+void canmgr_heartbeat_send (void)
+{
+    struct canmgr_frame fr;
+
+    fr.pri = 1;
+    fr.dst = CANMGR_MODULE_CTRL;
+    fr.src = addr_node | 0x10;
+    fr.type = CANMGR_TYPE_WNA;
+    fr.node = CANMGR_MODULE_CTRL;
+    fr.module = CANMGR_ADDR_NOROUTE;
+    fr.object = CANOBJ_HEARTBEAT;
+    fr.dlen = 0; // payload empty for now
+    can_send (&fr, 100);
+};
+
 int canmgr_console_send_ready (void)
 {
     if (CONSOLE_UNCONNECTED (&console_connected))

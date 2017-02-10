@@ -6,6 +6,7 @@
 #include "target_reset.h"
 #include "target_power.h"
 #include "target_console.h"
+#include "heartbeat.h"
 
 int main (void)
 {
@@ -19,6 +20,7 @@ int main (void)
     address_setup ();
     address_get (&mod, &node);
     canmgr_setup (mod, node);
+    heartbeat_setup ();
 
     while (1) {
         canmgr_update ();
@@ -27,8 +29,10 @@ int main (void)
         target_reset_update ();
         target_power_update ();
         target_console_update ();
+        heartbeat_update ();
     }
 
+    heartbeat_finalize ();
     canmgr_finalize ();
     address_finalize ();
     target_console_finalize ();

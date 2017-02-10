@@ -40,6 +40,7 @@ SRCS_CXX = \
 	target_reset.cpp \
 	target_power.cpp \
 	target_console.cpp \
+	heartbeat.cpp
 
 CANMGR_DIR := $(shell pwd)/../libcanmgr
 VPATH = $(CANMGR_DIR)
