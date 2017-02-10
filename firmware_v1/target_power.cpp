@@ -50,6 +50,11 @@ void target_power_set (uint8_t val)
         digitalWriteFast (shutdown_pin, shutdown_state);
         poweroff = 1;
         poweroff_since = 0;
+    } else if (val == 3) { // toggle
+        if (switch_state == HIGH)
+            target_power_set (2);
+        else
+            target_power_set (1);
     }
 }
 
