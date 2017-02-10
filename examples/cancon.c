@@ -240,8 +240,8 @@ static void stdin_cb (EV_P_ ev_io *w, int revents)
                 case 'i': // identify=off
                     identify_request (0);
                     break;
-                case 'I': // identify=on
-                    identify_request (1);
+                case 'I': // identify=blinking
+                    identify_request (2);
                     break;
                 case 'R': // reset=3 (pulse)
                     reset_request (3);

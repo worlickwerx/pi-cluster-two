@@ -59,7 +59,7 @@ enum {
     CANOBJ_TARGET_CONSOLERECV = 1, // recv 0-8 bytes of data from cancon
     CANOBJ_TARGET_CONSOLESEND = 2, // send 0-8 bytes of data to cancon
 
-    CANOBJ_LED_IDENTIFY = 3,    // 1 byte (0=LED Off, 1=LED blinking)
+    CANOBJ_LED_IDENTIFY = 3,    // 1 byte (0=off, 1=on, 2=blinking)
     CANOBJ_TARGET_POWER = 4,    // 1 byte (0=off, 1=on, 2=soft poweroff)
     CANOBJ_ECHO = 5,            // payloaded echoed back (ping)
     CANOBJ_TARGET_RESET = 6,    // 1 byte (0=run, 1=hold in reset, 2=toggle)
