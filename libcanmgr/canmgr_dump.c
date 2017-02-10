@@ -26,6 +26,7 @@ void canmgr_dump (struct canmgr_frame *fr, char *buf, int len)
     }
     /* stringify object */
     switch (fr->object) {
+        case CANOBJ_HEARTBEAT:          objstr = "HB"; break;
         case CANOBJ_TARGET_CONSOLECONN: objstr = "CONSOLECONN"; break;
         case CANOBJ_TARGET_CONSOLEDISC: objstr = "CONSOLEDISC"; break;
         case CANOBJ_TARGET_CONSOLESEND: objstr = "CONSOLESEND"; break;
