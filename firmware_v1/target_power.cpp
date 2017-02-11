@@ -10,9 +10,9 @@ const uint32_t shutdown_depress_period = 100; // keypress millisec
 elapsedMillis shutdown_depress_since;
 
 const uint8_t sense_pin = 2;
-const uint32_t poweroff_timeout = 30000; // shutdown > 30s, turn off
-elapsedMillis poweroff_since;
-uint8_t poweroff = 0;
+const uint32_t shutdown_timeout = 30000; // shutdown > 30s, turn off
+elapsedMillis shutdown_since;
+uint8_t shutdown = 0;
 
 void target_power_setup (void)
 {
@@ -29,7 +29,12 @@ void target_power_finalize (void)
 
 void target_power_get (uint8_t *val)
 {
-    *val = switch_state == HIGH ? 1 : 0;
+    if (switch_state == LOW)
+        *val = 0;
+    else if (!shutdown)
+        *val = 1;
+    else /* shutting down */
+        *val = 2;
 }
 
 void target_power_set (uint8_t val)
@@ -37,24 +42,26 @@ void target_power_set (uint8_t val)
     if (val == 0) { // turn off
         switch_state = LOW;
         digitalWriteFast (switch_pin, switch_state);
-        poweroff = 0;
+        shutdown = 0;
     } else if (val == 1) { // turn on
         switch_state = HIGH;
         digitalWriteFast (switch_pin, switch_state);
-        poweroff = 0;
+        shutdown = 0;
         shutdown_state = HIGH;
         digitalWriteFast (shutdown_pin, shutdown_state);
     } else if (val == 2) { // POWER_OFF keypress (shutdown)
         shutdown_state = LOW;
         shutdown_depress_since = 0;
         digitalWriteFast (shutdown_pin, shutdown_state);
-        poweroff = 1;
-        poweroff_since = 0;
+        shutdown = 1;
+        shutdown_since = 0;
     } else if (val == 3) { // toggle
-        if (switch_state == HIGH)
+        if (switch_state == LOW)
+            target_power_set (1);
+        else if (!shutdown)
             target_power_set (2);
         else
-            target_power_set (1);
+            target_power_set (0);
     }
 }
 
@@ -68,20 +75,20 @@ void target_power_update (void)
         }
         shutdown_depress_since = 0;
     }
-    /* poweroff complete - switch off  */
-    if (poweroff == 1 && digitalReadFast (sense_pin) == HIGH) {
+    /* shutdown complete - switch off  */
+    if (shutdown == 1 && digitalReadFast (sense_pin) == HIGH) {
         switch_state = LOW;
         digitalWriteFast (switch_pin, switch_state);
-        poweroff = 0;
+        shutdown = 0;
     }
-    /* poweroff timed out - switch off */
-    if (poweroff_since >= poweroff_timeout) {
-        if (poweroff == 1) {
+    /* shutdown timed out - switch off */
+    if (shutdown_since >= shutdown_timeout) {
+        if (shutdown == 1) {
             switch_state = LOW;
             digitalWriteFast (switch_pin, switch_state);
-            poweroff = 0;
+            shutdown = 0;
         }
-        poweroff_since = 0;
+        shutdown_since = 0;
     }
 }
 
