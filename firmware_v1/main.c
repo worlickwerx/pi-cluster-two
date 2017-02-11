@@ -12,6 +12,7 @@ int main (void)
 {
     uint8_t mod, node;
 
+    heartbeat_setup (); // early to accumulate entropy
     identify_setup ();
     activity_setup ();
     target_reset_setup ();
@@ -20,7 +21,6 @@ int main (void)
     address_setup ();
     address_get (&mod, &node);
     canmgr_setup (mod, node);
-    heartbeat_setup ();
 
     while (1) {
         canmgr_update ();
