@@ -72,7 +72,7 @@ void canmgr_ack (struct canmgr_frame *fr, int type, uint8_t *data, int len)
     can_send (fr, 100);
 }
 
-void canmgr_heartbeat_send (void)
+void canmgr_heartbeat_send (uint8_t *data, uint8_t len)
 {
     struct canmgr_frame fr;
 
@@ -83,7 +83,8 @@ void canmgr_heartbeat_send (void)
     fr.node = CANMGR_MODULE_CTRL;
     fr.module = CANMGR_ADDR_NOROUTE;
     fr.object = CANOBJ_HEARTBEAT;
-    fr.dlen = 0; // payload empty for now
+    memcpy (fr.data, data, len);
+    fr.dlen = len; // payload empty for now
     can_send (&fr, 100);
 };
 
