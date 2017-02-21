@@ -11,7 +11,11 @@ uint8_t activity_state = LOW;
 void activity_setup (void)
 {
     pinMode (activity_pin, OUTPUT);
-    digitalWriteFast (activity_pin, activity_state);
+
+    /* quick test */
+    digitalWriteFast (activity_pin, HIGH);
+    delay(200);
+    digitalWriteFast (activity_pin, LOW);
 }
 
 void activity_finalize (void)
