@@ -12,7 +12,11 @@ uint8_t identify_state = LOW; // LED off
 void identify_setup (void)
 {
     pinMode (identify_pin, OUTPUT);
-    digitalWriteFast (identify_pin, identify_state);
+
+    /* quick test */
+    digitalWriteFast (identify_pin, HIGH);
+    delay (200);
+    digitalWriteFast (identify_pin, LOW);
 }
 
 void identify_finalize (void)
