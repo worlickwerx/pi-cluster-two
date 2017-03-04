@@ -40,7 +40,7 @@ void target_power_finalize (void)
 void target_power_measure (uint16_t *val)
 {
     float amps = analogRead (meas_pin) * 3.3/1024;
-    *val = (uint16_t)(amps * 1E-3);
+    *val = (uint16_t)(amps * 1E3);
 }
 
 void target_power_get (uint8_t *val)
