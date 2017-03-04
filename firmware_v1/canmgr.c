@@ -20,6 +20,12 @@ static struct canmgr_frame console_connected = {
 static int console_lastsent_needack = 0;
 static int console_ringdump = 0;
 
+/* teensy is little endian, network byte order is big endian */
+uint16_t htons (uint16_t val)
+{
+    return (val << 8) | (val >> 8);
+}
+
 void canmgr_setup (uint8_t mod, uint8_t node)
 {
     int i;
@@ -56,7 +62,7 @@ int can_send (struct canmgr_frame *fr, uint16_t timeout_ms)
     return 0;
 }
 
-void canmgr_ack (struct canmgr_frame *fr, int type, uint8_t *data, int len)
+void canmgr_ack (struct canmgr_frame *fr, int type, void *data, int len)
 {
     int tmpaddr = fr->src;
     fr->src = fr->dst;
@@ -155,6 +161,29 @@ void canobj_target_power (struct canmgr_frame *fr)
             canmgr_ack (fr, CANMGR_TYPE_ACK, &val, 1);
             break;
         case CANMGR_TYPE_DAT:
+            goto nak;
+        default:
+            break;
+    }
+    return;
+nak:
+    canmgr_ack (fr, CANMGR_TYPE_NAK, NULL, 0);
+}
+
+void canobj_target_power_measure (struct canmgr_frame *fr)
+{
+    uint16_t val;
+
+    switch (fr->type) {
+        case CANMGR_TYPE_RO:
+            if (fr->dlen != 0)
+                goto nak;
+            target_power_measure (&val);
+            val = htons (val);
+            canmgr_ack (fr, CANMGR_TYPE_ACK, &val, 2);
+            break;
+        case CANMGR_TYPE_DAT:
+        case CANMGR_TYPE_WO:
             goto nak;
         default:
             break;
@@ -358,6 +387,9 @@ void canmgr_dispatch (struct canmgr_frame *fr)
             break;
         case CANOBJ_TARGET_POWER:
             canobj_target_power (fr);
+            break;
+        case CANOBJ_TARGET_POWER_MEASURE:
+            canobj_target_power_measure (fr);
             break;
         case CANOBJ_TARGET_RESET:
             canobj_target_reset (fr);

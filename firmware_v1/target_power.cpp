@@ -19,6 +19,11 @@ const uint32_t shutdown_timeout = 30000; // shutdown > 30s, turn off
 elapsedMillis shutdown_since;
 uint8_t shutdown = 0;
 
+// analog power measurement
+// analog range: 0-1023 =~ 0-Vcc
+// INA169 with adafruit config 1V/A
+const uint16_t meas_pin = 7;  // N.B. analog pin numbering
+
 void target_power_setup (void)
 {
     pinMode (switch_pin, OUTPUT);
@@ -30,6 +35,12 @@ void target_power_setup (void)
 
 void target_power_finalize (void)
 {
+}
+
+void target_power_measure (uint16_t *val)
+{
+    float amps = analogRead (meas_pin) * 3.3/1024;
+    *val = (uint16_t)(amps * 1E-3);
 }
 
 void target_power_get (uint8_t *val)
