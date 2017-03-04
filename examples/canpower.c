@@ -28,18 +28,29 @@ static void can_cb (EV_P_ ev_io *w, int revents)
     }
     if (fr.dst != addr_node)
         return; // not addressed to me
-    if (fr.object != CANOBJ_TARGET_POWER)
-        return;
     if (fr.type != CANMGR_TYPE_ACK && fr.type != CANMGR_TYPE_NAK)
         return;
-    if (fr.type == CANMGR_TYPE_NAK) {
-        printf ("%.2x,%.2x: NAK to power request\n",
-                fr.module, fr.node);
-        ev_break (EV_A_ EVBREAK_ONE);
-    } else {
-        printf ("%.2x,%.2x: power request successful\n",
-                fr.module, fr.node);
-        ev_break (EV_A_ EVBREAK_ONE);
+    if (fr.object == CANOBJ_TARGET_POWER) {
+        if (fr.type == CANMGR_TYPE_NAK) {
+            printf ("%.2x,%.2x: NAK to power request\n",
+                    fr.module, fr.node);
+            ev_break (EV_A_ EVBREAK_ONE);
+        } else {
+            printf ("%.2x,%.2x: power request successful\n",
+                    fr.module, fr.node);
+            ev_break (EV_A_ EVBREAK_ONE);
+        }
+    } else if (fr.object == CANOBJ_TARGET_POWER_MEASURE) {
+        if (fr.type == CANMGR_TYPE_NAK) {
+            printf ("%.2x,%.2x: NAK to power measure request\n",
+                    fr.module, fr.node);
+            ev_break (EV_A_ EVBREAK_ONE);
+        } else {
+            uint16_t val = ntohs (*(uint16_t *)fr.data);
+            printf ("%.2x,%.2x: %-.3f amps\n",
+                    fr.module, fr.node, (float)val / 1000);
+            ev_break (EV_A_ EVBREAK_ONE);
+        }
     }
 }
 
@@ -73,12 +84,35 @@ static void send_power_request (uint8_t mod, uint8_t node, uint8_t val)
     }
 }
 
+static void send_power_measure_request (uint8_t mod, uint8_t node)
+{
+    struct canmgr_frame fr;
+
+    node |= 0x10; // select board controller;
+
+    fr.pri = 1;
+    fr.dst = mod == addr_mod ? node : CANMGR_MODULE_CTRL;
+    fr.src = addr_node;
+
+    fr.xpri = 1;
+    fr.type = CANMGR_TYPE_RO;
+    fr.node = node;
+    fr.module = mod;
+    fr.object = CANOBJ_TARGET_POWER_MEASURE;
+    fr.dlen = 0;
+
+    if (lxcan_send (s, &fr) < 0) {
+        fprintf (stderr, "lxcan_send: %m\n");
+        exit (1);
+    }
+}
+
 int main (int argc, char *argv[])
 {
     int m, n;
 
-    if (argc != 3) {
-        fprintf (stderr, "Usage: canpower m,n 0|1|2\n");
+    if (argc != 2 && argc != 3) {
+        fprintf (stderr, "Usage: canpower m,n [0|1|2]\n");
         exit (1);
     }
     if (sscanf (argv[1], "%x,%x", &m, &n) != 2
@@ -95,7 +129,10 @@ int main (int argc, char *argv[])
         exit (1);
     }
 
-    send_power_request (m, n, strtoul (argv[2], NULL, 10));
+    if (argc == 2)
+        send_power_measure_request (m, n);
+    else
+        send_power_request (m, n, strtoul (argv[2], NULL, 10));
 
     loop = EV_DEFAULT;
 
