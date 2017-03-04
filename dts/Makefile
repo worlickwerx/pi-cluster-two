@@ -12,7 +12,7 @@ address.dtbo: address.dts
 	dtc -@ -I dts -O dtb -o $@ $<
 
 install: shutdown.dtbo address.dtbo
-	cp $< /boot/overlays/
+	cp $^ /boot/overlays/
 	cp 70-power-switch.rules /etc/udev/rules.d/
 
 clean:
