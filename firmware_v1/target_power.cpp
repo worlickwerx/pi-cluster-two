@@ -4,11 +4,16 @@
 const uint8_t switch_pin = 23;
 uint8_t switch_state = LOW;
 
+// /etc/systemd/logind.conf: HandlePowerKey=poweroff
+// dtoverlay shutdown
+// to pi gpio 20 (pin 38)
 const uint8_t shutdown_pin = 20;
 uint8_t shutdown_state = HIGH;
 const uint32_t shutdown_depress_period = 100; // keypress millisec
 elapsedMillis shutdown_depress_since;
 
+// dtoverlay poweroff
+// to pi gpio 26 (pin 37)
 const uint8_t sense_pin = 2;
 const uint32_t shutdown_timeout = 30000; // shutdown > 30s, turn off
 elapsedMillis shutdown_since;
