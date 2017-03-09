@@ -1,1 +1,1 @@
-{"flash": 256, "ram": 32, "name": "STM32F091RC"}
+{"flash": 64, "ram": 20, "name": "STM32F103C8"}

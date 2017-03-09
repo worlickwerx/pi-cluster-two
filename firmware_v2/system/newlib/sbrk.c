@@ -3,7 +3,7 @@
   allocate memory (for example when using malloc)
 */
 
-#include <stm32f0xx.h>
+#include <stm32f1xx.h>
 
 #include <errno.h>
 #include <sys/unistd.h>
