@@ -4,7 +4,7 @@
 #include <stm32f1xx_hal_rcc.h>
 #include <stm32f1xx_hal_gpio.h>
 
-#define PANIC while (1)
+#include "debug.h"
 
 /* Configure HSE clock with 8MHz xtal -> PLL (x9) -> 72 MHz system clock.
  */
@@ -46,7 +46,7 @@ int main (void)
     GPIO_InitTypeDef GPIO_Init;
 
     if (configure_clock () < 0)
-        PANIC;
+        FATAL ("configure_clock failed\n");
     SystemCoreClockUpdate ();
     HAL_Init();
 
@@ -58,7 +58,10 @@ int main (void)
     GPIO_Init.Speed = GPIO_SPEED_HIGH;
     HAL_GPIO_Init (GPIOB, &GPIO_Init);
 
+
+    int count = 0;
     while (1) {
+        itm_printf ("Blink: %d\n", count++);
         HAL_GPIO_WritePin (GPIOB, GPIO_PIN_12, GPIO_PIN_RESET); // ON
         HAL_Delay (200);
         HAL_GPIO_WritePin (GPIOB, GPIO_PIN_12, GPIO_PIN_SET); // OFF
