@@ -6,6 +6,7 @@
 
 #include "debug.h"
 #include "address.h"
+#include "activity.h"
 
 /* Configure HSE clock with 8MHz xtal -> PLL (x9) -> 72 MHz system clock.
  */
@@ -51,24 +52,7 @@ void mcu_setup (void)
 
     __GPIOA_CLK_ENABLE();
     __GPIOB_CLK_ENABLE();
-    __GPIOC_CLK_ENABLE();
-}
-
-// PB12 = blue LED
-void blink_setup (void)
-{
-    GPIO_InitTypeDef GPIO_Init;
-
-    GPIO_Init.Pin = GPIO_PIN_12;
-    GPIO_Init.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_Init.Speed = GPIO_SPEED_HIGH;
-    HAL_GPIO_Init (GPIOB, &GPIO_Init);
-}
-
-void blink_set (uint8_t val)
-{
-    HAL_GPIO_WritePin (GPIOB, GPIO_PIN_12, val ? GPIO_PIN_RESET
-                                               : GPIO_PIN_SET);
+    //__GPIOC_CLK_ENABLE();
 }
 
 int main (void)
@@ -76,17 +60,17 @@ int main (void)
     uint8_t mod, node;
 
     mcu_setup ();
-    blink_setup ();
     address_setup ();
     address_get (&mod, &node);
+    activity_setup ();
 
     while (1) {
-        blink_set (1);
-        HAL_Delay (200);
-        blink_set (0);
-        HAL_Delay (200);
+        activity_update ();
+        if (HAL_GetTick () % 500 == 0)
+            activity_pulse ();
     }
 
+    activity_finalize ();
     address_finalize ();
 }
 
