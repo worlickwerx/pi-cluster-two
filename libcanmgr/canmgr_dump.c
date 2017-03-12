@@ -8,7 +8,7 @@
 
 void canmgr_dump (struct canmgr_frame *fr, char *buf, int len)
 {
-    const char *typestr, *objstr;
+    const char *typestr = "?", *objstr;
     char s[16];
     char hex[32];
     char ascii[35];

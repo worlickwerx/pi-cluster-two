@@ -7,6 +7,7 @@
 #include "address.h"
 #include "activity.h"
 #include "identify.h"
+#include "can.h"
 
 int main (void)
 {
@@ -18,13 +19,16 @@ int main (void)
     address_get (&mod, &node);
     activity_setup ();
     identify_setup ();
+    can_setup (mod, node);
 
     while (1) {
         alive_update ();
+        can_update ();
         activity_update ();
         identify_update ();
     }
 
+    can_finalize ();
     identify_finalize ();
     activity_finalize ();
     address_finalize ();

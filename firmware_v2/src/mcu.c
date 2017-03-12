@@ -36,6 +36,9 @@ int configure_clock (void)
 
     if (HAL_RCC_ClockConfig (&c, FLASH_LATENCY_2) != HAL_OK)
         return -1;
+
+    //HAL_NVIC_SetPriority (SysTick_IRQn, 0, 0);
+
     return 0;
 }
 
