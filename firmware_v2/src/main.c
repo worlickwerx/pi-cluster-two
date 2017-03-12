@@ -5,6 +5,7 @@
 #include <stm32f1xx_hal_gpio.h>
 
 #include "debug.h"
+#include "address.h"
 
 /* Configure HSE clock with 8MHz xtal -> PLL (x9) -> 72 MHz system clock.
  */
@@ -41,33 +42,54 @@ int configure_clock (void)
     return 0;
 }
 
-int main (void)
+void mcu_setup (void)
 {
-    GPIO_InitTypeDef GPIO_Init;
-
     if (configure_clock () < 0)
         FATAL ("configure_clock failed\n");
     SystemCoreClockUpdate ();
     HAL_Init();
 
+    __GPIOA_CLK_ENABLE();
     __GPIOB_CLK_ENABLE();
+    __GPIOC_CLK_ENABLE();
+}
 
-    // PB12 = blue LED
+// PB12 = blue LED
+void blink_setup (void)
+{
+    GPIO_InitTypeDef GPIO_Init;
+
     GPIO_Init.Pin = GPIO_PIN_12;
     GPIO_Init.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_Init.Speed = GPIO_SPEED_HIGH;
     HAL_GPIO_Init (GPIOB, &GPIO_Init);
+}
 
+void blink_set (uint8_t val)
+{
+    HAL_GPIO_WritePin (GPIOB, GPIO_PIN_12, val ? GPIO_PIN_RESET
+                                               : GPIO_PIN_SET);
+}
 
-    int count = 0;
+int main (void)
+{
+    uint8_t mod, node;
+
+    mcu_setup ();
+    blink_setup ();
+    address_setup ();
+    address_get (&mod, &node);
+
     while (1) {
-        itm_printf ("Blink: %d\n", count++);
-        HAL_GPIO_WritePin (GPIOB, GPIO_PIN_12, GPIO_PIN_RESET); // ON
+        blink_set (1);
         HAL_Delay (200);
-        HAL_GPIO_WritePin (GPIOB, GPIO_PIN_12, GPIO_PIN_SET); // OFF
+        blink_set (0);
         HAL_Delay (200);
     }
+
+    address_finalize ();
 }
+
 void SysTick_Handler (void)
 {
     HAL_IncTick ();
