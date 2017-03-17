@@ -1,8 +1,5 @@
-#include <stm32f1xx.h>
-
 #include <stm32f1xx_hal.h>
-#include <stm32f1xx_hal_rcc.h>
-#include <stm32f1xx_hal_gpio.h>
+#include <stm32f1xx_hal_conf.h>
 
 #include "debug.h"
 #include "mcu.h"

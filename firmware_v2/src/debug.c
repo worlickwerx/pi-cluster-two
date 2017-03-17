@@ -1,4 +1,6 @@
-#include <stm32f1xx.h>
+#include <stm32f1xx_hal.h>
+#include <stm32f1xx_hal_conf.h>
+
 #include <stdio.h>
 #include <stdarg.h>
 #include "debug.h"
