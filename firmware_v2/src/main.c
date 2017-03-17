@@ -3,6 +3,7 @@
 #include <stm32f1xx_hal.h>
 
 #include "mcu.h"
+#include "alive.h"
 #include "debug.h"
 #include "address.h"
 #include "activity.h"
@@ -13,23 +14,22 @@ int main (void)
     uint8_t mod, node;
 
     mcu_setup ();
+    alive_setup ();
     address_setup ();
     address_get (&mod, &node);
     activity_setup ();
     identify_setup ();
 
-    identify_set (2);
-
     while (1) {
+        alive_update ();
         activity_update ();
         identify_update ();
-        if (HAL_GetTick () % 500 == 0)
-            activity_pulse ();
     }
 
     identify_finalize ();
     activity_finalize ();
     address_finalize ();
+    alive_finalize ();
     mcu_finalize ();
 }
 
