@@ -7,7 +7,7 @@
 
 /* Borrowed from ITM_SendChar() in system/cmsis/core_cm3.h.
  */
-static int itm_enabled (void)
+int itm_enabled (void)
 {
     if (((ITM->TCR & ITM_TCR_ITMENA_Msk) != 0UL) &&  /* ITM enabled */
         ((ITM->TER & 1UL               ) != 0UL)   ) /* ITM Port #0 enabled */
