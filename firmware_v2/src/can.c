@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "canmgr_proto.h"
+#include "canmgr_dump.h"
 #include "debug.h"
 #include "activity.h"
 #include "can.h"
@@ -31,6 +32,11 @@ int can_recv (struct canmgr_frame *fr, uint32_t timeout_ms)
     if (canmgr_decode (fr, &raw) < 0)
         return -1;
     activity_pulse ();
+    if (itm_enabled ()) {
+        char buf[80];
+        canmgr_dump (fr, buf, sizeof (buf));
+        itm_printf ("%s\n", buf);
+    }
     return 0;
 }
 
@@ -49,6 +55,11 @@ int can_send (struct canmgr_frame *fr, uint32_t timeout_ms)
     if (HAL_CAN_Transmit (&can1, timeout_ms) != HAL_OK)
         return -1;
     activity_pulse ();
+    if (itm_enabled ()) {
+        char buf[80];
+        canmgr_dump (fr, buf, sizeof (buf));
+        itm_printf ("%s\n", buf);
+    }
     return 0;
 }
 
