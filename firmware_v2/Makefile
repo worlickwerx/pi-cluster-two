@@ -2,7 +2,7 @@
 -include dirs.mk
 
 # Flags for compilation and linking
-FLAGS := $(OPTIMIZE) $(CSTD) $(MCU) -ffunction-sections -fdata-sections -ffreestanding -flto -fno-move-loop-invariants -Wall -Wno-strict-aliasing
+FLAGS := $(OPTIMIZE) $(CSTD) $(MCU) -ffunction-sections -fdata-sections -ffreestanding -flto -fno-move-loop-invariants -Wall -Wno-strict-aliasing -Wno-char-subscripts
 
 SOURCES_WD := $(foreach dir, $(DIRS), $(wildcard $(dir)/*.c))
 INCLUDES := $(foreach dir, $(DIRS), -I"$(dir)")
