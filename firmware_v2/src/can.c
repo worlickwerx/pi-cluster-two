@@ -99,15 +99,17 @@ void can_setup (uint8_t mod, uint8_t node)
     if (HAL_CAN_Init (&can1) != HAL_OK)
         FATAL ("HAL_CAN_Init failed");
 
-    /* match all and direct to FIFO 0, */
+    uint32_t can_mask = CANMGR_DST_MASK;
+    uint32_t can_id = (addr_node|0x10) << CANMGR_DST_SHIFT;
+
     f.FilterNumber = 0;
     f.FilterMode = CAN_FILTERMODE_IDMASK;
     f.FilterScale = CAN_FILTERSCALE_32BIT;
-    f.FilterIdHigh = 0x0000;
-    f.FilterIdLow = 0x0000;
-    f.FilterMaskIdHigh = 0x0000;
-    f.FilterMaskIdLow = 0x0000;
-    f.FilterFIFOAssignment = 0;
+    f.FilterIdHigh = (can_id << 3) >> 16;
+    f.FilterIdLow = (can_id << 3) & 0xFFFF;
+    f.FilterMaskIdHigh = (can_mask << 3) >> 16;
+    f.FilterMaskIdLow = (can_mask << 3) & 0xFFFF;
+    f.FilterFIFOAssignment = CAN_FILTER_FIFO0;
     f.FilterActivation = ENABLE;
     f.BankNumber = 14;
 
