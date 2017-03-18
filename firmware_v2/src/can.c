@@ -15,6 +15,9 @@ static CAN_HandleTypeDef    can1;
 static CanTxMsgTypeDef      tx_msg;
 static CanRxMsgTypeDef      rx_msg;
 
+void canobj_echo (struct canmgr_frame *fr);
+void canobj_unknown (struct canmgr_frame *fr);
+
 int can_available (void)
 {
     return __HAL_CAN_MSG_PENDING (&can1, CAN_FIFO0);
@@ -61,6 +64,22 @@ int can_send (struct canmgr_frame *fr, uint32_t timeout_ms)
         itm_printf ("%s\n", buf);
     }
     return 0;
+}
+
+void can_send_ack (struct canmgr_frame *fr, int type, void *data, int len)
+{
+    int tmpaddr = fr->src;
+    fr->src = fr->dst;
+    fr->dst = tmpaddr;
+    fr->pri = 0; // high priority
+    fr->type = type;
+
+    if (len > canmgr_maxdata (fr->object))
+        return;
+    memcpy (fr->data, data, len);
+    fr->dlen = len;
+
+    can_send (fr, 100);
 }
 
 void can_setup (uint8_t mod, uint8_t node)
@@ -139,7 +158,47 @@ void can_update (void)
     struct canmgr_frame fr;
 
     if (can_available ()) {
-        (void)can_recv (&fr, 0);
+        if (can_recv (&fr, 0) == 0) {
+            switch (fr.object) {
+                case CANOBJ_ECHO:
+                    canobj_echo (&fr);
+                    break;
+                default:
+                    canobj_unknown (&fr);
+                    break;
+            }
+        }
+    }
+}
+
+/* can objects */
+
+void canobj_echo (struct canmgr_frame *fr)
+{
+    switch (fr->type) {
+        case CANMGR_TYPE_WO:
+        case CANMGR_TYPE_RO:
+        case CANMGR_TYPE_DAT:
+            can_send_ack (fr, CANMGR_TYPE_ACK, fr->data, fr->dlen);
+            break;
+        case CANMGR_TYPE_ACK:
+        case CANMGR_TYPE_NAK:
+            break;
+        default:
+            break;
+    }
+}
+
+void canobj_unknown (struct canmgr_frame *fr)
+{
+    switch (fr->type) {
+        case CANMGR_TYPE_WO:
+        case CANMGR_TYPE_RO:
+        case CANMGR_TYPE_DAT:
+            can_send_ack (fr, CANMGR_TYPE_NAK, NULL, 0);
+            break;
+        default:
+            break;
     }
 }
 
