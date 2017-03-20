@@ -112,11 +112,12 @@ void can_setup (uint8_t mod, uint8_t node)
     can1.pTxMsg = &tx_msg;
     can1.pRxMsg = &rx_msg;
 
-    // 125Kbaud
+    // 125Kbaud (prescaler clocked at 36 MHz (APB1/PCLK1)
+    // http://www.bittiming.can-wiki.info/
     can1.Init.SJW = CAN_SJW_1TQ;
-    can1.Init.BS1 = CAN_BS1_8TQ;
-    can1.Init.BS2 = CAN_BS2_3TQ;
-    can1.Init.Prescaler = 24;
+    can1.Init.BS1 = CAN_BS1_13TQ;
+    can1.Init.BS2 = CAN_BS2_2TQ;
+    can1.Init.Prescaler = 18;
 
     can1.Init.TTCM = DISABLE; // time triggered comms mode
     can1.Init.ABOM = DISABLE; // auto bus-off management
