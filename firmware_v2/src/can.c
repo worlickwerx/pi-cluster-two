@@ -6,6 +6,7 @@
 #include "canmgr_dump.h"
 #include "debug.h"
 #include "activity.h"
+#include "identify.h"
 #include "power.h"
 #include "can.h"
 
@@ -16,6 +17,7 @@ static CAN_HandleTypeDef    can1;
 static CanTxMsgTypeDef      tx_msg;
 static CanRxMsgTypeDef      rx_msg;
 
+void canobj_led_identify (struct canmgr_frame *fr);
 void canobj_target_power (struct canmgr_frame *fr);
 void canobj_echo (struct canmgr_frame *fr);
 void canobj_unknown (struct canmgr_frame *fr);
@@ -178,6 +180,33 @@ void can_update (void)
 }
 
 /* can objects */
+
+void canobj_led_identify (struct canmgr_frame *fr)
+{
+    uint8_t val;
+
+    switch (fr->type) {
+        case CANMGR_TYPE_WO:
+            if (fr->dlen != 1)
+                goto nak;
+            identify_set (fr->data[0]);
+            can_send_ack (fr, CANMGR_TYPE_ACK, NULL, 0);
+            break;
+        case CANMGR_TYPE_RO:
+            if (fr->dlen != 0)
+                goto nak;
+            identify_get (&val);
+            can_send_ack (fr, CANMGR_TYPE_ACK, &val, 1);
+            break;
+        case CANMGR_TYPE_DAT:
+            goto nak;
+        default:
+            break;
+    }
+    return;
+nak:
+    can_send_ack (fr, CANMGR_TYPE_NAK, NULL, 0);
+}
 
 void canobj_target_power (struct canmgr_frame *fr)
 {
