@@ -8,6 +8,7 @@
 #include "activity.h"
 #include "identify.h"
 #include "can.h"
+#include "power.h"
 
 int main (void)
 {
@@ -19,6 +20,7 @@ int main (void)
     address_get (&mod, &node);
     activity_setup ();
     identify_setup ();
+    power_setup ();
     can_setup (mod, node);
 
     while (1) {
@@ -26,9 +28,11 @@ int main (void)
         can_update ();
         activity_update ();
         identify_update ();
+        power_update ();
     }
 
     can_finalize ();
+    power_finalize ();
     identify_finalize ();
     activity_finalize ();
     address_finalize ();
