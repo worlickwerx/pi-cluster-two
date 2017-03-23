@@ -24,7 +24,7 @@ int main (void)
     can_setup (mod, node);
 
     while (1) {
-        alive_update ();
+        //alive_update ();
         can_update ();
         activity_update ();
         identify_update ();
