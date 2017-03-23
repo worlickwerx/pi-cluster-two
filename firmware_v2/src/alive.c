@@ -15,7 +15,7 @@ uint8_t alive_state = 0;
 static void alive_write (uint8_t val)
 {
     HAL_GPIO_WritePin (alive_port, alive_pin,
-                       val ? GPIO_PIN_SET : GPIO_PIN_RESET);
+                       val ? GPIO_PIN_RESET : GPIO_PIN_SET);
     alive_state = val;
 }
 
