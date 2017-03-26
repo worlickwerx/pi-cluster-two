@@ -187,6 +187,9 @@ void can_update (void)
                 case CANOBJ_TARGET_POWER:
                     canobj_target_power (&fr);
                     break;
+                case CANOBJ_LED_IDENTIFY:
+                    canobj_led_identify (&fr);
+                    break;
                 default:
                     canobj_unknown (&fr);
                     break;
