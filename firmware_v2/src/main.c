@@ -10,6 +10,7 @@
 #include "can.h"
 #include "power.h"
 #include "heartbeat.h"
+#include "console.h"
 
 int main (void)
 {
@@ -21,6 +22,7 @@ int main (void)
     address_get (&mod, &node);
     activity_setup ();
     identify_setup ();
+    console_setup ();
     power_setup ();
     can_setup (mod, node);
     heartbeat_setup ();
@@ -30,12 +32,14 @@ int main (void)
         can_update ();
         activity_update ();
         identify_update ();
+        console_update ();
         power_update ();
         heartbeat_update ();
     }
 
     heartbeat_finalize ();
     can_finalize ();
+    console_finalize ();
     power_finalize ();
     identify_finalize ();
     activity_finalize ();

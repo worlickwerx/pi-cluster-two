@@ -8,6 +8,7 @@
 #include "activity.h"
 #include "identify.h"
 #include "power.h"
+#include "console.h"
 #include "can.h"
 
 static uint8_t addr_mod;
@@ -17,6 +18,18 @@ static CAN_HandleTypeDef    can1;
 static CanTxMsgTypeDef      tx_msg;
 static CanRxMsgTypeDef      rx_msg;
 
+static struct canmgr_frame console_connected = {
+    .module = CANMGR_ADDR_NOROUTE,
+    .node = CANMGR_ADDR_NOROUTE,
+};
+static int console_lastsent_needack = 0;
+static int console_ringdump = 0;
+
+void canobj_target_consoleconn (struct canmgr_frame *fr);
+void canobj_target_consoledisc (struct canmgr_frame *fr);
+void canobj_target_consolering (struct canmgr_frame *fr);
+void canobj_target_consolerecv (struct canmgr_frame *fr);
+void canobj_target_consolesend (struct canmgr_frame *fr);
 void canobj_led_identify (struct canmgr_frame *fr);
 void canobj_target_power (struct canmgr_frame *fr);
 void canobj_echo (struct canmgr_frame *fr);
@@ -100,6 +113,28 @@ void can_heartbeat_send (uint8_t *data, uint8_t len)
     memcpy (fr.data, data, len);
     fr.dlen = len; // payload empty for now
     can_send (&fr, 100);
+}
+
+int can_console_send_ready (void)
+{
+    if (CONSOLE_UNCONNECTED (&console_connected))
+        return 0;
+    if (console_lastsent_needack)
+        return 0;
+    return 1;
+}
+
+void can_console_send (uint8_t *buf, int len)
+{
+    if (!can_console_send_ready ())
+        return;
+    if (len > canmgr_maxdata (console_connected.object))
+        return;
+    console_connected.dlen = len;
+    memcpy (console_connected.data, buf, len);
+    if (can_send (&console_connected, 100) < 0)
+        return;
+    console_lastsent_needack = 1;
 }
 
 void can_setup (uint8_t mod, uint8_t node)
@@ -190,10 +225,43 @@ void can_update (void)
                 case CANOBJ_LED_IDENTIFY:
                     canobj_led_identify (&fr);
                     break;
+               case CANOBJ_TARGET_CONSOLECONN:
+                    canobj_target_consoleconn (&fr);
+                    break;
+                case CANOBJ_TARGET_CONSOLEDISC:
+                    canobj_target_consoledisc (&fr);
+                    break;
+                case CANOBJ_TARGET_CONSOLERECV:
+                    canobj_target_consolerecv (&fr);
+                    break;
+                case CANOBJ_TARGET_CONSOLERING:
+                    canobj_target_consolering (&fr);
+                    break;
                 default:
+                    if (fr.object == console_connected.object) {
+                        canobj_target_consolesend (&fr);
+                        break;
+                    }
                     canobj_unknown (&fr);
                     break;
             }
+        }
+    }
+    if (can_console_send_ready ()) {
+        uint8_t buf[8];
+        int max = canmgr_maxdata (console_connected.object);
+        int len = 0;
+
+        if (max > sizeof (buf))
+            max = sizeof (buf);
+        if (console_ringdump) {
+            if ((len = console_history_next (buf, max)) == 0)
+                console_ringdump = 0; // EOF
+        } else {
+            len = console_recv (buf, max);
+        }
+        if (len > 0) {
+            can_console_send (buf, len);
         }
     }
 }
@@ -281,6 +349,129 @@ void canobj_unknown (struct canmgr_frame *fr)
         default:
             break;
     }
+}
+
+void canobj_target_consoleconn (struct canmgr_frame *fr)
+{
+    uint8_t val[3];
+
+    switch (fr->type) {
+        case CANMGR_TYPE_WO:
+            if (fr->dlen != 3)
+                goto nak;
+            /* Prepare reusable outgoing DAT packet for console output
+             */
+            console_connected.pri = 1;
+            console_connected.dst = fr->data[1];
+            console_connected.src = addr_node | 0x10;;
+            console_connected.xpri = 1;
+            console_connected.type = CANMGR_TYPE_DAT;
+            console_connected.module = fr->data[0];
+            console_connected.node = fr->data[1];
+            console_connected.object = fr->data[2];
+            console_reset (); // dump only new data
+            can_send_ack (fr, CANMGR_TYPE_ACK, NULL, 0);
+            break;
+        case CANMGR_TYPE_RO:
+            if (fr->dlen != 0)
+                goto nak;
+            val[0] = console_connected.module;
+            val[1] = console_connected.node;
+            val[2] = console_connected.object;
+            can_send_ack (fr, CANMGR_TYPE_ACK, val, 3);
+            break;
+        case CANMGR_TYPE_DAT:
+            goto nak;
+        default:
+            break;
+    }
+    return;
+nak:
+    can_send_ack (fr, CANMGR_TYPE_NAK, NULL, 0);
+}
+
+void canobj_target_consoledisc (struct canmgr_frame *fr)
+{
+    switch (fr->type) {
+        case CANMGR_TYPE_WO:
+            if (fr->dlen != 3 || console_connected.module != fr->data[0]
+                              || console_connected.node != fr->data[1]
+                              || console_connected.object != fr->data[2])
+                goto nak;
+            console_connected.node = CANMGR_ADDR_NOROUTE;
+            console_connected.module = CANMGR_ADDR_NOROUTE;
+            can_send_ack (fr, CANMGR_TYPE_ACK, NULL, 0);
+            console_lastsent_needack = 0;
+            break;
+        case CANMGR_TYPE_RO:
+        case CANMGR_TYPE_DAT:
+            goto nak;
+        default:
+            break;
+    }
+    return;
+nak:
+    can_send_ack (fr, CANMGR_TYPE_NAK, NULL, 0);
+}
+
+void canobj_target_consolering (struct canmgr_frame *fr)
+{
+    switch (fr->type) {
+        case CANMGR_TYPE_WO:
+            if (fr->dlen != 3 || console_connected.module != fr->data[0]
+                              || console_connected.node != fr->data[1]
+                              || console_connected.object != fr->data[2])
+                goto nak;
+            console_history_reset ();
+            console_ringdump = 1;
+            can_send_ack (fr, CANMGR_TYPE_ACK, NULL, 0);
+            break;
+        case CANMGR_TYPE_RO:
+        case CANMGR_TYPE_DAT:
+            goto nak;
+        default:
+            break;
+    }
+    return;
+nak:
+    can_send_ack (fr, CANMGR_TYPE_NAK, NULL, 0);
+}
+
+void canobj_target_consolerecv (struct canmgr_frame *fr)
+{
+    switch (fr->type) {
+        case CANMGR_TYPE_DAT:
+            console_send (fr->data, fr->dlen);
+            can_send_ack (fr, CANMGR_TYPE_ACK, NULL, 0);
+            break;
+        case CANMGR_TYPE_WO:
+        case CANMGR_TYPE_RO:
+            goto nak;
+        default:
+            break;
+    }
+    return;
+nak:
+    can_send_ack (fr, CANMGR_TYPE_NAK, NULL, 0);
+}
+
+void canobj_target_consolesend (struct canmgr_frame *fr)
+{
+    switch (fr->type) {
+        case CANMGR_TYPE_WO:
+        case CANMGR_TYPE_RO:
+        case CANMGR_TYPE_DAT:
+            goto nak;
+        case CANMGR_TYPE_ACK:
+        case CANMGR_TYPE_NAK:
+            console_lastsent_needack = 0;
+            break;
+        default:
+            break;
+    }
+    return;
+nak:
+    can_send_ack (fr, CANMGR_TYPE_NAK, NULL, 0);
 }
 
 /*
