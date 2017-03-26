@@ -1,4 +1,4 @@
-void heartbeat_setup (void);
+void heartbeat_setup (int skew);
 void heartbeat_finalize (void);
 
 void heartbeat_update (void);

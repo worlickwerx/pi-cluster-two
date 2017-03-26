@@ -9,11 +9,15 @@
 uint32_t heartbeat_period = 1000;
 uint32_t heartbeat_t0;
 
-
-void heartbeat_setup (void)
+/* first heatbeat will be in (heartbeat_period - skew) milliseconds.
+ * Set skew either randomly or based on L-CAN address so that
+ * compute boards that are powered up simultaneously won't be likely
+ * to have heartbeat collisions.
+ */
+void heartbeat_setup (int skew)
 {
     itm_printf ("Heartbeat: initialized\n");
-    heartbeat_t0 = HAL_GetTick ();
+    heartbeat_t0 = HAL_GetTick () + skew;
 }
 
 void heartbeat_finalize (void)

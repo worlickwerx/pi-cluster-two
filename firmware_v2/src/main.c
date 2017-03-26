@@ -25,7 +25,7 @@ int main (void)
     console_setup ();
     power_setup ();
     can_setup (mod, node);
-    heartbeat_setup ();
+    heartbeat_setup (node * 100);
 
     while (1) {
         //alive_update ();
