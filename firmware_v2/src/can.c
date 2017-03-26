@@ -86,6 +86,22 @@ void can_send_ack (struct canmgr_frame *fr, int type, void *data, int len)
     can_send (fr, 100);
 }
 
+void can_heartbeat_send (uint8_t *data, uint8_t len)
+{
+   struct canmgr_frame fr;
+
+    fr.pri = 1;
+    fr.dst = CANMGR_MODULE_CTRL;
+    fr.src = addr_node | 0x10;
+    fr.type = CANMGR_TYPE_WNA;
+    fr.node = CANMGR_MODULE_CTRL;
+    fr.module = CANMGR_ADDR_NOROUTE;
+    fr.object = CANOBJ_HEARTBEAT;
+    memcpy (fr.data, data, len);
+    fr.dlen = len; // payload empty for now
+    can_send (&fr, 100);
+}
+
 void can_setup (uint8_t mod, uint8_t node)
 {
     GPIO_InitTypeDef g;

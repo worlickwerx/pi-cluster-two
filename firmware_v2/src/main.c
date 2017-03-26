@@ -9,6 +9,7 @@
 #include "identify.h"
 #include "can.h"
 #include "power.h"
+#include "heartbeat.h"
 
 int main (void)
 {
@@ -22,6 +23,7 @@ int main (void)
     identify_setup ();
     power_setup ();
     can_setup (mod, node);
+    heartbeat_setup ();
 
     while (1) {
         //alive_update ();
@@ -29,8 +31,10 @@ int main (void)
         activity_update ();
         identify_update ();
         power_update ();
+        heartbeat_update ();
     }
 
+    heartbeat_finalize ();
     can_finalize ();
     power_finalize ();
     identify_finalize ();
