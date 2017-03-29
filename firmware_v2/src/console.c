@@ -54,8 +54,10 @@ void console_setup (void)
     uart1.Init.Parity = UART_PARITY_NONE;
     uart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
     uart1.Init.Mode = UART_MODE_TX_RX;
-    //uart1.Init.OverSampling = 16; // needed?
+    uart1.Init.OverSampling = UART_OVERSAMPLING_16;
 
+    if (HAL_UART_DeInit (&uart1) != HAL_OK)
+        FATAL ("HAL_UART_DeInint failed");
     if (HAL_UART_Init (&uart1) != HAL_OK)
         FATAL ("HAL_UART_Init failed");
 
@@ -68,21 +70,31 @@ void console_finalize (void)
 {
 }
 
+// chars arriving at 115kb (115 per ms), bursty, and buffered;
+// chars departing via CAN at up to 8 per update cycle.
 void console_update (void)
 {
-    HAL_StatusTypeDef res;
-    uint8_t c;
+    if (uart1.State == HAL_UART_STATE_READY && uart1.Lock == HAL_UNLOCKED) {
+        uint32_t t0 = HAL_GetTick ();
 
-    if ((res = HAL_UART_Receive (&uart1, &c, 1, 0)) == HAL_OK) {
-        recv_buf[postincr (&head)] = c;
-        if (head == tail)
-            postincr (&tail);
-        if (head == tail_hist)
-            postincr (&tail_hist);
-        if (head == tail_cursor)
-            postincr (&tail_cursor);
-    } else if (res != HAL_TIMEOUT) {
-        itm_printf ("Console: receive error %d\n", res);
+        uart1.Lock = HAL_LOCKED;
+        uart1.ErrorCode = HAL_UART_ERROR_NONE;
+        uart1.State = HAL_UART_STATE_BUSY_RX;
+        while (__HAL_UART_GET_FLAG (&uart1, UART_FLAG_RXNE) != RESET) {
+            recv_buf[postincr (&head)] = uart1.Instance->DR & 0xff;
+            if (head == tail_hist)
+                postincr (&tail_hist);
+            if (head == tail_cursor)
+                postincr (&tail_cursor);
+            if (head == tail) {
+                postincr (&tail);
+                break;
+            }
+            if (timesince (t0) > 10)
+                break;
+        }
+        uart1.State = HAL_UART_STATE_READY;
+        uart1.Lock = HAL_UNLOCKED;
     }
 }
 
