@@ -5,12 +5,20 @@ and control in a cluster context.  It provides:
 
 * Remote Power/Reset
 * Remote Serial console
-* Remote Power monitoring
+* Remote Power (watts) monitoring
 * Remote Beacon LED
 
 This is accomplished using management processors and a two-level CAN bus
 network, somewhat similar to the CAN bus architecture of the
 [Meiko CS/2](https://github.com/garlick/meiko-cs2).
+
+### v2 Prototype
+
+The v2 prototype is under active devleopment.
+
+An STM32F103C8T6 embedded processor replaces the Teensy as management
+controller, and the management electronics are squeezed down to an
+elongated HAT(ish) Pi daughter board with a DIN 3x16 connector on the end.
 
 ### v1 Prototype
 
@@ -21,9 +29,7 @@ controller.  The teensy is attached to the local (L-CAN) CAN bus via a
 [MCP2551 CAN transceiver](http://www.microchip.com/wwwproducts/en/en010405).
 The teensy can
 * pull down the Pi reset line with one of its GPIO's
-* hard power on/off the Pi using a [TPS22958 load switch](http://www.ti.com/product/TPS22958)
-* soft power off the Pi using systemd's POWER\_OFF button
-* monitor for shutdown completion during soft power off
+* [hard/soft power control](doc/power.md)
 * flash a beacon LED to identify a board that needs service
 * read/write the Pi console serial port and buffer 32K of history
 * monitor Pi external current draw
