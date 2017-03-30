@@ -13,13 +13,13 @@ GPIO_TypeDef *uart1_rx_port = GPIOA;
 
 UART_HandleTypeDef uart1;
 
-static uint8_t recv_buf[8192];
-static unsigned int head, tail, tail_hist, tail_cursor;
+static uint8_t rx_buf[8192];
+static unsigned int rx_head, rx_tail, rx_tail_hist, rx_tail_cursor;
 
 static unsigned int postincr (unsigned int *i)
 {
     unsigned int last = *i;
-    if (++(*i) == sizeof (recv_buf))
+    if (++(*i) == sizeof (rx_buf))
         *i = 0;
     return last;
 }
@@ -50,13 +50,13 @@ void USART1_IRQHandler (void)
     /* receive buffer not empty */
     if (__HAL_UART_GET_FLAG (&uart1, UART_FLAG_RXNE) != RESET
         && __HAL_UART_GET_IT_SOURCE (&uart1, UART_IT_RXNE) != RESET) {
-        recv_buf[postincr (&head)] = uart1.Instance->DR & 0xff;
-        if (head == tail_hist)
-            postincr (&tail_hist);
-        if (head == tail_cursor)
-            postincr (&tail_cursor);
-        if (head == tail)
-            postincr (&tail);
+        rx_buf[postincr (&rx_head)] = uart1.Instance->DR & 0xff;
+        if (rx_head == rx_tail_hist)
+            postincr (&rx_tail_hist);
+        if (rx_head == rx_tail_cursor)
+            postincr (&rx_tail_cursor);
+        if (rx_head == rx_tail)
+            postincr (&rx_tail);
     }
     /* transmit buffer empty */
     if (__HAL_UART_GET_FLAG (&uart1, UART_FLAG_TXE) != RESET
@@ -108,7 +108,7 @@ void console_setup (void)
     if (HAL_UART_Init (&uart1) != HAL_OK)
         FATAL ("HAL_UART_Init failed");
 
-    head = tail = tail_hist = tail_cursor = 0;
+    rx_head = rx_tail = rx_tail_hist = rx_tail_cursor = 0;
 
     __HAL_UART_ENABLE_IT (&uart1, UART_IT_PE);
     __HAL_UART_ENABLE_IT (&uart1, UART_IT_ERR);
@@ -135,13 +135,13 @@ void console_send (uint8_t *buf, int len)
 
 int console_available (void)
 {
-    return head != tail;
+    return rx_head != rx_tail;
 }
 
 void console_reset (void)
 {
     __HAL_UART_DISABLE_IT (&uart1, UART_IT_RXNE);
-    tail = head;
+    rx_tail = rx_head;
     __HAL_UART_ENABLE_IT (&uart1, UART_IT_RXNE);
 }
 
@@ -149,8 +149,8 @@ int console_recv (uint8_t *buf, int len)
 {
     int i = 0;
     __HAL_UART_DISABLE_IT (&uart1, UART_IT_RXNE);
-    while (i < len && tail != head)
-        buf[i++] = recv_buf[postincr (&tail)];
+    while (i < len && rx_tail != rx_head)
+        buf[i++] = rx_buf[postincr (&rx_tail)];
     __HAL_UART_ENABLE_IT (&uart1, UART_IT_RXNE);
     return i;
 }
@@ -159,8 +159,8 @@ int console_history_next (uint8_t *buf, int len)
 {
     int i = 0;
     __HAL_UART_DISABLE_IT (&uart1, UART_IT_RXNE);
-    while (i < len && tail_cursor != head)
-        buf[i++] = recv_buf[postincr (&tail_cursor)];
+    while (i < len && rx_tail_cursor != rx_head)
+        buf[i++] = rx_buf[postincr (&rx_tail_cursor)];
     __HAL_UART_ENABLE_IT (&uart1, UART_IT_RXNE);
     return i;
 }
@@ -168,7 +168,7 @@ int console_history_next (uint8_t *buf, int len)
 void console_history_reset (void)
 {
     __HAL_UART_DISABLE_IT (&uart1, UART_IT_RXNE);
-    tail_cursor = tail_hist;
+    rx_tail_cursor = rx_tail_hist;
     __HAL_UART_ENABLE_IT (&uart1, UART_IT_RXNE);
 }
 
