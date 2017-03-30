@@ -16,6 +16,9 @@ UART_HandleTypeDef uart1;
 static uint8_t rx_buf[8192];
 static unsigned int rx_head, rx_tail, rx_tail_hist, rx_tail_cursor;
 
+static uint8_t tx_buf[1024];
+static unsigned int tx_head, tx_tail;
+
 static unsigned int postincr (unsigned int *i)
 {
     unsigned int last = *i;
@@ -24,7 +27,10 @@ static unsigned int postincr (unsigned int *i)
     return last;
 }
 
-/* override weak symbol in HAL startup assembly */
+/* This presumes 9B is not enabled.
+ * There is no interlock between TX and RX unlike HAL (see how that goes!)
+ * It overrides weak function in HAL startup assembly.
+ */
 void USART1_IRQHandler (void)
 {
     /* parity error */
@@ -51,20 +57,30 @@ void USART1_IRQHandler (void)
     if (__HAL_UART_GET_FLAG (&uart1, UART_FLAG_RXNE) != RESET
         && __HAL_UART_GET_IT_SOURCE (&uart1, UART_IT_RXNE) != RESET) {
         rx_buf[postincr (&rx_head)] = uart1.Instance->DR & 0xff;
+        if (rx_head == rx_tail)
+            postincr (&rx_tail);
         if (rx_head == rx_tail_hist)
             postincr (&rx_tail_hist);
         if (rx_head == rx_tail_cursor)
             postincr (&rx_tail_cursor);
-        if (rx_head == rx_tail)
-            postincr (&rx_tail);
     }
     /* transmit buffer empty */
     if (__HAL_UART_GET_FLAG (&uart1, UART_FLAG_TXE) != RESET
         && __HAL_UART_GET_IT_SOURCE (&uart1, UART_IT_TXE) != RESET) {
+        if (tx_tail != tx_head) {
+            uart1.Instance->DR = tx_buf[postincr (&tx_tail)];
+            __HAL_UART_DISABLE_IT (&uart1, UART_IT_TXE);
+            __HAL_UART_ENABLE_IT (&uart1, UART_IT_TC);
+        } else {
+            __HAL_UART_DISABLE_IT (&uart1, UART_IT_TXE);
+        }
     }
     /* transmit complete */
     if (__HAL_UART_GET_FLAG (&uart1, UART_FLAG_TC) != RESET
         && __HAL_UART_GET_IT_SOURCE (&uart1, UART_IT_TC) != RESET) {
+        if (tx_tail != tx_head)
+            __HAL_UART_ENABLE_IT (&uart1, UART_IT_TXE);
+        __HAL_UART_DISABLE_IT (&uart1, UART_IT_TC);
     }
 }
 
@@ -109,10 +125,14 @@ void console_setup (void)
         FATAL ("HAL_UART_Init failed");
 
     rx_head = rx_tail = rx_tail_hist = rx_tail_cursor = 0;
+    tx_head = tx_tail = 0;
 
     __HAL_UART_ENABLE_IT (&uart1, UART_IT_PE);
     __HAL_UART_ENABLE_IT (&uart1, UART_IT_ERR);
     __HAL_UART_ENABLE_IT (&uart1, UART_IT_RXNE);
+
+    __HAL_UART_DISABLE_IT (&uart1, UART_IT_TXE);
+    __HAL_UART_DISABLE_IT (&uart1, UART_IT_TC);
 
     itm_printf ("Console: initialized\n");
 }
@@ -127,10 +147,15 @@ void console_update (void)
 
 void console_send (uint8_t *buf, int len)
 {
-    HAL_StatusTypeDef res;
+    int i;
 
-    if ((res = HAL_UART_Transmit (&uart1, buf, len, 100)) != HAL_OK)
-        itm_printf ("Console: transmit error %d\n", res);
+    __HAL_UART_DISABLE_IT (&uart1, UART_IT_TXE);
+    for (i = 0; i < len; i++) {
+        tx_buf[postincr (&tx_head)] = buf[i];
+        if (tx_head == tx_tail)
+            postincr (&tx_tail);
+    }
+    __HAL_UART_ENABLE_IT (&uart1, UART_IT_TXE);
 }
 
 int console_available (void)
