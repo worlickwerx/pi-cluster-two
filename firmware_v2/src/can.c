@@ -11,6 +11,7 @@
 #include "console.h"
 #include "can.h"
 
+static const uint32_t baudrate = 125000;
 static uint8_t addr_mod;
 static uint8_t addr_node;
 
@@ -137,10 +138,41 @@ void can_console_send (uint8_t *buf, int len)
     console_lastsent_needack = 1;
 }
 
+typedef struct {
+    uint32_t baud;
+    uint32_t sjw;
+    uint32_t bs1;
+    uint32_t bs2;
+    uint32_t prescaler;
+} canbaud_t;
+
+// table generated using http://www.bittiming.can-wiki.info/
+// assumes prescaler is clocked at 36 MHz (APB1/PCLK1)
+static canbaud_t bt[] = {
+    {   10000, CAN_SJW_1TQ, CAN_BS1_13TQ, CAN_BS2_2TQ, 225 },
+    {   50000, CAN_SJW_1TQ, CAN_BS1_13TQ, CAN_BS2_2TQ, 45 },
+    {   83333, CAN_SJW_1TQ, CAN_BS1_13TQ, CAN_BS2_2TQ, 27 },
+    {  125000, CAN_SJW_1TQ, CAN_BS1_13TQ, CAN_BS2_2TQ, 18 },
+    {  250000, CAN_SJW_1TQ, CAN_BS1_13TQ, CAN_BS2_2TQ, 9 },
+    {  500000, CAN_SJW_1TQ, CAN_BS1_10TQ, CAN_BS1_1TQ, 6 },
+    {  800000, CAN_SJW_1TQ, CAN_BS1_12TQ, CAN_BS1_2TQ, 3 },
+    { 1000000, CAN_SJW_1TQ, CAN_BS1_10TQ, CAN_BS1_1TQ, 3 },
+};
+
+static canbaud_t *lookup_baud (uint32_t baud)
+{
+    int i;
+    for (i = 0; i < sizeof (bt) / sizeof (bt[0]); i++)
+        if (bt[i].baud == baud)
+            return &bt[i];
+    return NULL;
+}
+
 void can_setup (uint8_t mod, uint8_t node)
 {
     GPIO_InitTypeDef g;
     CAN_FilterConfTypeDef f;
+    canbaud_t *baud;
 
     addr_node = node;
     addr_mod = mod;
@@ -167,12 +199,12 @@ void can_setup (uint8_t mod, uint8_t node)
     can1.pTxMsg = &tx_msg;
     can1.pRxMsg = &rx_msg;
 
-    // 125Kbaud (prescaler clocked at 36 MHz (APB1/PCLK1)
-    // http://www.bittiming.can-wiki.info/
-    can1.Init.SJW = CAN_SJW_1TQ;
-    can1.Init.BS1 = CAN_BS1_13TQ;
-    can1.Init.BS2 = CAN_BS2_2TQ;
-    can1.Init.Prescaler = 18;
+    if (!(baud = lookup_baud (baudrate)))
+        FATAL ("Unknown CAN baud rate");
+    can1.Init.SJW = baud->sjw;
+    can1.Init.BS1 = baud->bs1;
+    can1.Init.BS2 = baud->bs2;
+    can1.Init.Prescaler = baud->prescaler;
 
     can1.Init.TTCM = DISABLE; // time triggered comms mode
     can1.Init.ABOM = DISABLE; // auto bus-off management
