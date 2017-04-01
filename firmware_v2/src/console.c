@@ -41,17 +41,17 @@ void USART1_IRQHandler (void)
     /* framing error */
     if (__HAL_UART_GET_FLAG (&uart1, UART_FLAG_FE) != RESET
         && __HAL_UART_GET_IT_SOURCE (&uart1, UART_IT_ERR) != RESET) {
-        __HAL_UART_CLEAR_PEFLAG (&uart1);
+        __HAL_UART_CLEAR_FEFLAG (&uart1);
     }
     /* noise error */
     if (__HAL_UART_GET_FLAG (&uart1, UART_FLAG_NE) != RESET
         && __HAL_UART_GET_IT_SOURCE (&uart1, UART_IT_ERR) != RESET) {
-        __HAL_UART_CLEAR_PEFLAG (&uart1);
+        __HAL_UART_CLEAR_NEFLAG (&uart1);
     }
     /* over-run error */
     if (__HAL_UART_GET_FLAG (&uart1, UART_FLAG_ORE) != RESET
         && __HAL_UART_GET_IT_SOURCE (&uart1, UART_IT_ERR) != RESET) {
-        __HAL_UART_CLEAR_PEFLAG (&uart1);
+        __HAL_UART_CLEAR_OREFLAG (&uart1);
     }
     /* receive buffer not empty */
     if (__HAL_UART_GET_FLAG (&uart1, UART_FLAG_RXNE) != RESET
