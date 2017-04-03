@@ -22,6 +22,9 @@ static void alive_write (uint8_t val)
 void alive_setup (void)
 {
     GPIO_InitTypeDef g;
+
+    __GPIOB_CLK_ENABLE(); 
+
     g.Mode = GPIO_MODE_OUTPUT_PP;
     g.Pull = GPIO_NOPULL;
     g.Speed = GPIO_SPEED_HIGH;
