@@ -48,10 +48,6 @@ void mcu_setup (void)
         FATAL ("configure_clock failed\n");
     SystemCoreClockUpdate ();
     HAL_Init();
-
-    __GPIOA_CLK_ENABLE();
-    __GPIOB_CLK_ENABLE();
-    //__GPIOC_CLK_ENABLE();
 }
 
 void mcu_finalize (void)
