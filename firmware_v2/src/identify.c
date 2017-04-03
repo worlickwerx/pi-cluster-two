@@ -24,6 +24,9 @@ static void identify_write (uint8_t val)
 void identify_setup (void)
 {
     GPIO_InitTypeDef g;
+
+    __GPIOB_CLK_ENABLE();
+
     g.Mode = GPIO_MODE_OUTPUT_PP;
     g.Pull = GPIO_NOPULL;
     g.Speed = GPIO_SPEED_HIGH;
