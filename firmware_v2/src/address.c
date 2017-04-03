@@ -30,6 +30,8 @@ void address_setup (void)
 {
     uint8_t mod, node;
 
+    __GPIOA_CLK_ENABLE();
+
     config_input (na_port, na0_pin);
     config_input (na_port, na1_pin);
     config_input (na_port, na2_pin);
