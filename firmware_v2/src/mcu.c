@@ -4,9 +4,24 @@
 #include "debug.h"
 #include "mcu.h"
 
-/* Configure HSE clock with 8MHz xtal -> PLL (x9) -> 72 MHz system clock.
+/* 40 kHz RTCCLK is derived from LSI (internal) RC osc.
  */
-int configure_clock (void)
+int configure_rtcclk (void)
+{
+    RCC_OscInitTypeDef o;
+
+    o.OscillatorType = RCC_OSCILLATORTYPE_LSI;
+    o.LSEState = RCC_LSE_OFF;
+    o.LSIState = RCC_LSI_ON;
+
+    if (HAL_RCC_OscConfig (&o) != HAL_OK)
+        return -1;
+    return 0;
+}
+
+/* 72 MHz SYSCLK is derived from 8MHz HSE (external) xtal -> PLLMUL (x9).
+ */
+int configure_sysclk (void)
 {
     RCC_OscInitTypeDef o;
     RCC_ClkInitTypeDef c;
@@ -14,10 +29,8 @@ int configure_clock (void)
     o.OscillatorType = RCC_OSCILLATORTYPE_HSE;
     o.HSEState = RCC_HSE_ON;
     o.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
-    o.LSEState = RCC_LSE_ON;
     o.HSIState = RCC_HSI_OFF;
     o.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-    o.LSIState = RCC_LSI_OFF;
 
     o.PLL.PLLState = RCC_PLL_ON;
     o.PLL.PLLSource = RCC_PLLSOURCE_HSE;
@@ -44,8 +57,10 @@ int configure_clock (void)
 
 void mcu_setup (void)
 {
-    if (configure_clock () < 0)
-        FATAL ("configure_clock failed\n");
+    if (configure_sysclk () < 0)
+        FATAL ("configure_sysclk failed\n");
+    //if (configure_rtcclk () < 0)
+    //    FATAL ("configure_rtcclk failed\n");
     SystemCoreClockUpdate ();
     HAL_Init();
 }
