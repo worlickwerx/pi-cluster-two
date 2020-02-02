@@ -1,45 +1,64 @@
 ## pi-compute-board
 
-pi-compute-board is add-on hardware for a Raspberry Pi for remote monitoring
-and control in a cluster context.  It provides:
+pi-compute-board is a 3U molleibus carrier for Raspberry Pi intended for
+ganging up multiple Pi's in a molliebus crate for parallel computation.
+The Pi is monitored and controlled with a _service processor_, embedded
+on each carrier board.
 
-* Remote Power/Reset
-* Remote Serial console
-* Remote Power (watts) monitoring
-* Remote Beacon LED
+### service processor
 
-This is accomplished using management processors and a two-level CAN bus
-network, somewhat similar to the CAN bus architecture of the
-[Meiko CS/2](https://github.com/garlick/meiko-cs2).
+The service processor is based on the STM32F1 ARM Cortex-M3 microprocessor
+running FreeRTOS.  It communicates with the molliebus crate controller
+over the CAN control bus, and with the Pi over I2C.  It offers the following
+functions:
 
-### v2 Prototype
+* Remote CAN power on/off of Pi 5V supply
+* Remote CAN current monitoring of the Pi 5V supply
+* Remote CAN temperature sensing
+* Remote CAN reset of the Pi
+* Remote CAN _soft shutdown_ of the Pi
+* Remote CAN and I2C control of a 5x7 LED matrix
+* Remote CAN access to the Pi console serial port
 
-The v2 prototype is under active devleopment.
+### molliebus
 
-An STM32F103C8T6 embedded processor replaces the Teensy as management
-controller, and the management electronics are squeezed down to an
-elongated HAT(ish) Pi daughter board with a DIN 3x16 connector on the end.
+Molliebus is a (work in progress) bus design utilizing Eurocard 3U
+and 6U (160mm depth) boards with DIN 41612 connectors.  It can coexist
+with VME, utilizing rows a and c of the P2 connector, or be implemented
+as a standalone bus.  The "bus" portion thus far
+* distributes power (3V3, 5V, 12V, and 5V-standby rails)
+* provides a crate-wide reset signal
+* implements a 1 mbps CAN control bus
+* provides _geographic slot addressing_
+* specifes a slot 1 "crate controller" role
 
-### v1 Prototype
+There can be up to 31 slots per crate, including the crate controller.
 
-The initial prototype is a 3U eurocard with the Pi 3 on standoffs, and
-some other hardware including a
-[teensy3.2](https://www.pjrc.com/store/teensy32.html) as a management
-controller.  The teensy is attached to the local (L-CAN) CAN bus via a
-[MCP2551 CAN transceiver](http://www.microchip.com/wwwproducts/en/en010405).
-The teensy can
-* pull down the Pi reset line with one of its GPIO's
-* [hard/soft power control](doc/power.md)
-* flash a beacon LED to identify a board that needs service
-* read/write the Pi console serial port and buffer 32K of history
-* monitor Pi external current draw
-* read L-CAN address from DIP switch
-* read X-CAN address from DIN backplane.
-* answer CAN queries
+Half of the available pins (row c, pins 1-32) are left to be user-defined,
+with the idea that high speed communication between boards will require
+point to point or switched differential pair signaling (such as USB or
+ethernet).  The design of these interconnects can be application specific,
+and need not be specified as part of the bus design.
 
-The Pi itself also gets a L-CAN interface through a
-[MCP2515 SPI CAN controller](http://www.microchip.com/wwwproducts/en/en010406)
-and reads the L-CAN and X-CAN addresses via GPIO.
+Row c is not used by the Pi carrier, as the Pi already has appropriately
+terminated USB and ethernet connectors, and these are made available via
+the Pi carrier faceplate.
 
-The Eurocard plugs into a DIN backplane which supplies power and interconnects
-L-CAN endpoints.
+### origin and license
+
+This project includes parts of:
+* FreeRTOS (MIT license)
+* libopencm3 (LGPLv3+)
+* project templates from the book _Beginning STM32_ by Warren Gay (LGPLv3+)
+
+The CAN control bus and LED matrix were influenced by similar features
+of the [Meiko CS/2](https://github.com/garlick/meiko-cs2), a ground breaking
+supercomputer of the 1990's.
+
+#### software
+
+SPDX-License-Identifier: GPL-3.0-or-later
+
+#### hardware
+
+SPDX-License-Identifier: CERN-OHL-1.2
