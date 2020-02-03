@@ -1,7 +1,3 @@
-/* Simple LED task demo:
- *
- * The LED on PC13 is toggled in task1.
- */
 #include <string.h>
 
 #include "FreeRTOS.h"
@@ -11,47 +7,45 @@
 #include <libopencm3/stm32/gpio.h>
 #include <libopencm3/cm3/nvic.h>
 
-#define mainECHO_TASK_PRIORITY                ( tskIDLE_PRIORITY + 1 )
 
-extern void vApplicationStackOverflowHook(xTaskHandle *pxTask,signed portCHAR *pcTaskName);
+extern void vApplicationStackOverflowHook (xTaskHandle *pxTask,
+                                           signed portCHAR *pcTaskName);
 
-void vApplicationStackOverflowHook (xTaskHandle *pxTask,
-                                    signed portCHAR *pcTaskName)
+
+void vApplicationStackOverflowHook (xTaskHandle *task __attribute((unused)),
+                                    signed portCHAR *name __attribute((unused)))
 {
-    (void)pxTask;
-    (void)pcTaskName;
     for (;;)
-        ;
+       ;
 }
 
-static void gpio_setup (void)
+static void task1 (void *args __attribute((unused)))
 {
-    rcc_clock_setup_in_hse_8mhz_out_72mhz ();    // Use this for "blue pill"
-    rcc_periph_clock_enable (RCC_GPIOC);
-    gpio_set_mode (GPIOC,
-                   GPIO_MODE_OUTPUT_2_MHZ,
-                   GPIO_CNF_OUTPUT_PUSHPULL,
-                   GPIO13);
-}
-
-static void task1 (void *args)
-{
-    int i;
-
-    (void)args;
-
     for (;;) {
-        gpio_toggle (GPIOC,GPIO13);
-        for (i = 0; i < 300000; i++)
-            __asm__("nop");
+        gpio_toggle (GPIOC, GPIO13);
+        vTaskDelay (pdMS_TO_TICKS (500));
     }
 }
 
 int main (void)
 {
-    gpio_setup ();
-    xTaskCreate (task1, "LED", 100, NULL, configMAX_PRIORITIES - 1, NULL);
+    rcc_clock_setup_in_hse_8mhz_out_72mhz ();    // Use this for "blue pill"
+    rcc_periph_clock_enable (RCC_GPIOC);
+
+    gpio_set_mode (GPIOC,
+                   GPIO_MODE_OUTPUT_2_MHZ,
+                   GPIO_CNF_OUTPUT_PUSHPULL,
+                   GPIO13);
+
+    xTaskCreate (task1,
+                 "LED",
+                 100,
+                 NULL,
+                 configMAX_PRIORITIES - 1,
+                 NULL);
+
     vTaskStartScheduler ();
+    /*NOTREACHED*/
     for (;;)
         ;
     return 0;
