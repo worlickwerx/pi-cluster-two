@@ -5,10 +5,12 @@
 
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/gpio.h>
+#include <libopencm3/stm32/spi.h>
 #include <libopencm3/cm3/nvic.h>
 
 #include "blink.h"
 #include "address.h"
+#include "matrix.h"
 
 extern void vApplicationStackOverflowHook (xTaskHandle *pxTask,
                                            signed portCHAR *pcTaskName);
