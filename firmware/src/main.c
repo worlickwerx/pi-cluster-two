@@ -8,6 +8,7 @@
 #include <libopencm3/cm3/nvic.h>
 
 #include "blink.h"
+#include "address.h"
 
 extern void vApplicationStackOverflowHook (xTaskHandle *pxTask,
                                            signed portCHAR *pcTaskName);
@@ -25,6 +26,8 @@ int main (void)
     rcc_clock_setup_in_hse_8mhz_out_72mhz ();    // Use this for "blue pill"
 
     blink_init ();
+    matrix_init ();
+    address_init ();
 
     vTaskStartScheduler ();
     /*NOTREACHED*/
