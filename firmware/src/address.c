@@ -42,15 +42,13 @@ void address_init (void)
                    GPIO_MODE_INPUT,
                    GPIO_CNF_INPUT_PULL_UPDOWN,
                    GPIO15 | GPIO14); // GA0, GA1
-    gpio_set (GPIOC, GPIO15);
-    gpio_set (GPIOC, GPIO14);
+    gpio_set (GPIOC, GPIO15 | GPIO14);
 
     gpio_set_mode (GPIOB,
                    GPIO_MODE_INPUT,
                    GPIO_CNF_INPUT_PULL_UPDOWN,
                    GPIO7 | GPIO6); // GA2, GA3
-    gpio_set (GPIOB, GPIO7);
-    gpio_set (GPIOB, GPIO6);
+    gpio_set (GPIOB, GPIO7 | GPIO6);
 
     gpio_set_mode (GPIOA,
                    GPIO_MODE_INPUT,
