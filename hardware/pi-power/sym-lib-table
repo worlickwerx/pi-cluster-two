@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name pi-power)(type Legacy)(uri ${KIPRJMOD}/project_components/pi-power.lib)(options "")(descr ""))
+  (lib (name pi-power-rescue)(type Legacy)(uri ${KIPRJMOD}/pi-power-rescue.lib)(options "")(descr ""))
+)

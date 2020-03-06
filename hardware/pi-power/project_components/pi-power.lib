@@ -1,0 +1,57 @@
+EESchema-LIBRARY Version 2.4
+#encoding utf-8
+#
+# INA169NA_3K
+#
+DEF INA169NA_3K U 0 40 Y Y 1 F N
+F0 "U" -200 440 60 H V R CNN
+F1 "INA169NA_3K" 10 -50 60 H V L CNN
+F2 "digikey-footprints:SOT-753" 200 200 60 H I L CNN
+F3 "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Fina139" 200 300 60 H I L CNN
+F4 "296-26063-1-ND" 200 400 60 H I L CNN "Digi-Key_PN"
+F5 "INA169NA/3K" 200 500 60 H I L CNN "MPN"
+F6 "Integrated Circuits (ICs)" 200 600 60 H I L CNN "Category"
+F7 "PMIC - Current Regulation/Management" 200 700 60 H I L CNN "Family"
+F8 "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Fina139" 200 800 60 H I L CNN "DK_Datasheet_Link"
+F9 "/product-detail/en/texas-instruments/INA169NA-3K/296-26063-1-ND/2254837" 200 900 60 H I L CNN "DK_Detail_Page"
+F10 "IC CURRENT MONITOR 0.5% SOT23-5" 200 1000 60 H I L CNN "Description"
+F11 "Texas Instruments" 200 1100 60 H I L CNN "Manufacturer"
+F12 "Active" 200 1200 60 H I L CNN "Status"
+DRAW
+S -300 400 200 0 0 1 0 f
+X OUT 1 300 200 100 L 50 50 1 1 O
+X GND 2 0 -100 100 U 50 50 1 1 W
+X VIN+ 3 -400 300 100 R 50 50 1 1 P
+X VIN- 4 -400 200 100 R 50 50 1 1 P
+X V+ 5 0 500 100 D 50 50 1 1 W
+ENDDRAW
+ENDDEF
+#
+# TPS27081ADDCR
+#
+DEF TPS27081ADDCR U 0 40 Y Y 1 F N
+F0 "U" -100 250 60 H V C CNN
+F1 "TPS27081ADDCR" 200 -500 60 H V L CNN
+F2 "digikey-footprints:SOT-23-6" 200 200 60 H I L CNN
+F3 "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Ftps27081a" 200 300 60 H I L CNN
+F4 "296-34970-1-ND" 200 400 60 H I L CNN "Digi-Key_PN"
+F5 "TPS27081ADDCR" 200 500 60 H I L CNN "MPN"
+F6 "Integrated Circuits (ICs)" 200 600 60 H I L CNN "Category"
+F7 "PMIC - Power Distribution Switches, Load Drivers" 200 700 60 H I L CNN "Family"
+F8 "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Ftps27081a" 200 800 60 H I L CNN "DK_Datasheet_Link"
+F9 "/product-detail/en/texas-instruments/TPS27081ADDCR/296-34970-1-ND/3671576" 200 900 60 H I L CNN "DK_Detail_Page"
+F10 "IC LOAD SW HIGH SIDE 6SOT" 200 1000 60 H I L CNN "Description"
+F11 "Texas Instruments" 200 1100 60 H I L CNN "Manufacturer"
+F12 "Active" 200 1200 60 H I L CNN "Status"
+DRAW
+S -200 200 300 -400 0 1 0 f
+X R2 1 400 0 100 L 50 50 1 1 P
+X VOUT 2 0 -500 100 U 50 50 1 1 w
+X VOUT 3 0 -500 100 U 50 50 1 1 P N
+X VIN 4 100 300 100 D 50 50 1 1 W
+X ON/OFF 5 -300 0 100 R 50 50 1 1 I
+X R1/C1 6 -300 -100 100 R 50 50 1 1 I
+ENDDRAW
+ENDDEF
+#
+#End Library
