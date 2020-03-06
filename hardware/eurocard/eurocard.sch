@@ -25,7 +25,7 @@ F 3 "" H 650 6700 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L eurocard:Mounting_Hole_PAD-Mechanical-eurocard MK2
+L eurocard:Mounting_Hole_PAD-Mechanical MK2
 U 1 1 5A6CFF98
 P 650 7000
 F 0 "MK2" H 750 7051 50  0000 L CNN
