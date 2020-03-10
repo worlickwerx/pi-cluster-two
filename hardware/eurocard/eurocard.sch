@@ -1207,222 +1207,181 @@ Wire Wire Line
 NoConn ~ 9600 2500
 NoConn ~ 9600 1700
 Wire Wire Line
-	5100 1800 6350 1800
-Wire Notes Line
-	6550 650  6550 2200
-Wire Notes Line
-	2950 2200 6550 2200
+	6000 1800 7150 1800
 $Comp
 L eurocard:INA169NA_3K U5
 U 1 1 65FAADB1
-P 5400 1450
-F 0 "U5" H 4850 2000 60  0000 L CNN
-F 1 "INA169NA_3K" H 4850 1900 39  0000 L CNN
-F 2 "digikey-footprints:SOT-753" H 5600 1650 60  0001 L CNN
-F 3 "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Fina139" H 5600 1750 60  0001 L CNN
-F 4 "296-26063-1-ND" H 5600 1850 60  0001 L CNN "Digi-Key_PN"
-F 5 "INA169NA/3K" H 5600 1950 60  0001 L CNN "MPN"
-F 6 "Integrated Circuits (ICs)" H 5600 2050 60  0001 L CNN "Category"
-F 7 "PMIC - Current Regulation/Management" H 5600 2150 60  0001 L CNN "Family"
-F 8 "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Fina139" H 5600 2250 60  0001 L CNN "DK_Datasheet_Link"
-F 9 "/product-detail/en/texas-instruments/INA169NA-3K/296-26063-1-ND/2254837" H 5600 2350 60  0001 L CNN "DK_Detail_Page"
-F 10 "IC CURRENT MONITOR 0.5% SOT23-5" H 5600 2450 60  0001 L CNN "Description"
-F 11 "Texas Instruments" H 5600 2550 60  0001 L CNN "Manufacturer"
-F 12 "Active" H 5600 2650 60  0001 L CNN "Status"
-	1    5400 1450
+P 6300 1450
+F 0 "U5" H 5750 2000 60  0000 L CNN
+F 1 "INA169NA_3K" H 5750 1900 39  0000 L CNN
+F 2 "digikey-footprints:SOT-753" H 6500 1650 60  0001 L CNN
+F 3 "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Fina139" H 6500 1750 60  0001 L CNN
+F 4 "296-26063-1-ND" H 6500 1850 60  0001 L CNN "Digi-Key_PN"
+F 5 "INA169NA/3K" H 6500 1950 60  0001 L CNN "MPN"
+F 6 "Integrated Circuits (ICs)" H 6500 2050 60  0001 L CNN "Category"
+F 7 "PMIC - Current Regulation/Management" H 6500 2150 60  0001 L CNN "Family"
+F 8 "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Fina139" H 6500 2250 60  0001 L CNN "DK_Datasheet_Link"
+F 9 "/product-detail/en/texas-instruments/INA169NA-3K/296-26063-1-ND/2254837" H 6500 2350 60  0001 L CNN "DK_Detail_Page"
+F 10 "IC CURRENT MONITOR 0.5% SOT23-5" H 6500 2450 60  0001 L CNN "Description"
+F 11 "Texas Instruments" H 6500 2550 60  0001 L CNN "Manufacturer"
+F 12 "Active" H 6500 2650 60  0001 L CNN "Status"
+	1    6300 1450
 	1    0    0    -1  
 $EndComp
-Connection ~ 5100 1800
+Connection ~ 6000 1800
 $Comp
 L power:PWR_FLAG #FLG04
 U 1 1 65F856E4
-P 5100 1800
-F 0 "#FLG04" H 5100 1875 50  0001 C CNN
-F 1 "PWR_FLAG" H 5100 1973 50  0001 C CNN
-F 2 "" H 5100 1800 50  0001 C CNN
-F 3 "~" H 5100 1800 50  0001 C CNN
-	1    5100 1800
+P 6000 1800
+F 0 "#FLG04" H 6000 1875 50  0001 C CNN
+F 1 "PWR_FLAG" H 6000 1973 50  0001 C CNN
+F 2 "" H 6000 1800 50  0001 C CNN
+F 3 "~" H 6000 1800 50  0001 C CNN
+	1    6000 1800
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3850 1800 4600 1800
+	4850 1800 5600 1800
 $Comp
 L eurocard:TPS27081ADDCR U3
 U 1 1 65F1C805
-P 3850 1300
-F 0 "U3" H 3650 1750 60  0000 L CNN
-F 1 "TPS27081ADDCR" H 3650 1650 39  0000 L CNN
-F 2 "digikey-footprints:SOT-23-6" H 4050 1500 60  0001 L CNN
-F 3 "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Ftps27081a" H 4050 1600 60  0001 L CNN
-F 4 "296-34970-1-ND" H 4050 1700 60  0001 L CNN "Digi-Key_PN"
-F 5 "TPS27081ADDCR" H 4050 1800 60  0001 L CNN "MPN"
-F 6 "Integrated Circuits (ICs)" H 4050 1900 60  0001 L CNN "Category"
-F 7 "PMIC - Power Distribution Switches, Load Drivers" H 4050 2000 60  0001 L CNN "Family"
-F 8 "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Ftps27081a" H 4050 2100 60  0001 L CNN "DK_Datasheet_Link"
-F 9 "/product-detail/en/texas-instruments/TPS27081ADDCR/296-34970-1-ND/3671576" H 4050 2200 60  0001 L CNN "DK_Detail_Page"
-F 10 "IC LOAD SW HIGH SIDE 6SOT" H 4050 2300 60  0001 L CNN "Description"
-F 11 "Texas Instruments" H 4050 2400 60  0001 L CNN "Manufacturer"
-F 12 "Active" H 4050 2500 60  0001 L CNN "Status"
-	1    3850 1300
+P 4850 1300
+F 0 "U3" H 4650 1750 60  0000 L CNN
+F 1 "TPS27081ADDCR" H 4650 1650 39  0000 L CNN
+F 2 "digikey-footprints:SOT-23-6" H 5050 1500 60  0001 L CNN
+F 3 "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Ftps27081a" H 5050 1600 60  0001 L CNN
+F 4 "296-34970-1-ND" H 5050 1700 60  0001 L CNN "Digi-Key_PN"
+F 5 "TPS27081ADDCR" H 5050 1800 60  0001 L CNN "MPN"
+F 6 "Integrated Circuits (ICs)" H 5050 1900 60  0001 L CNN "Category"
+F 7 "PMIC - Power Distribution Switches, Load Drivers" H 5050 2000 60  0001 L CNN "Family"
+F 8 "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Ftps27081a" H 5050 2100 60  0001 L CNN "DK_Datasheet_Link"
+F 9 "/product-detail/en/texas-instruments/TPS27081ADDCR/296-34970-1-ND/3671576" H 5050 2200 60  0001 L CNN "DK_Detail_Page"
+F 10 "IC LOAD SW HIGH SIDE 6SOT" H 5050 2300 60  0001 L CNN "Description"
+F 11 "Texas Instruments" H 5050 2400 60  0001 L CNN "Manufacturer"
+F 12 "Active" H 5050 2500 60  0001 L CNN "Status"
+	1    4850 1300
 	1    0    0    -1  
 $EndComp
 Text Notes 4500 2150 0    59   ~ 0
 Power Control
 Wire Wire Line
-	4900 1800 5100 1800
-Wire Notes Line
-	6550 650  2950 650 
-Wire Notes Line
-	2950 650  2950 2200
-Connection ~ 4900 1800
-Text Label 5800 1250 0    50   ~ 0
+	5900 1800 6000 1800
+Connection ~ 5900 1800
+Text Label 6600 1250 0    50   ~ 0
 PWR_MEASURE
 Wire Wire Line
-	5700 1250 6350 1250
+	6600 1250 7150 1250
 Wire Wire Line
-	4300 950  4300 1000
-Connection ~ 4300 1000
-Text Label 6000 1800 0    50   ~ 0
+	5300 950  5300 1000
+Connection ~ 5300 1000
+Text Label 6800 1800 0    50   ~ 0
 USER_5V
 Wire Wire Line
-	4900 1250 4900 1800
+	5900 1250 5900 1800
 $Comp
 L Device:R R7
 U 1 1 5E56C384
-P 4750 1800
-F 0 "R7" V 4543 1800 50  0000 C CNN
-F 1 "0.1" V 4634 1800 50  0000 C CNN
-F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 4680 1800 50  0001 C CNN
-F 3 "~" H 4750 1800 50  0001 C CNN
-	1    4750 1800
+P 5750 1800
+F 0 "R7" V 5543 1800 50  0000 C CNN
+F 1 "0.1" V 5634 1800 50  0000 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 5680 1800 50  0001 C CNN
+F 3 "~" H 5750 1800 50  0001 C CNN
+	1    5750 1800
 	0    1    1    0   
 $EndComp
-Text Notes 4500 1950 0    50   ~ 0
+Text Notes 5500 1950 0    50   ~ 0
 2W 1% shunt
 Wire Wire Line
-	4600 1800 4600 1150
-Connection ~ 4600 1800
+	5600 1800 5600 1150
+Connection ~ 5600 1800
 $Comp
 L power:GND #PWR038
 U 1 1 5E5AE8C7
-P 5400 1550
-F 0 "#PWR038" H 5400 1300 50  0001 C CNN
-F 1 "GND" H 5500 1550 50  0000 C CNN
-F 2 "" H 5400 1550 50  0001 C CNN
-F 3 "" H 5400 1550 50  0001 C CNN
-	1    5400 1550
+P 6300 1550
+F 0 "#PWR038" H 6300 1300 50  0001 C CNN
+F 1 "GND" H 6400 1550 50  0000 C CNN
+F 2 "" H 6300 1550 50  0001 C CNN
+F 3 "" H 6300 1550 50  0001 C CNN
+	1    6300 1550
 	1    0    0    -1  
 $EndComp
 $Comp
 L power:+3V3 #PWR037
 U 1 1 5E5AEFA5
-P 5400 950
-F 0 "#PWR037" H 5400 800 50  0001 C CNN
-F 1 "+3V3" H 5415 1123 50  0000 C CNN
-F 2 "" H 5400 950 50  0001 C CNN
-F 3 "" H 5400 950 50  0001 C CNN
-	1    5400 950 
+P 6300 950
+F 0 "#PWR037" H 6300 800 50  0001 C CNN
+F 1 "+3V3" H 6315 1123 50  0000 C CNN
+F 2 "" H 6300 950 50  0001 C CNN
+F 3 "" H 6300 950 50  0001 C CNN
+	1    6300 950 
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	4900 1250 5000 1250
+	5600 1150 5900 1150
 Wire Wire Line
-	4600 1150 5000 1150
+	4950 1000 5300 1000
+Connection ~ 5300 1300
 Wire Wire Line
-	3000 1300 3350 1300
+	5250 1300 5300 1300
 Wire Wire Line
-	3950 1000 4300 1000
-Connection ~ 4300 1300
+	4450 1400 4450 1250
 Wire Wire Line
-	4250 1300 4300 1300
-Wire Wire Line
-	3450 1400 3450 1250
-Wire Wire Line
-	3550 1400 3450 1400
+	4550 1400 4450 1400
 $Comp
 L Device:C C9
 U 1 1 5E3F6042
-P 4300 1150
-F 0 "C9" H 4415 1196 50  0000 L CNN
-F 1 "1uF" H 4400 1100 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4338 1000 50  0001 C CNN
-F 3 "~" H 4300 1150 50  0001 C CNN
-	1    4300 1150
+P 5300 1150
+F 0 "C9" H 5415 1196 50  0000 L CNN
+F 1 "1uF" H 5400 1100 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 5338 1000 50  0001 C CNN
+F 3 "~" H 5300 1150 50  0001 C CNN
+	1    5300 1150
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	3350 1300 3550 1300
-Connection ~ 3350 1300
 $Comp
 L power:GND #PWR034
 U 1 1 5E3B1235
-P 4300 1450
-F 0 "#PWR034" H 4300 1200 50  0001 C CNN
-F 1 "GND" H 4300 1300 50  0000 C CNN
-F 2 "" H 4300 1450 50  0001 C CNN
-F 3 "" H 4300 1450 50  0001 C CNN
-	1    4300 1450
+P 5300 1450
+F 0 "#PWR034" H 5300 1200 50  0001 C CNN
+F 1 "GND" H 5300 1300 50  0000 C CNN
+F 2 "" H 5300 1450 50  0001 C CNN
+F 3 "" H 5300 1450 50  0001 C CNN
+	1    5300 1450
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	4300 1300 4300 1450
-$Comp
-L power:GND #PWR028
-U 1 1 5E3AE17B
-P 3350 1650
-F 0 "#PWR028" H 3350 1400 50  0001 C CNN
-F 1 "GND" H 3450 1550 50  0000 C CNN
-F 2 "" H 3350 1650 50  0001 C CNN
-F 3 "" H 3350 1650 50  0001 C CNN
-	1    3350 1650
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	3350 1350 3350 1300
-$Comp
-L Device:R R1
-U 1 1 5E3AAA95
-P 3350 1500
-F 0 "R1" H 3300 1500 50  0000 R CNN
-F 1 "10K" V 3350 1550 50  0000 R CNN
-F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 3280 1500 50  0001 C CNN
-F 3 "~" H 3350 1500 50  0001 C CNN
-	1    3350 1500
-	-1   0    0    1   
-$EndComp
+	5300 1300 5300 1450
 $Comp
 L power:+5V #PWR029
 U 1 1 5E3AA47F
-P 3450 950
-F 0 "#PWR029" H 3450 800 50  0001 C CNN
-F 1 "+5V" H 3465 1123 50  0000 C CNN
-F 2 "" H 3450 950 50  0001 C CNN
-F 3 "" H 3450 950 50  0001 C CNN
-	1    3450 950 
+P 4450 950
+F 0 "#PWR029" H 4450 800 50  0001 C CNN
+F 1 "+5V" H 4465 1123 50  0000 C CNN
+F 2 "" H 4450 950 50  0001 C CNN
+F 3 "" H 4450 950 50  0001 C CNN
+	1    4450 950 
 	1    0    0    -1  
 $EndComp
 $Comp
 L Device:R R3
 U 1 1 5E3A1063
-P 3450 1100
-F 0 "R3" H 3600 1050 50  0000 R CNN
-F 1 "10K" V 3450 1150 50  0000 R CNN
-F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 3380 1100 50  0001 C CNN
-F 3 "~" H 3450 1100 50  0001 C CNN
-	1    3450 1100
+P 4450 1100
+F 0 "R3" H 4600 1050 50  0000 R CNN
+F 1 "10K" V 4450 1150 50  0000 R CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 4380 1100 50  0001 C CNN
+F 3 "~" H 4450 1100 50  0001 C CNN
+	1    4450 1100
 	-1   0    0    1   
 $EndComp
-Text Label 3000 1300 0    50   ~ 0
-PWR_ON
 $Comp
 L power:+5V #PWR033
 U 1 1 5E396C8B
-P 4300 950
-F 0 "#PWR033" H 4300 800 50  0001 C CNN
-F 1 "+5V" H 4315 1123 50  0000 C CNN
-F 2 "" H 4300 950 50  0001 C CNN
-F 3 "" H 4300 950 50  0001 C CNN
-	1    4300 950 
+P 5300 950
+F 0 "#PWR033" H 5300 800 50  0001 C CNN
+F 1 "+5V" H 5315 1123 50  0000 C CNN
+F 2 "" H 5300 950 50  0001 C CNN
+F 3 "" H 5300 950 50  0001 C CNN
+	1    5300 950 
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
@@ -1583,4 +1542,110 @@ Wire Wire Line
 Connection ~ 2300 3000
 Wire Wire Line
 	2300 3000 2600 3000
+$Comp
+L 74xGxx:74AUP1G74 U?
+U 1 1 5E67B39C
+P 4000 1400
+F 0 "U?" H 3900 1750 50  0000 C CNN
+F 1 "74AUP1G74" H 3800 1650 39  0000 C CNN
+F 2 "" H 4000 1400 50  0001 C CNN
+F 3 "http://www.ti.com/lit/sg/scyt129e/scyt129e.pdf" H 4000 1400 50  0001 C CNN
+	1    4000 1400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4250 1500 4250 1750
+Wire Wire Line
+	4250 1750 3700 1750
+Wire Wire Line
+	3700 1750 3700 1300
+Wire Wire Line
+	3700 1300 3750 1300
+$Comp
+L Device:R R?
+U 1 1 5E71D4BC
+P 3550 1100
+F 0 "R?" H 3700 1050 50  0000 R CNN
+F 1 "10K" V 3550 1150 50  0000 R CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 3480 1100 50  0001 C CNN
+F 3 "~" H 3550 1100 50  0001 C CNN
+	1    3550 1100
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 5E71DD89
+P 3550 1850
+F 0 "C?" H 3350 1900 50  0000 L CNN
+F 1 "100nF" H 3200 1800 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 3588 1700 50  0001 C CNN
+F 3 "~" H 3550 1850 50  0001 C CNN
+	1    3550 1850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3550 1250 3550 1650
+$Comp
+L power:GND #PWR?
+U 1 1 5E737412
+P 3550 2000
+F 0 "#PWR?" H 3550 1750 50  0001 C CNN
+F 1 "GND" H 3650 1900 50  0000 C CNN
+F 2 "" H 3550 2000 50  0001 C CNN
+F 3 "" H 3550 2000 50  0001 C CNN
+	1    3550 2000
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR?
+U 1 1 5E737A64
+P 3550 950
+F 0 "#PWR?" H 3550 800 50  0001 C CNN
+F 1 "+3V3" H 3565 1123 50  0000 C CNN
+F 2 "" H 3550 950 50  0001 C CNN
+F 3 "" H 3550 950 50  0001 C CNN
+	1    3550 950 
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4250 1300 4350 1300
+Wire Wire Line
+	4000 1650 3550 1650
+Connection ~ 3550 1650
+Wire Wire Line
+	3550 1650 3550 1700
+Wire Wire Line
+	3750 1500 3050 1500
+Text Label 3050 1500 0    50   ~ 0
+PWR_TOGGLE
+$Comp
+L power:+3V3 #PWR?
+U 1 1 5E828452
+P 4000 950
+F 0 "#PWR?" H 4000 800 50  0001 C CNN
+F 1 "+3V3" H 4015 1123 50  0000 C CNN
+F 2 "" H 4000 950 50  0001 C CNN
+F 3 "" H 4000 950 50  0001 C CNN
+	1    4000 950 
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4000 950  4000 1150
+Wire Wire Line
+	4350 1300 4350 2000
+Wire Wire Line
+	4350 2000 7150 2000
+Connection ~ 4350 1300
+Wire Wire Line
+	4350 1300 4550 1300
+Text Label 6700 2000 0    50   ~ 0
+PWR_SENSE
+Wire Notes Line
+	7250 650  7250 2200
+Wire Notes Line
+	7250 2200 2950 2200
+Wire Notes Line
+	2950 2200 2950 650 
+Wire Notes Line
+	2950 650  7250 650 
 $EndSCHEMATC
