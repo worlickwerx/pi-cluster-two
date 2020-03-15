@@ -25,7 +25,7 @@ uint8_t address_get (void)
         val |= 4;
     if (gpio_get (GPIOB, GPIO6))
         val |= 8;
-    if (gpio_get (GPIOA, GPIO8))
+    if (gpio_get (GPIOB, GPIO5))
         val |= 16;
     return val;
 }
@@ -34,7 +34,6 @@ uint8_t address_get (void)
  */
 void address_init (void)
 {
-    rcc_periph_clock_enable (RCC_GPIOA);
     rcc_periph_clock_enable (RCC_GPIOB);
     rcc_periph_clock_enable (RCC_GPIOC);
 
@@ -47,14 +46,8 @@ void address_init (void)
     gpio_set_mode (GPIOB,
                    GPIO_MODE_INPUT,
                    GPIO_CNF_INPUT_PULL_UPDOWN,
-                   GPIO7 | GPIO6); // GA2, GA3
+                   GPIO7 | GPIO6 | GPIO5); // GA2, GA3, GA4
     gpio_set (GPIOB, GPIO7 | GPIO6);
-
-    gpio_set_mode (GPIOA,
-                   GPIO_MODE_INPUT,
-                   GPIO_CNF_INPUT_PULL_UPDOWN,
-                   GPIO8); // GA4
-    gpio_set (GPIOA, GPIO8);
 }
 
 /*
