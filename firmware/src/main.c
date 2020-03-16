@@ -11,6 +11,7 @@
 #include "blink.h"
 #include "address.h"
 #include "matrix.h"
+#include "power.h"
 
 extern void vApplicationStackOverflowHook (xTaskHandle *pxTask,
                                            signed portCHAR *pcTaskName);
@@ -30,6 +31,7 @@ int main (void)
     blink_init ();
     matrix_init ();
     address_init ();
+    power_init ();
 
     vTaskStartScheduler ();
     /*NOTREACHED*/
