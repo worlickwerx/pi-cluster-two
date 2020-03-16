@@ -2,13 +2,17 @@
 
 /* power.c - control power of raspberry pi
  *
- * Power switch state is toggled by rising clock edge of PA6.
- * The power switch state may be read on PA7.
- * The current may be measured via an INA169 on PB0 (analog).
+ * power switch
+ * - pulse PA6 to toggle (clocked on rising edge)
  *
- * N.B. PA6 has an external pull-down resistor to ensure power state does
- * not change when the STM32 is reset.  On power-up, the power state will
- * be pre-set to off.
+ * power status
+ * - read PA7 (0=off, 1=on)
+ *
+ * power measure
+ * - read PB0 analog
+ * - reading is proportional to current
+ *
+ * N.B. The state is unaffected by STM32 reset.
  */
 
 #include <string.h>
@@ -53,7 +57,6 @@ void power_init (void)
                    GPIO_MODE_INPUT,
                    GPIO_CNF_INPUT_PULL_UPDOWN,
                    GPIO7); // PWR_SENSE
-    //gpio_set (GPIOA, GPIO7); // weak pull-up
 }
 
 /*
