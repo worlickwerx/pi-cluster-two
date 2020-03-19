@@ -12,6 +12,7 @@
 #include "address.h"
 #include "matrix.h"
 #include "power.h"
+#include "trace.h"
 
 extern void vApplicationStackOverflowHook (xTaskHandle *pxTask,
                                            signed portCHAR *pcTaskName);
@@ -32,6 +33,8 @@ int main (void)
     matrix_init ();
     address_init ();
     power_init ();
+
+    trace_puts ("Hello world!\r\n");
 
     vTaskStartScheduler ();
     /*NOTREACHED*/

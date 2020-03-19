@@ -8,6 +8,7 @@ SRCFILES	= main.c \
 		  address.c \
 		  blink.c \
 		  matrix.c \
+		  trace.c \
 		  rtos/heap_4.c \
 		  rtos/list.c \
 		  rtos/port.c \
