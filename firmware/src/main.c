@@ -34,7 +34,7 @@ int main (void)
     address_init ();
     power_init ();
 
-    trace_puts ("Hello world!\r\n");
+    trace_printf ("Hello world!\n");
 
     vTaskStartScheduler ();
     /*NOTREACHED*/
