@@ -14,8 +14,10 @@ SRCFILES	= main.c \
 		  rtos/port.c \
 		  rtos/queue.c \
 		  rtos/tasks.c \
-		  rtos/opencm3.c
+		  rtos/opencm3.c \
+		  libwwg/miniprintf.c
 LDSCRIPT	= stm32f103c8t6.ld
+CFLAGS		+= -Ilibwwg
 
 # DEPS		= 	# Any additional dependencies for your build
 # CLOBBER	+= 	# Any additional files to be removed with "make clobber"
