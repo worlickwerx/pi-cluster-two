@@ -34,6 +34,8 @@ int main (void)
     address_init ();
     power_init ();
 
+    power_set_state (true);
+
     trace_printf ("Hello world!\n");
 
     vTaskStartScheduler ();
