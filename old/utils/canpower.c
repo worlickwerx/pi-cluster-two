@@ -6,15 +6,14 @@
 
 #include "canmgr_proto.h"
 #include "canmgr_dump.h"
-#include "address.h"
 #include "lxcan.h"
 
 static ev_io can_watcher;
 static ev_timer timeout_watcher;
 static struct ev_loop *loop;
 
-static uint8_t addr_mod;
-static uint8_t addr_node;
+static uint8_t addr_mod = 0;
+static uint8_t addr_node = 0x0c;
 
 static int s;
 
@@ -118,10 +117,6 @@ int main (int argc, char *argv[])
     if (sscanf (argv[1], "%x,%x", &m, &n) != 2
             ||  m < 0 || m >= 0x10 || n < 0 || n >= 0x10) {
         fprintf (stderr, "improperly specified target\n");
-        exit (1);
-    }
-    if (can_address_get (&addr_mod, &addr_node) < 0) {
-        fprintf (stderr, "could not read GPIO lines: %m\n");
         exit (1);
     }
     if ((s = lxcan_open ("can0")) < 0) {

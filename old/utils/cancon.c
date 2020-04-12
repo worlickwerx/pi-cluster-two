@@ -11,10 +11,9 @@
 #include "canmgr_proto.h"
 #include "canmgr_dump.h"
 #include "lxcan.h"
-#include "address.h"
 
-static uint8_t addr_node;
-static uint8_t addr_mod;
+static uint8_t addr_node = 0x0c;
+static uint8_t addr_mod = 0;
 static int myobject = CANOBJ_TARGET_CONSOLESEND;
 static int s;
 static int m, n;
@@ -324,10 +323,7 @@ int main (int argc, char *argv[])
         exit (1);
     }
     n |= 0x10; // select board controller
-    if (can_address_get (&addr_mod, &addr_node) < 0) {
-        fprintf (stderr, "could not read GPIO lines: %m\n");
-        exit (1);
-    }
+
     // FIXME: object should be unique
     // Use CANOBJ_TARGET_CONSOLESEND for the common case,
     // but if that's in use, select from range CANOBJ_TARGET_CONSOLEBASE - 0xff

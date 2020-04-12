@@ -6,11 +6,10 @@
 
 #include "canmgr_proto.h"
 #include "lxcan.h"
-#include "address.h"
 #include "monotime.h"
 
-uint8_t addr_mod, addr_node;
-uint8_t targ_mod, targ_node;
+uint8_t addr_mod, addr_node = 0x0c;
+uint8_t targ_mod, targ_node = 0;
 uint32_t seq = 0;
 int s;
 #define nslots (16)
@@ -86,10 +85,6 @@ int main (int argc, char *argv[])
     }
     if (sscanf (argv[1], "%x,%x", &targ_mod, &targ_node) != 2) {
         fprintf (stderr, "improperly specified target\n");
-        exit (1);
-    }
-    if (can_address_get (&addr_mod, &addr_node) < 0) {
-        fprintf (stderr, "could not read GPIO lines: %m\n");
         exit (1);
     }
     if ((s = lxcan_open ("can0")) < 0) {
