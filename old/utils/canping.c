@@ -1,3 +1,4 @@
+#include <netinet/in.h>
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
@@ -78,15 +79,18 @@ static void timeout_cb (EV_P_ ev_timer *w, int revents)
 int main (int argc, char *argv[])
 {
     char dump[80];
+    unsigned int mod, node;
 
     if (argc != 2) {
         fprintf (stderr, "Usage: canping m,n\n");
         exit (1);
     }
-    if (sscanf (argv[1], "%x,%x", &targ_mod, &targ_node) != 2) {
+    if (sscanf (argv[1], "%x,%x", &mod, &node) != 2) {
         fprintf (stderr, "improperly specified target\n");
         exit (1);
     }
+    targ_mod = mod;
+    targ_node = node;
     if ((s = lxcan_open ("can0")) < 0) {
         fprintf (stderr, "lxcan_open: %m\n");
         exit (1);
