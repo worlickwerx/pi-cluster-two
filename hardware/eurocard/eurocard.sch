@@ -255,7 +255,7 @@ $EndComp
 Wire Wire Line
 	5050 3350 5150 3350
 Wire Wire Line
-	5050 3650 5750 3650
+	5050 3650 5850 3650
 Wire Wire Line
 	5050 3250 5100 3250
 Wire Wire Line
@@ -275,10 +275,6 @@ Wire Wire Line
 	2600 4700 2600 5100
 Wire Wire Line
 	2600 5100 5150 5100
-Wire Wire Line
-	5150 5100 5150 3350
-Wire Wire Line
-	5050 3750 5750 3750
 Wire Wire Line
 	2300 4650 2300 5000
 NoConn ~ 1350 1700
@@ -804,18 +800,16 @@ F 3 "" H 5100 3250 50  0001 C CNN
 	1    5100 3250
 	0    1    1    0   
 $EndComp
-Text Label 5300 3650 0    50   ~ 0
-~USER_RESET~
-Text Label 5250 3750 0    50   ~ 0
-PWR_MEASURE
-Text Label 5400 3550 0    50   ~ 0
+Text Label 5250 3650 0    50   ~ 0
+PWR_MEASURE_V
+Text Label 5500 3550 0    50   ~ 0
 USER_SCL
-Text Label 5400 3450 0    50   ~ 0
+Text Label 5500 3450 0    50   ~ 0
 USER_SDA
 Wire Wire Line
-	5050 3550 5750 3550
+	5050 3550 5850 3550
 Wire Wire Line
-	5050 3450 5750 3450
+	5050 3450 5850 3450
 Wire Wire Line
 	6450 3900 6050 3900
 Wire Wire Line
@@ -1144,7 +1138,6 @@ NoConn ~ 1350 3500
 NoConn ~ 1350 3300
 NoConn ~ 3500 3750
 NoConn ~ 3500 3850
-NoConn ~ 5050 4250
 NoConn ~ 5050 4350
 NoConn ~ 5050 4450
 NoConn ~ 5050 4550
@@ -1247,8 +1240,8 @@ Power Control
 Wire Wire Line
 	5100 1900 5200 1900
 Connection ~ 5100 1900
-Text Label 5800 1350 0    50   ~ 0
-PWR_MEASURE
+Text Label 5750 1350 0    50   ~ 0
+PWR_MEASURE_I
 Wire Wire Line
 	5800 1350 5900 1350
 Wire Wire Line
@@ -1630,21 +1623,21 @@ Wire Notes Line
 	2150 750  6450 750 
 NoConn ~ 3500 4150
 Wire Wire Line
-	5050 3850 5750 3850
-Text Label 5350 3850 0    50   ~ 0
+	5050 3850 5850 3850
+Text Label 5450 3850 0    50   ~ 0
 PWR_SENSE
 Wire Wire Line
-	5050 3950 5750 3950
-Text Label 5300 3950 0    50   ~ 0
+	5050 3950 5850 3950
+Text Label 5400 3950 0    50   ~ 0
 PWR_TOGGLE
 NoConn ~ 3500 3950
 Wire Wire Line
-	5050 4050 5750 4050
-Text Label 5250 4050 0    50   ~ 0
+	5050 4050 5850 4050
+Text Label 5350 4050 0    50   ~ 0
 ~USER_HALTED~
 Wire Wire Line
-	5050 4150 5750 4150
-Text Label 5350 4150 0    50   ~ 0
+	5050 4150 5850 4150
+Text Label 5450 4150 0    50   ~ 0
 USER_HALT
 Wire Wire Line
 	3500 4250 2900 4250
@@ -1767,4 +1760,14 @@ Wire Wire Line
 Connection ~ 5900 1350
 Wire Wire Line
 	5900 1350 6350 1350
+Text Label 5250 3750 0    50   ~ 0
+PWR_MEASURE_I
+Wire Wire Line
+	5150 3350 5150 5100
+Wire Wire Line
+	5050 3750 5850 3750
+Wire Wire Line
+	5050 4250 5850 4250
+Text Label 5400 4250 0    50   ~ 0
+~USER_RESET~
 $EndSCHEMATC
