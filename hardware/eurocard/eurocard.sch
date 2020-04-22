@@ -656,29 +656,7 @@ Text Label 9850 4400 0    50   ~ 0
 USER_SCL
 NoConn ~ 2900 3250
 Wire Wire Line
-	2750 4050 3500 4050
-$Comp
-L power:GND #PWR030
-U 1 1 5F193C70
-P 2750 4150
-F 0 "#PWR030" H 2750 3900 50  0001 C CNN
-F 1 "GND" H 2755 3977 50  0000 C CNN
-F 2 "" H 2750 4150 50  0001 C CNN
-F 3 "" H 2750 4150 50  0001 C CNN
-	1    2750 4150
-	1    0    0    -1  
-$EndComp
-$Comp
-L Connector_Generic:Conn_01x02 J3
-U 1 1 5F1951AC
-P 2550 4150
-F 0 "J3" H 2550 3950 50  0000 C CNN
-F 1 "Conn_01x02" H 2850 4050 50  0001 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_2x01_P2.54mm_Vertical" H 2550 4150 50  0001 C CNN
-F 3 "~" H 2550 4150 50  0001 C CNN
-	1    2550 4150
-	-1   0    0    1   
-$EndComp
+	2900 4050 3500 4050
 $Comp
 L Connector_Generic:Conn_01x02 J7
 U 1 1 5F1D0E3A
@@ -1324,8 +1302,6 @@ Wire Wire Line
 Connection ~ 1500 1300
 Wire Wire Line
 	1500 1300 1800 1300
-Text Label 1600 1500 0    50   ~ 0
-BUS3V3
 NoConn ~ 150  4500
 Wire Wire Line
 	1350 5000 1500 5000
@@ -1355,9 +1331,6 @@ NoConn ~ 1350 2600
 NoConn ~ 1350 2800
 NoConn ~ 1350 2400
 NoConn ~ 1350 2200
-NoConn ~ 1350 2000
-NoConn ~ 1350 1800
-NoConn ~ 1350 1600
 Wire Wire Line
 	2150 7300 2600 7300
 Connection ~ 2600 7300
@@ -1699,8 +1672,8 @@ $Comp
 L Device:LED D1
 U 1 1 5ED1CB4E
 P 4700 2250
-F 0 "D1" H 4693 1995 50  0000 C CNN
-F 1 "LED" H 4693 2086 50  0000 C CNN
+F 0 "D1" H 4700 2150 50  0000 C CNN
+F 1 "LED" H 4700 2350 50  0001 C CNN
 F 2 "" H 4700 2250 50  0001 C CNN
 F 3 "~" H 4700 2250 50  0001 C CNN
 	1    4700 2250
@@ -1897,4 +1870,28 @@ Wire Wire Line
 	2950 1050 3100 1050
 Wire Wire Line
 	3100 1050 3100 1000
+Text Label 1600 7300 0    50   ~ 0
+BUS5V
+Wire Wire Line
+	1350 1600 1900 1600
+Text Label 1650 1600 0    50   ~ 0
+SWDIO
+Wire Wire Line
+	1350 1800 1900 1800
+Text Label 1650 1800 0    50   ~ 0
+SWCLK
+Wire Wire Line
+	1350 2000 1900 2000
+Text Label 1750 2000 0    50   ~ 0
+SWO
+NoConn ~ 4100 5200
+NoConn ~ 4400 5200
+Wire Wire Line
+	4200 5200 4200 5550
+Text Label 4200 5550 1    50   ~ 0
+SWDIO
+Wire Wire Line
+	4300 5200 4300 5550
+Text Label 4300 5550 1    50   ~ 0
+SWCLK
 $EndSCHEMATC
