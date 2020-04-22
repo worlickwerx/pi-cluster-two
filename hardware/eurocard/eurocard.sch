@@ -210,56 +210,12 @@ Text Label 2900 3250 0    50   ~ 0
 MISO
 Wire Wire Line
 	3500 3350 2900 3350
-$Comp
-L eurocard:SN74LVC1G07DBVR-dk_Logic-Buffers-Drivers-Receivers-Transceivers U1
-U 1 1 5E488A75
-P 2300 4700
-F 0 "U1" H 2050 5050 60  0000 L CNN
-F 1 "SN74LVC1G07DBVR" H 1650 4950 39  0000 L CNN
-F 2 "Package_TO_SOT_SMD:SOT-23-5_HandSoldering" H 2500 4900 60  0001 L CNN
-F 3 "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Fsn74lvc1g07" H 2500 5000 60  0001 L CNN
-F 4 "296-8485-1-ND" H 2500 5100 60  0001 L CNN "Digi-Key_PN"
-F 5 "SN74LVC1G07DBVR" H 2500 5200 60  0001 L CNN "MPN"
-F 6 "Integrated Circuits (ICs)" H 2500 5300 60  0001 L CNN "Category"
-F 7 "Logic - Buffers, Drivers, Receivers, Transceivers" H 2500 5400 60  0001 L CNN "Family"
-F 8 "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Fsn74lvc1g07" H 2500 5500 60  0001 L CNN "DK_Datasheet_Link"
-F 9 "/product-detail/en/texas-instruments/SN74LVC1G07DBVR/296-8485-1-ND/377454" H 2500 5600 60  0001 L CNN "DK_Detail_Page"
-F 10 "IC BUF NON-INVERT 5.5V SOT23-5" H 2500 5700 60  0001 L CNN "Description"
-F 11 "Texas Instruments" H 2500 5800 60  0001 L CNN "Manufacturer"
-F 12 "Active" H 2500 5900 60  0001 L CNN "Status"
-	1    2300 4700
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR027
-U 1 1 5E4ADC56
-P 2300 5000
-F 0 "#PWR027" H 2300 4750 50  0001 C CNN
-F 1 "GND" H 2305 4827 50  0000 C CNN
-F 2 "" H 2300 5000 50  0001 C CNN
-F 3 "" H 2300 5000 50  0001 C CNN
-	1    2300 5000
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:+3V3 #PWR026
-U 1 1 5E4AEC38
-P 2300 4400
-F 0 "#PWR026" H 2300 4250 50  0001 C CNN
-F 1 "+3V3" H 2315 4573 50  0000 C CNN
-F 2 "" H 2300 4400 50  0001 C CNN
-F 3 "" H 2300 4400 50  0001 C CNN
-	1    2300 4400
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
-	5050 3350 5150 3350
+	5050 3350 5850 3350
 Wire Wire Line
 	5050 3650 5850 3650
 Wire Wire Line
 	5050 3250 5100 3250
-Wire Wire Line
-	1350 4700 2000 4700
 $Comp
 L power:GND #PWR025
 U 1 1 5E3445C8
@@ -271,12 +227,6 @@ F 3 "" H 2000 5950 50  0001 C CNN
 	1    2000 5950
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	2600 4700 2600 5100
-Wire Wire Line
-	2600 5100 5150 5100
-Wire Wire Line
-	2300 4650 2300 5000
 NoConn ~ 1350 1700
 NoConn ~ 1350 1900
 NoConn ~ 1350 2100
@@ -1492,7 +1442,6 @@ F 3 "" H 4750 7300 50  0001 C CNN
 	1    4750 7300
 	0    1    1    0   
 $EndComp
-Connection ~ 2300 5000
 $Comp
 L Device:C C7
 U 1 1 5EAA4A49
@@ -1586,8 +1535,6 @@ Wire Wire Line
 	5900 1350 6400 1350
 Text Label 5250 3750 0    50   ~ 0
 PWR_MEASURE_I
-Wire Wire Line
-	5150 3350 5150 5100
 Wire Wire Line
 	5050 4250 5850 4250
 Text Label 5400 4250 0    50   ~ 0
@@ -1894,4 +1841,54 @@ Wire Wire Line
 	4300 5200 4300 5550
 Text Label 4300 5550 1    50   ~ 0
 SWCLK
+$Comp
+L power:+3V3 #PWR026
+U 1 1 5E4AEC38
+P 2300 4400
+F 0 "#PWR026" H 2300 4250 50  0001 C CNN
+F 1 "+3V3" H 2315 4573 50  0000 C CNN
+F 2 "" H 2300 4400 50  0001 C CNN
+F 3 "" H 2300 4400 50  0001 C CNN
+	1    2300 4400
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR027
+U 1 1 5E4ADC56
+P 2300 5000
+F 0 "#PWR027" H 2300 4750 50  0001 C CNN
+F 1 "GND" H 2305 4827 50  0000 C CNN
+F 2 "" H 2300 5000 50  0001 C CNN
+F 3 "" H 2300 5000 50  0001 C CNN
+	1    2300 5000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1350 4700 2000 4700
+$Comp
+L eurocard:SN74LVC1G07DBVR-dk_Logic-Buffers-Drivers-Receivers-Transceivers U1
+U 1 1 5E488A75
+P 2300 4700
+F 0 "U1" H 2050 5050 60  0000 L CNN
+F 1 "SN74LVC1G07DBVR" H 1650 4950 39  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23-5_HandSoldering" H 2500 4900 60  0001 L CNN
+F 3 "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Fsn74lvc1g07" H 2500 5000 60  0001 L CNN
+F 4 "296-8485-1-ND" H 2500 5100 60  0001 L CNN "Digi-Key_PN"
+F 5 "SN74LVC1G07DBVR" H 2500 5200 60  0001 L CNN "MPN"
+F 6 "Integrated Circuits (ICs)" H 2500 5300 60  0001 L CNN "Category"
+F 7 "Logic - Buffers, Drivers, Receivers, Transceivers" H 2500 5400 60  0001 L CNN "Family"
+F 8 "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Fsn74lvc1g07" H 2500 5500 60  0001 L CNN "DK_Datasheet_Link"
+F 9 "/product-detail/en/texas-instruments/SN74LVC1G07DBVR/296-8485-1-ND/377454" H 2500 5600 60  0001 L CNN "DK_Detail_Page"
+F 10 "IC BUF NON-INVERT 5.5V SOT23-5" H 2500 5700 60  0001 L CNN "Description"
+F 11 "Texas Instruments" H 2500 5800 60  0001 L CNN "Manufacturer"
+F 12 "Active" H 2500 5900 60  0001 L CNN "Status"
+	1    2300 4700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2600 4700 2750 4700
+Text Label 2600 4700 0    50   ~ 0
+~RST~
+Text Label 5700 3350 0    50   ~ 0
+~RST~
 $EndSCHEMATC
