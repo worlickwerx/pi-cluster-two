@@ -1831,15 +1831,9 @@ Wire Wire Line
 	1350 2000 1900 2000
 Text Label 1750 2000 0    50   ~ 0
 SWO
-NoConn ~ 4100 5200
-NoConn ~ 4400 5200
-Wire Wire Line
-	4200 5200 4200 5550
-Text Label 4200 5550 1    50   ~ 0
+Text Label 4250 5600 1    50   ~ 0
 SWDIO
-Wire Wire Line
-	4300 5200 4300 5550
-Text Label 4300 5550 1    50   ~ 0
+Text Label 4350 5600 1    50   ~ 0
 SWCLK
 $Comp
 L power:+3V3 #PWR026
@@ -1891,4 +1885,19 @@ Text Label 2600 4700 0    50   ~ 0
 ~RST~
 Text Label 5700 3350 0    50   ~ 0
 ~RST~
+$Comp
+L Connector_Generic:Conn_01x02 J3
+U 1 1 5FAC46EE
+P 4250 5100
+F 0 "J3" H 4250 4900 50  0000 C CNN
+F 1 "Conn_01x02" H 4550 5000 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x01_P2.54mm_Vertical" H 4250 5100 50  0001 C CNN
+F 3 "~" H 4250 5100 50  0001 C CNN
+	1    4250 5100
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	4350 5300 4350 5600
+Wire Wire Line
+	4250 5300 4250 5600
 $EndSCHEMATC
