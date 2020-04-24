@@ -9,6 +9,7 @@ SRCFILES	= main.c \
 		  blink.c \
 		  matrix.c \
 		  trace.c \
+		  canbus.c \
 		  rtos/heap_4.c \
 		  rtos/list.c \
 		  rtos/port.c \
