@@ -35,6 +35,13 @@ void trace_printf (const char *fmt, ...)
     }
 }
 
+void trace_fatal (const char *msg, const char *file, int line)
+{
+    trace_printf ("fatal error (%s::%d): %s\n", file, line, msg);
+    while (1)
+        ;
+}
+
 /*
  * vi:ts=4 sw=4 expandtab
  */
