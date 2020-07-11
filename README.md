@@ -1,9 +1,12 @@
-## pi-compute-board
+## pi-cluster-two
 
-pi-compute-board is a 3U molleibus carrier for Raspberry Pi intended for
-ganging up multiple Pi's in a molliebus crate for parallel computation.
-The Pi is monitored and controlled with a _service processor_, embedded
-on each carrier board.
+Second personal pi cluster attempt, influenced by the first one:
+[pi-cluster-one](https://github.com/garlick/pi-cluster-one).
+
+A compute element is built as a 3U "molleibus" carrier for Raspberry Pi.
+The intent is gang up multiple Pi's in a eurocard crate for parallel
+computation.  The Pi is monitored and controlled with a _service processor_,
+embedded on each carrier board.
 
 ### service processor
 
@@ -26,7 +29,7 @@ Molliebus is a (work in progress) bus design utilizing Eurocard 3U
 and 6U (160mm depth) boards with DIN 41612 connectors.  It can coexist
 with VME, utilizing rows a and c of the P2 connector, or be implemented
 as a standalone bus.  The "bus" portion thus far
-* distributes power (3V3, 5V, 12V, and 5V-standby rails)
+* distributes power (5V)
 * provides a crate-wide reset signal
 * implements a 1 mbps CAN control bus
 * provides _geographic slot addressing_
