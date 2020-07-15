@@ -5,6 +5,12 @@ D STM32 Blue Pill
 K STM32 Blue Pill BluePill
 $ENDCMP
 #
+$CMP molliebus
+D Connector Europe, 96 contacts, ranges A,B,C
+K connector
+F  ~
+$ENDCMP
+#
 $CMP C64AC
 D Connector Europe 64 contacts, ranges A,B,C
 K connector DIN
