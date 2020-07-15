@@ -1,4 +1,4 @@
-18349302665545717
+18354076141584683
 Battery
 BatteryHolder_Bulgin_BX0036_1xC
 Bulgin Battery Holder, BX0036, Battery Type C (https://www.bulgin.com/products/pub/media/bulgin/data/Battery_holders.pdf)
@@ -80814,3 +80814,24 @@ varistor SIOV
 0
 2
 2
+project_footprints
+DIN41612_B_3x32_Horizontal
+DIN 41612 connector, type B, horizontal, 32 pins wide, 3 rows, full configuration
+DIN 41512 IEC 60603 B
+0
+96
+96
+project_footprints
+LED_Dual_RG_discrete
+
+
+0
+4
+4
+project_footprints
+Rasp_pi4_mounted
+
+
+0
+0
+0
