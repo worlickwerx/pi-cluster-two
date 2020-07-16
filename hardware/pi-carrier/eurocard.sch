@@ -183,8 +183,6 @@ F 3 "https://datasheets.maximintegrated.com/en/ds/MAX7219-MAX7221.pdf" H 8450 17
 	1    8400 1900
 	1    0    0    -1  
 $EndComp
-NoConn ~ 8800 1100
-NoConn ~ 8800 1200
 Wire Wire Line
 	5800 5500 6500 5500
 Text Label 6500 5500 2    50   ~ 0
@@ -669,35 +667,35 @@ Wire Wire Line
 $Comp
 L Device:CP C11
 U 1 1 6680D782
-P 9250 2950
-F 0 "C11" H 9368 2996 50  0000 L CNN
-F 1 "10uF" H 9368 2905 50  0000 L CNN
-F 2 "Capacitor_SMD:CP_Elec_4x3" H 9288 2800 50  0001 C CNN
-F 3 "~" H 9250 2950 50  0001 C CNN
-	1    9250 2950
-	1    0    0    -1  
+P 9400 3200
+F 0 "C11" H 9518 3246 50  0000 L CNN
+F 1 "10uF" H 9518 3155 50  0000 L CNN
+F 2 "Capacitor_SMD:CP_Elec_4x3" H 9438 3050 50  0001 C CNN
+F 3 "~" H 9400 3200 50  0001 C CNN
+	1    9400 3200
+	0    -1   -1   0   
 $EndComp
 $Comp
 L power:GND #PWR049
 U 1 1 6680EF8A
-P 9250 3100
-F 0 "#PWR049" H 9250 2850 50  0001 C CNN
-F 1 "GND" H 9255 2927 50  0000 C CNN
-F 2 "" H 9250 3100 50  0001 C CNN
-F 3 "" H 9250 3100 50  0001 C CNN
-	1    9250 3100
-	1    0    0    -1  
+P 9550 3200
+F 0 "#PWR049" H 9550 2950 50  0001 C CNN
+F 1 "GND" H 9555 3027 50  0000 C CNN
+F 2 "" H 9550 3200 50  0001 C CNN
+F 3 "" H 9550 3200 50  0001 C CNN
+	1    9550 3200
+	0    -1   -1   0   
 $EndComp
 $Comp
 L power:+5V #PWR048
 U 1 1 6680F613
-P 9250 2800
-F 0 "#PWR048" H 9250 2650 50  0001 C CNN
-F 1 "+5V" H 9265 2973 50  0000 C CNN
-F 2 "" H 9250 2800 50  0001 C CNN
-F 3 "" H 9250 2800 50  0001 C CNN
-	1    9250 2800
-	1    0    0    -1  
+P 9250 3200
+F 0 "#PWR048" H 9250 3050 50  0001 C CNN
+F 1 "+5V" H 9265 3373 50  0000 C CNN
+F 2 "" H 9250 3200 50  0001 C CNN
+F 3 "" H 9250 3200 50  0001 C CNN
+	1    9250 3200
+	0    -1   -1   0   
 $EndComp
 NoConn ~ 4250 4600
 NoConn ~ 4250 4700
@@ -740,7 +738,6 @@ Wire Wire Line
 	9300 1600 9650 1600
 Wire Wire Line
 	8800 1700 9300 1700
-NoConn ~ 8800 2600
 NoConn ~ 8800 1800
 Wire Wire Line
 	5300 1900 6400 1900
@@ -1743,4 +1740,46 @@ F 3 "" H 1150 7800 50  0001 C CNN
 	1    1150 7800
 	1    0    0    -1  
 $EndComp
+$Comp
+L Device:LED_Dual_AACC D2
+U 1 1 5F119CD6
+P 9800 1000
+F 0 "D2" H 9800 1250 50  0000 C CNN
+F 1 "LED_Dual_AACC" H 9800 1334 50  0001 C CNN
+F 2 "project_footprints:LED_Dual_RG_discrete" H 9830 1000 50  0001 C CNN
+F 3 "~" H 9830 1000 50  0001 C CNN
+	1    9800 1000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8800 1100 9200 1100
+Wire Wire Line
+	9200 1100 9200 900 
+Wire Wire Line
+	9200 900  9500 900 
+Wire Wire Line
+	8800 1200 9300 1200
+Wire Wire Line
+	9300 1200 9300 1100
+Wire Wire Line
+	9300 1100 9500 1100
+Wire Wire Line
+	10100 900  10300 900 
+Wire Wire Line
+	10300 900  10300 1100
+Wire Wire Line
+	10300 2850 9300 2850
+Wire Wire Line
+	9300 2850 9300 2600
+Wire Wire Line
+	9300 2600 8800 2600
+Wire Wire Line
+	10100 1100 10300 1100
+Connection ~ 10300 1100
+Wire Wire Line
+	10300 1100 10300 2850
+Text Notes 9400 1100 0    50   ~ 0
+red
+Text Notes 9400 900  0    50   ~ 0
+green
 $EndSCHEMATC
