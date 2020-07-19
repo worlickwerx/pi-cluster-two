@@ -14,17 +14,6 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L eurocard:Mounting_Hole_PAD-Mechanical MK2
-U 1 1 5A6CFED2
-P 650 7800
-F 0 "MK2" H 750 7851 50  0000 L CNN
-F 1 "Mounting_Hole_PAD" H 750 7760 50  0001 L CNN
-F 2 "MountingHole:MountingHole_2.7mm_M2.5" H 650 7800 50  0001 C CNN
-F 3 "" H 650 7800 50  0001 C CNN
-	1    650  7800
-	1    0    0    -1  
-$EndComp
-$Comp
 L eurocard:Mounting_Hole_PAD-Mechanical MK1
 U 1 1 5A6CFFFA
 P 650 7500
@@ -35,7 +24,6 @@ F 3 "" H 650 7500 50  0001 C CNN
 	1    650  7500
 	1    0    0    -1  
 $EndComp
-NoConn ~ 650  7900
 NoConn ~ 650  7600
 NoConn ~ 4250 5600
 NoConn ~ 5800 5800
@@ -163,7 +151,7 @@ U 1 1 5EA6059F
 P 9850 2150
 F 0 "U10" H 9700 1550 50  0000 L CNN
 F 1 "LTP747" H 9900 1550 50  0000 L CNN
-F 2 "Package_DIP:DIP-12_W7.62mm_Socket" H 9750 2700 50  0001 C CNN
+F 2 "project_footprints:DIP-12_W7.62mm_right_angle" H 9750 2700 50  0001 C CNN
 F 3 "" H 9750 2700 50  0001 C CNN
 	1    9850 2150
 	1    0    0    -1  
@@ -408,7 +396,7 @@ U 1 1 5EEAE6EB
 P 8300 5000
 F 0 "J5" H 8600 6400 50  0000 C CNN
 F 1 "Raspberry_Pi_2_3" H 8900 6300 50  0000 C CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_2x20_P2.54mm_Vertical" H 8300 5000 50  0001 C CNN
+F 2 "project_footprints:Rasp_pi4_mounted" H 8300 5000 50  0001 C CNN
 F 3 "https://www.raspberrypi.org/documentation/hardware/raspberrypi/schematics/rpi_SCH_3bplus_1p0_reduced.pdf" H 8300 5000 50  0001 C CNN
 	1    8300 5000
 	1    0    0    -1  
@@ -1719,25 +1707,14 @@ NoConn ~ 600  6200
 NoConn ~ 600  6300
 NoConn ~ 6600 5100
 $Comp
-L eurocard:Mounting_Hole_PAD-Mechanical MK3
-U 1 1 5F1A7C0C
-P 1150 7500
-F 0 "MK3" H 1250 7549 50  0000 L CNN
-F 1 "Mounting_Hole_PAD-Mechanical" H 1250 7458 50  0000 L CNN
-F 2 "MountingHole:MountingHole_2.7mm_M2.5" H 1150 7500 50  0001 C CNN
-F 3 "" H 1150 7500 50  0001 C CNN
-	1    1150 7500
-	1    0    0    -1  
-$EndComp
-$Comp
 L eurocard:Mounting_Hole_PAD-Mechanical MK4
 U 1 1 5F1A7E7B
-P 1150 7800
-F 0 "MK4" H 1250 7849 50  0000 L CNN
-F 1 "Mounting_Hole_PAD-Mechanical" H 1250 7758 50  0000 L CNN
-F 2 "Mounting_Holes:MountingHole_2.7mm" H 1150 7800 50  0001 C CNN
-F 3 "" H 1150 7800 50  0001 C CNN
-	1    1150 7800
+P 650 7800
+F 0 "MK4" H 750 7849 50  0000 L CNN
+F 1 "Mounting_Hole_PAD-Mechanical" H 750 7758 50  0001 L CNN
+F 2 "Mounting_Holes:MountingHole_2.7mm" H 650 7800 50  0001 C CNN
+F 3 "" H 650 7800 50  0001 C CNN
+	1    650  7800
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -1782,4 +1759,5 @@ Text Notes 9400 1100 0    50   ~ 0
 red
 Text Notes 9400 900  0    50   ~ 0
 green
+NoConn ~ 650  7900
 $EndSCHEMATC
