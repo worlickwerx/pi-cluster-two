@@ -658,7 +658,7 @@ U 1 1 6680D782
 P 9400 3200
 F 0 "C11" H 9518 3246 50  0000 L CNN
 F 1 "10uF" H 9518 3155 50  0000 L CNN
-F 2 "Capacitor_SMD:CP_Elec_4x3" H 9438 3050 50  0001 C CNN
+F 2 "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm" H 9438 3050 50  0001 C CNN
 F 3 "~" H 9400 3200 50  0001 C CNN
 	1    9400 3200
 	0    -1   -1   0   
@@ -1265,7 +1265,7 @@ U 1 1 5F00A499
 P 1800 7000
 F 0 "C1" H 1900 7000 50  0000 L CNN
 F 1 "100uF" H 1900 6900 50  0000 L CNN
-F 2 "Capacitor_SMD:CP_Elec_6.3x5.9" H 1838 6850 50  0001 C CNN
+F 2 "Capacitor_THT:CP_Radial_D6.3mm_P2.50mm" H 1838 6850 50  0001 C CNN
 F 3 "~" H 1800 7000 50  0001 C CNN
 	1    1800 7000
 	1    0    0    -1  
@@ -1276,7 +1276,7 @@ U 1 1 5F1334DC
 P 2250 7000
 F 0 "C2" H 2350 7000 50  0000 L CNN
 F 1 "10uF" H 2350 6900 50  0000 L CNN
-F 2 "Capacitor_SMD:CP_Elec_4x3" H 2288 6850 50  0001 C CNN
+F 2 "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm" H 2288 6850 50  0001 C CNN
 F 3 "~" H 2250 7000 50  0001 C CNN
 	1    2250 7000
 	1    0    0    -1  
@@ -1289,7 +1289,7 @@ U 1 1 5F176291
 P 3300 7000
 F 0 "C4" H 3400 7000 50  0000 L CNN
 F 1 "10uF" H 3400 6900 50  0000 L CNN
-F 2 "Capacitor_SMD:CP_Elec_4x3" H 3338 6850 50  0001 C CNN
+F 2 "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm" H 3338 6850 50  0001 C CNN
 F 3 "~" H 3300 7000 50  0001 C CNN
 	1    3300 7000
 	1    0    0    -1  
@@ -1519,8 +1519,6 @@ $EndComp
 Wire Wire Line
 	1550 6100 1600 6100
 Wire Wire Line
-	1550 4700 1950 4700
-Wire Wire Line
 	1550 5000 1900 5000
 Text Label 1900 5000 2    50   ~ 0
 GA4
@@ -1558,10 +1556,8 @@ Wire Wire Line
 	1650 6300 1650 6400
 Wire Wire Line
 	1650 6600 1650 6850
-Connection ~ 2050 6000
 Wire Wire Line
 	2050 6000 2050 5700
-Connection ~ 1950 5800
 Wire Wire Line
 	3150 6100 3550 6100
 Text Label 3550 6100 2    50   ~ 0
@@ -1570,21 +1566,6 @@ Text Label 3550 6000 2    50   ~ 0
 CANRX
 Wire Wire Line
 	1950 6100 1950 6050
-Wire Wire Line
-	2050 6050 2050 6000
-$Comp
-L Connector_Generic:Conn_01x02 J2
-U 1 1 66540780
-P 2050 6250
-F 0 "J2" H 2050 6050 50  0000 C CNN
-F 1 "Conn_01x02" H 2350 6150 50  0001 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_2x01_P2.54mm_Vertical" H 2050 6250 50  0001 C CNN
-F 3 "~" H 2050 6250 50  0001 C CNN
-	1    2050 6250
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	2150 5800 1950 5800
 Wire Wire Line
 	2050 6000 2150 6000
 Wire Wire Line
@@ -1616,36 +1597,20 @@ F 3 "http://www.ti.com/lit/ds/symlink/tcan337.pdf" H 2650 5900 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L Device:R R1
-U 1 1 62B8DC40
-P 1950 5950
-F 0 "R1" V 1850 5900 50  0000 L CNN
-F 1 "120" V 1950 5850 50  0000 L CNN
-F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 1880 5950 50  0001 C CNN
-F 3 "~" H 1950 5950 50  0001 C CNN
-	1    1950 5950
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:GND #PWR08
 U 1 1 5E3445C8
-P 2600 5450
-F 0 "#PWR08" H 2600 5200 50  0001 C CNN
-F 1 "GND" H 2650 5300 50  0000 C CNN
-F 2 "" H 2600 5450 50  0001 C CNN
-F 3 "" H 2600 5450 50  0001 C CNN
-	1    2600 5450
+P 2650 5450
+F 0 "#PWR08" H 2650 5200 50  0001 C CNN
+F 1 "GND" H 2700 5300 50  0000 C CNN
+F 2 "" H 2650 5450 50  0001 C CNN
+F 3 "" H 2650 5450 50  0001 C CNN
+	1    2650 5450
 	0    1    1    0   
 $EndComp
 Wire Wire Line
 	1550 5700 2050 5700
 Wire Wire Line
-	1550 5800 1950 5800
-Wire Wire Line
 	3150 6000 3550 6000
-Connection ~ 1950 4700
-Wire Wire Line
-	1950 4700 2000 4700
 Wire Wire Line
 	9100 4400 9650 4400
 Wire Wire Line
@@ -1760,4 +1725,8 @@ red
 Text Notes 9400 900  0    50   ~ 0
 green
 NoConn ~ 650  7900
+Wire Wire Line
+	1550 5800 2150 5800
+Wire Wire Line
+	1550 4700 1950 4700
 $EndSCHEMATC
