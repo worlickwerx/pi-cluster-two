@@ -735,7 +735,7 @@ U 1 1 65FAADB1
 P 5500 1550
 F 0 "U7" H 4950 2100 60  0000 L CNN
 F 1 "INA169NA_3K" H 4950 2000 39  0000 L CNN
-F 2 "digikey-footprints:SOT-753" H 5700 1750 60  0001 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23-5_HandSoldering" H 5700 1750 60  0001 L CNN
 F 3 "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Fina139" H 5700 1850 60  0001 L CNN
 F 4 "296-26063-1-ND" H 5700 1950 60  0001 L CNN "Digi-Key_PN"
 F 5 "INA169NA/3K" H 5700 2050 60  0001 L CNN "MPN"
@@ -769,7 +769,7 @@ U 1 1 65F1C805
 P 4050 1400
 F 0 "U5" H 3850 1850 60  0000 L CNN
 F 1 "TPS27081ADDCR" H 3850 1750 39  0000 L CNN
-F 2 "digikey-footprints:SOT-23-6" H 4250 1600 60  0001 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23-6_Handsoldering" H 4250 1600 60  0001 L CNN
 F 3 "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Ftps27081a" H 4250 1700 60  0001 L CNN
 F 4 "296-34970-1-ND" H 4250 1800 60  0001 L CNN "Digi-Key_PN"
 F 5 "TPS27081ADDCR" H 4250 1900 60  0001 L CNN "MPN"
