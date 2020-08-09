@@ -1,4 +1,4 @@
-18354076141584683
+18355671594253683
 Battery
 BatteryHolder_Bulgin_BX0036_1xC
 Bulgin Battery Holder, BX0036, Battery Type C (https://www.bulgin.com/products/pub/media/bulgin/data/Battery_holders.pdf)
@@ -80822,6 +80822,13 @@ DIN 41512 IEC 60603 B
 96
 96
 project_footprints
+DIP-12_W7.62mm_right_angle
+
+
+0
+12
+12
+project_footprints
 LED_Dual_RG_discrete
 
 
@@ -80833,5 +80840,5 @@ Rasp_pi4_mounted
 
 
 0
-0
-0
+40
+40
