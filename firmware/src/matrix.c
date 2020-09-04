@@ -31,6 +31,20 @@
 #define MAX7219_MODE_TEST         0x0F00
 #define MAX7219_MODE_NOOP         0x0000
 
+/* G F E D C B A dp
+   0 1 2 3 4 5 6 7
+ -------------------
+0| * * * * *       |
+1| * * * * *       |
+2| * * * * *       |
+3| * * * * *       |
+4| * * * * *       |
+5| * * * * *       |
+6| * * * * *       |
+7|           r g   |
+ -------------------
+*/
+
 static void max7219_send (uint16_t data)
 {
     spi_enable (SPI2); // assert NSS
@@ -45,7 +59,7 @@ static void max7219_send (uint16_t data)
     spi_disable (SPI2); // de-assert NSS
 }
 
-static void matrix_set_row (uint16_t row, uint8_t val)
+static void max7219_send_row (uint16_t row, uint8_t val)
 {
     max7219_send ((row + 1) << 8 | val);
 }
@@ -61,7 +75,7 @@ static void matrix_set_glyph (const uint8_t cols[5])
         val = 0;
         for (col = 0; col < 5; col++)
             val |= (cols[col] & 1<<row) ? 1<<col : 0;
-        matrix_set_row (row, val);
+        max7219_send_row (row, val);
     }
 }
 
@@ -75,8 +89,8 @@ static void matrix_clear (void)
 {
     uint8_t row;
 
-    for (row = 0; row < 7; row++)
-        matrix_set_row (row, 0);
+    for (row = 0; row < 8; row++)
+        max7219_send_row (row, 0);
 }
 
 /* Blink the entire display three times as a test
@@ -121,12 +135,20 @@ static void matrix_task (void *args __attribute((unused)))
     for (;;) {
         uint8_t row, col;
 
-        for (row = 0; row < 7; row++) {
-            for (col = 0; col < 5; col++) {
-                matrix_set_row (row, 1<<col);
+        for (row = 0; row < 8; row++) {
+            if (row < 7) {
+                for (col = 0; col < 5; col++) {
+                    max7219_send_row (row, 1<<col);
+                    vTaskDelay (pdMS_TO_TICKS (200));
+                }
+            }
+            else {
+                max7219_send_row (row, 1<<6); // green
+                vTaskDelay (pdMS_TO_TICKS (200));
+                max7219_send_row (row, 1<<5); // red
                 vTaskDelay (pdMS_TO_TICKS (200));
             }
-            matrix_set_row (row, 0);
+            max7219_send_row (row, 0);
         }
     }
 }
