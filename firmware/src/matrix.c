@@ -6,8 +6,7 @@
  * - 10K pullup on NSS (PB12)
  * - SN74AHCT125N converts 3V3 STM32 to 5V max7219
  * - Assumes anode column, cathode row matrix device.
- *   Caveat: this wastes memory: 7 bytes with 5 valid bits,
- *   not 5 bytes with 7 valid bits.
+ * - Discrete green and red front panel LEDs are wired on row 7.
  */
 
 #include <string.h>
@@ -31,6 +30,31 @@
 #define MAX7219_MODE_TEST         0x0F00
 #define MAX7219_MODE_NOOP         0x0000
 
+/* G F E D C B A dp
+   0 1 2 3 4 5 6 7
+ -------------------
+0| * * * * *       |
+1| * * * * *       |
+2| * * * * *       |
+3| * * * * *       |
+4| * * * * *       |
+5| * * * * *       |
+6| * * * * *       |
+7|           r g   |
+ -------------------
+*/
+
+/* Frame buffer
+ * Can be updated while matrix_task is syncing the display.
+ */
+static volatile uint8_t pending[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+
+static TaskHandle_t matrix_task_handle = NULL;
+static TaskHandle_t green_task_handle = NULL;
+
+/* Set a byte to the chip over SPI.
+ * This function may sleep.
+ */
 static void max7219_send (uint16_t data)
 {
     spi_enable (SPI2); // assert NSS
@@ -45,43 +69,44 @@ static void max7219_send (uint16_t data)
     spi_disable (SPI2); // de-assert NSS
 }
 
-static void matrix_set_row (uint16_t row, uint8_t val)
+/* Set display 'row' (0-7) to 'val'.
+ * This function may sleep.
+ */
+static void max7219_send_row (uint16_t row, uint8_t val)
 {
-    max7219_send ((row + 1) << 8 | val);
+    if (row < 8)
+        max7219_send ((row + 1) << 8 | val);
 }
 
-/* Set all rows to glyph encoded in 5 column bytes
+/* Sync display to match 'pending' frame buffer.
+ * If 'force' is true, update all rows.
+ * This function may sleep.
  */
-static void matrix_set_glyph (const uint8_t cols[5])
+static void max7219_sync (bool force)
 {
-    uint8_t row, col;
-    uint8_t val;
+    static uint8_t visible[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+    uint8_t row;
+    uint8_t update = 0;
 
-    for (row = 0; row < 7; row++) {
-        val = 0;
-        for (col = 0; col < 5; col++)
-            val |= (cols[col] & 1<<row) ? 1<<col : 0;
-        matrix_set_row (row, val);
+    taskENTER_CRITICAL ();
+    for (row = 0; row < 8; row++) {
+        if (force || pending[row] != visible[row]) {
+            update |= (1<<row);
+            visible[row] = pending[row];
+        }
+    }
+    taskEXIT_CRITICAL ();
+
+    for (row = 0; row < 8; row++) {
+        if (update & (1<<row))
+            max7219_send_row (row, visible[row]);
     }
 }
 
-static void matrix_set_char (char c)
-{
-    if (c >= 0x20 && c <= 0x7f)
-        matrix_set_glyph (&Font5x7[(c - 0x20) * 5]);
-}
-
-static void matrix_clear (void)
-{
-    uint8_t row;
-
-    for (row = 0; row < 7; row++)
-        matrix_set_row (row, 0);
-}
-
 /* Blink the entire display three times as a test
+ * This function may sleep.
  */
-static void matrix_selftest (void)
+static void max7219_selftest (void)
 {
     uint8_t count;
 
@@ -91,44 +116,106 @@ static void matrix_selftest (void)
     }
 }
 
-static void matrix_show_address (void)
-{
-    uint8_t addr = address_get ();
-
-    matrix_set_char ('0' + addr / 10);
-    vTaskDelay (pdMS_TO_TICKS (1000));
-    matrix_set_char ('0' + addr % 10);
-    vTaskDelay (pdMS_TO_TICKS (1000));
-    matrix_clear ();
-}
-
-static void matrix_config (void)
+/* Configure the chip.
+ * This function may sleep.
+ */
+static void max7219_config (void)
 {
     max7219_send (MAX7219_MODE_SCAN_LIMIT | 7); // mux over 8 digits/cols
     max7219_send (MAX7219_MODE_INTENSITY | 0xF);// intensity 0=dim F=bright
     max7219_send (MAX7219_MODE_DECODE | 0);     // no BCD decode
     max7219_send (MAX7219_MODE_SHUTDOWN | 1);   // power shutdown=0 normal=1
     max7219_send (MAX7219_MODE_TEST | 0);       // test mode off=0 on=1
-    matrix_clear ();
+    max7219_sync (true);
 }
 
+/* Notify matrix_task() to perform update.
+ */
+static void matrix_sync (void)
+{
+    xTaskNotifyGive (matrix_task_handle);
+}
+
+/* Set complete 5x7 matrix, using column major array.
+ * Column bytes pack better than row bytes, so do the bit level gymnastics
+ * to convert from that more compact representation to frame buffer rows.
+ */
+void matrix_set (const uint8_t cols[])
+{
+    uint8_t row, col;
+
+    taskENTER_CRITICAL ();
+    for (row = 0; row < 7; row++) {
+        pending[row] = 0;
+        for (col = 0; col < 5; col++)
+            pending[row] |= (cols[col] & 1<<row) ? 1<<col : 0;
+    }
+    taskEXIT_CRITICAL ();
+    matrix_sync ();
+}
+
+/* Put character to 5x7 matrix.
+ */
+void matrix_set_char (char c)
+{
+    if (c >= 0x20 && c <= 0x7f)
+        matrix_set (&Font5x7[(c - 0x20) * 5]);
+}
+
+void matrix_set_red (uint8_t val)
+{
+    taskENTER_CRITICAL ();
+    if (val)
+        pending[7] |= (1<<5);
+    else
+        pending[7] &= ~(1<<5);
+    taskEXIT_CRITICAL ();
+    matrix_sync ();
+}
+
+/* Only used internally - externally use matrix_pulse_green()
+ */
+static void matrix_set_green (uint8_t val)
+{
+    taskENTER_CRITICAL ();
+    if (val)
+        pending[7] |= (1<<6);
+    else
+        pending[7] &= ~(1<<6);
+    taskEXIT_CRITICAL ();
+    matrix_sync ();
+}
+
+/* Perform max7219 initialization, then clock the frame buffer out over SPI
+ * when requested by matrix_sync().
+ */
 static void matrix_task (void *args __attribute((unused)))
 {
-    matrix_config ();
-    matrix_selftest ();
-    matrix_show_address ();
+    max7219_config ();
+    max7219_selftest ();
 
     for (;;) {
-        uint8_t row, col;
-
-        for (row = 0; row < 7; row++) {
-            for (col = 0; col < 5; col++) {
-                matrix_set_row (row, 1<<col);
-                vTaskDelay (pdMS_TO_TICKS (200));
-            }
-            matrix_set_row (row, 0);
-        }
+        ulTaskNotifyTake (pdTRUE, portMAX_DELAY);
+        max7219_sync (false);
     }
+}
+
+/* Pulse the green led quickly when notified via matrix_pulse_green().
+ */
+static void green_task (void *args __attribute((unused)))
+{
+    for (;;) {
+        ulTaskNotifyTake (pdTRUE, portMAX_DELAY);
+
+        matrix_set_green (1);
+        vTaskDelay (pdMS_TO_TICKS (5));
+        matrix_set_green (0);
+    }
+}
+
+void matrix_pulse_green (void)
+{
+    xTaskNotifyGive (green_task_handle);
 }
 
 void matrix_init (void)
@@ -156,7 +243,14 @@ void matrix_init (void)
                  200,
                  NULL,
                  configMAX_PRIORITIES - 1,
-                 NULL);
+                 &matrix_task_handle);
+
+    xTaskCreate (green_task,
+                 "green",
+                 200,
+                 NULL,
+                 configMAX_PRIORITIES - 1,
+                 &green_task_handle);
 }
 
 /*

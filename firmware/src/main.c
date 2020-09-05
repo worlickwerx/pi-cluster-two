@@ -25,6 +25,29 @@ void vApplicationStackOverflowHook (xTaskHandle *task __attribute((unused)),
        ;
 }
 
+/* Perform initialization:
+ * - show the card address on the matrix display
+ */
+static void init_task (void *args __attribute((unused)))
+{
+    uint8_t addr = address_get ();
+
+    vTaskDelay (pdMS_TO_TICKS (200));
+
+    matrix_set_char ('0' + addr / 10); // tens
+    vTaskDelay (pdMS_TO_TICKS (1000));
+
+    matrix_set_char ('0' + addr % 10); // ones
+    vTaskDelay (pdMS_TO_TICKS (1000));
+
+    matrix_set_char (' '); // clear
+
+    /* init complete - block forever
+     */
+    ulTaskNotifyTake (pdTRUE, portMAX_DELAY);
+}
+
+
 int main (void)
 {
     rcc_clock_setup_in_hse_8mhz_out_72mhz ();    // Use this for "blue pill"
@@ -33,6 +56,13 @@ int main (void)
     matrix_init ();
     address_init ();
     power_init ();
+
+    xTaskCreate (init_task,
+                 "init",
+                 200,
+                 NULL,
+                 configMAX_PRIORITIES - 1,
+                 NULL);
 
     power_set_state (true);
 
