@@ -10,6 +10,7 @@
 #include "queue.h"
 
 #include "canbus.h"
+#include "matrix.h"
 #include "trace.h"
 
 static const uint32_t baudrate = 125000;
@@ -33,6 +34,7 @@ static void canbus_rx_task (void *arg __attribute((unused)))
     for (;;) {
         if (xQueueReceive (canrxq, &msg, portMAX_DELAY) == pdPASS) {
             // FIXME: handle 'msg'
+            matrix_pulse_green (); // blink the activity LED
         }
     }
 }
