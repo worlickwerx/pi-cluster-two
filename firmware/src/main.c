@@ -13,6 +13,7 @@
 #include "matrix.h"
 #include "power.h"
 #include "trace.h"
+#include "canbus.h"
 
 extern void vApplicationStackOverflowHook (xTaskHandle *pxTask,
                                            signed portCHAR *pcTaskName);
@@ -56,6 +57,7 @@ int main (void)
     matrix_init ();
     address_init ();
     power_init ();
+    canbus_init ();
 
     xTaskCreate (init_task,
                  "init",
