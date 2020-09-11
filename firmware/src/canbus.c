@@ -134,7 +134,7 @@ void canbus_init (void)
                   GPIO_CAN_PB_RX);
 
     // map CAN1 CAN_RX=PB8, CAN_TX=PB9
-    gpio_primary_remap (AFIO_MAPR_SWJ_CFG_JTAG_OFF_SW_OFF,
+    gpio_primary_remap (AFIO_MAPR_SWJ_CFG_FULL_SWJ,
                         AFIO_MAPR_CAN1_REMAP_PORTB);
 
     can_reset (CAN1);
