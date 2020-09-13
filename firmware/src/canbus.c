@@ -188,6 +188,29 @@ static void canmsg_v1_trace (const struct canmsg_v1 *msg)
                   msg->dlen);
 }
 
+static void canbus_xmit (uint32_t id,
+                         bool ext,
+                         bool rtr,
+                         uint8_t length,
+                         void *data)
+{
+    matrix_pulse_green (); // blink the activity LED
+
+    while (can_transmit (CAN1, id, ext, rtr, length, (uint8_t*)data) == -1)
+        taskYIELD();
+}
+
+static int canbus_xmit_v1 (const struct canmsg_v1 *msg)
+{
+    struct canmsg_raw raw;
+
+    if (canmsg_v1_encode (msg, &raw) < 0)
+        return -1;
+    canmsg_v1_trace (msg);
+    canbus_xmit (raw.msgid, raw.xmsgidf, 0, raw.length, raw.data);
+    return 0;
+}
+
 static void canbus_rx_task (void *arg __attribute((unused)))
 {
     struct canmsg_raw raw;
@@ -198,23 +221,31 @@ static void canbus_rx_task (void *arg __attribute((unused)))
 
             matrix_pulse_green (); // blink the activity LED
 
-            if (canmsg_v1_decode (&raw, &msg) == 0)
-                canmsg_v1_trace (&msg);
+            if (canmsg_v1_decode (&raw, &msg) < 0) {
+                trace_printf ("canbus-rx: error decoding received message\n");
+                continue;
+            }
+
+            canmsg_v1_trace (&msg);
+
+            /* Echo (canping)
+             */
+            if (msg.type == CANMSG_V1_TYPE_WO
+                    && msg.object == CANMSG_V1_OBJ_ECHO) {
+
+                msg.type = CANMSG_V1_TYPE_ACK;
+                msg.dst = msg.src;
+                msg.src = msg.node = address_get ();
+
+                if (canbus_xmit_v1 (&msg) < 0) {
+                    trace_printf ("canbus-rx: error encoding echo response\n");
+                    continue;
+                }
+
+            }
         }
     }
 }
-
-/*
-static void canbus_xmit (uint32_t id,
-                         bool ext,
-                         bool rtr,
-                         uint8_t length,
-                         void *data)
-{
-    while (can_transmit (CAN1, id, ext, rtr, length, (uint8_t*)data) == -1)
-        taskYIELD();
-}
-*/
 
 static void canbus_rx_isr (uint8_t fifo, unsigned msgcount)
 {
