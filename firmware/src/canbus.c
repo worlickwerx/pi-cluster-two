@@ -44,6 +44,39 @@ static int canbus_xmit_v1 (const struct canmsg_v1 *msg)
     return 0;
 }
 
+static void canbus_v1_nak (const struct canmsg_v1 *request)
+{
+    struct canmsg_v1 msg = *request;
+
+    if (request->type == CANMSG_V1_TYPE_WNA)
+        return;
+
+    msg.type = CANMSG_V1_TYPE_NAK;
+    msg.dst = msg.src;
+    msg.src = msg.node = address_get ();
+    msg.dlen = 0;
+
+    if (canbus_xmit_v1 (&msg) < 0)
+        trace_printf ("canbus-rx: error encoding NAK response\n");
+}
+
+static void canbus_v1_echo (const struct canmsg_v1 *request)
+{
+    struct canmsg_v1 msg = *request;
+
+    if (request->type != CANMSG_V1_TYPE_WO) {
+        canbus_v1_nak (request);
+        return;
+    }
+
+    msg.type = CANMSG_V1_TYPE_ACK;
+    msg.dst = msg.src;
+    msg.src = msg.node = address_get ();
+
+    if (canbus_xmit_v1 (&msg) < 0)
+        trace_printf ("canbus-rx: error encoding echo response\n");
+}
+
 static void canbus_rx_task (void *arg __attribute((unused)))
 {
     struct canmsg_raw raw;
@@ -61,20 +94,24 @@ static void canbus_rx_task (void *arg __attribute((unused)))
 
             canmsg_v1_trace (&msg);
 
-            /* Echo (canping)
-             */
-            if (msg.type == CANMSG_V1_TYPE_WO
-                    && msg.object == CANMSG_V1_OBJ_ECHO) {
-
-                msg.type = CANMSG_V1_TYPE_ACK;
-                msg.dst = msg.src;
-                msg.src = msg.node = address_get ();
-
-                if (canbus_xmit_v1 (&msg) < 0) {
-                    trace_printf ("canbus-rx: error encoding echo response\n");
-                    continue;
-                }
-
+            switch (msg.type) {
+                case CANMSG_V1_TYPE_WO:
+                case CANMSG_V1_TYPE_RO:
+                case CANMSG_V1_TYPE_WNA:
+                    switch (msg.object) {
+                        case CANMSG_V1_OBJ_ECHO:
+                            canbus_v1_echo (&msg);
+                            break;
+                        default: // unknown object id
+                            canbus_v1_nak (&msg);
+                            break;
+                    }
+                    break;
+                case CANMSG_V1_TYPE_DAT:
+                case CANMSG_V1_TYPE_ACK:
+                case CANMSG_V1_TYPE_NAK:
+                case CANMSG_V1_TYPE_SIG:
+                    break;
             }
         }
     }
