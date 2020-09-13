@@ -125,7 +125,7 @@ void canbus_init (void)
 
     gpio_set_mode (GPIOB,
                    GPIO_MODE_OUTPUT_50_MHZ,
-                   GPIO_CNF_OUTPUT_ALTFN_OPENDRAIN,
+                   GPIO_CNF_OUTPUT_ALTFN_PUSHPULL,
                    GPIO_CAN_PB_TX);
 
     gpio_set_mode(GPIOB,
