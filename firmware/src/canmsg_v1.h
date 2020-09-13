@@ -1,5 +1,13 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 
+// Inspired by Meiko CS/2 "Overview of the Control Area Network (CAN)"
+
+// CAN addressing within a module:
+// compute board: 00 01 02 03 04 05 06 07 08 09 0a 0b
+// compute mgr:   10 11 12 13 14 15 16 17 18 19 1a 1b
+// module mgr:    1d
+
+
 struct canmsg_v1 {
     /* 29 bit id */
     uint16_t pri:1; // 0=high, 1=low
@@ -7,6 +15,9 @@ struct canmsg_v1 {
     uint16_t src:5;
     uint32_t xpri:1; // 0=high, 1=low
     uint32_t type:3;
+    /* (module, node) is "outer envelope" addressing.
+     * If module doesn't match local module id, route to leader for forwarding.
+     */
     uint32_t module:6;
     uint32_t node:6;
     uint32_t object:8; // only 2 bits in id; if >= uses data[0]
@@ -39,6 +50,7 @@ enum {
     CANMSG_V1_OBJ_HEARTBEAT     = 0,
     CANMSG_V1_OBJ_CONSOLERECV   = 1,
     CANMSG_V1_OBJ_CONSOLESEND   = 2,
+    CANMSG_V1_OBJ_EXTENDED      = 3,
 
     /* these ids are represented in 2 bits object id + 6 bits data[0],
      * leaving data[1:7] for payload

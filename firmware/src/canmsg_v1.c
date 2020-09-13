@@ -67,7 +67,7 @@ int canmsg_v1_decode (const struct canmsg_raw *raw, struct canmsg_v1 *msg)
     msg->src = (raw->msgid>>18) & 0x1f;
     msg->dst = (raw->msgid>>23) & 0x1f;
     msg->pri = (raw->msgid>>28) & 1;
-    if (msg->object == 3) { // extended object id
+    if (msg->object == CANMSG_V1_OBJ_EXTENDED) {
         if (raw->length == 0)
             return -1;
         msg->object += raw->data[0];
@@ -94,8 +94,8 @@ int canmsg_v1_encode (const struct canmsg_v1 *msg, struct canmsg_raw *raw)
     raw->msgid |= msg->src<<18;
     raw->msgid |= msg->dst<<23;
     raw->msgid |= msg->pri<<28;
-    if (msg->object >= 3) { // extended object id
-        raw->data[0] = msg->object - 3;
+    if (msg->object >= CANMSG_V1_OBJ_EXTENDED) {
+        raw->data[0] = msg->object - CANMSG_V1_OBJ_EXTENDED;
         raw->length = msg->dlen + 1;
         memcpy (&raw->data[1], msg->data, msg->dlen);
     } else {
