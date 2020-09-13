@@ -28,6 +28,7 @@
 
 #include "trace.h"
 #include "power.h"
+#include "matrix.h"
 
 static void pulse_pa6 (void)
 {
@@ -46,6 +47,7 @@ void power_set_state (bool enable)
 {
     if (power_get_state () != enable)
         pulse_pa6 ();
+    matrix_set_red (power_get_state () ? 1 : 0);
 }
 
 static uint16_t read_adc (uint8_t channel)
@@ -79,6 +81,8 @@ uint16_t power_measure_ma (void)
 
 static void measure_task (void *args __attribute((unused)))
 {
+    matrix_set_red (power_get_state () ? 1 : 0);
+
     for (;;) {
         trace_printf ("%u mA %u mV\n",
                       power_measure_ma (),
