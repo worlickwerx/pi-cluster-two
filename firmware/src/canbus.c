@@ -16,6 +16,7 @@
 #include "address.h"
 #include "canmsg.h"
 #include "canmsg_v1.h"
+#include "power.h"
 
 static const uint32_t baudrate = 125000;
 
@@ -77,6 +78,36 @@ static void canbus_v1_echo (const struct canmsg_v1 *request)
         trace_printf ("canbus-rx: error encoding echo response\n");
 }
 
+static void canbus_v1_power (const struct canmsg_v1 *request)
+{
+    struct canmsg_v1 msg = *request;
+
+    if (request->type != CANMSG_V1_TYPE_WO)
+        goto error;
+    if (request->dlen != 1)
+        goto error;
+    if (request->data[0] == 0)
+        power_set_state (false);
+    else if (request->data[0] == 1)
+        power_set_state (true);
+    else if (request->data[0] == 2)
+        goto error; /* TODO: shutdown */
+    else if (request->data[0] == 3)
+        power_set_state (!power_get_state ());
+    else
+        goto error;
+
+    msg.type = CANMSG_V1_TYPE_ACK;
+    msg.dst = msg.src;
+    msg.src = msg.node = address_get ();
+
+    if (canbus_xmit_v1 (&msg) < 0)
+        trace_printf ("canbus-rx: error encoding power response\n");
+    return;
+error:
+    canbus_v1_nak (request);
+}
+
 static void canbus_rx_task (void *arg __attribute((unused)))
 {
     struct canmsg_raw raw;
@@ -101,6 +132,9 @@ static void canbus_rx_task (void *arg __attribute((unused)))
                     switch (msg.object) {
                         case CANMSG_V1_OBJ_ECHO:
                             canbus_v1_echo (&msg);
+                            break;
+                        case CANMSG_V1_OBJ_POWER:
+                            canbus_v1_power (&msg);
                             break;
                         default: // unknown object id
                             canbus_v1_nak (&msg);
