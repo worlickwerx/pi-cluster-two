@@ -12,6 +12,7 @@
 #include "canbus.h"
 #include "matrix.h"
 #include "trace.h"
+#include "address.h"
 
 static const uint32_t baudrate = 125000;
 
@@ -34,7 +35,8 @@ static void canbus_rx_task (void *arg __attribute((unused)))
     for (;;) {
         if (xQueueReceive (canrxq, &msg, portMAX_DELAY) == pdPASS) {
             matrix_pulse_green (); // blink the activity LED
-            trace_printf ("canbus: rx\n");
+            trace_printf ("canbus: canbus: rx to 0x%lx\n",
+                          (msg.msgid >> 23) & 0x1f);
         }
     }
 }
@@ -128,14 +130,13 @@ void canbus_init (void)
     gpio_set_mode (GPIOB,
                    GPIO_MODE_OUTPUT_50_MHZ,
                    GPIO_CNF_OUTPUT_ALTFN_PUSHPULL,
-                   GPIO_CAN_PB_TX);
+                   GPIO_CAN_PB_TX); // PB9
 
     gpio_set_mode(GPIOB,
                   GPIO_MODE_INPUT,
                   GPIO_CNF_INPUT_FLOAT,
-                  GPIO_CAN_PB_RX);
+                  GPIO_CAN_PB_RX); // PB8
 
-    // map CAN1 CAN_RX=PB8, CAN_TX=PB9
     gpio_primary_remap (AFIO_MAPR_SWJ_CFG_FULL_SWJ,
                         AFIO_MAPR_CAN1_REMAP_PORTB);
 
@@ -158,23 +159,15 @@ void canbus_init (void)
               false,            // disable loopback mode
               false);           // disable silent mode
 
-    // FIXME set up filters for this node's CAN address and bcast
+    /* locally addressed - route to FIFO 0 */
+    can_filter_id_mask_32bit_init (0,                 // filter bank 0
+                                   (address_get () << 23) << 3, // id
+                                   (0x1f << 23) << 3, // mask
+                                   0,                 // FIFO 0
+                                   true);             // enable
 
-    can_filter_id_mask_16bit_init (0,                // Filter bank 0
-                                   0x000 << 5,
-                                   0x001 << 5,       // LSB == 0
-                                   0x000 << 5,
-                                   0x001 << 5,       // Not used
-                                   0,                // FIFO 0
-                                   true);
-
-    can_filter_id_mask_16bit_init (1,                // Filter bank 1
-                                   0x010 << 5,
-                                   0x001 << 5,       // LSB == 1 (no match)
-                                   0x001 << 5,
-                                   0x001 << 5,       // Match when odd
-                                   1,                // FIFO 1
-                                   true);
+    /* (disabled) promiscuous - route to FIFO 1 */
+    can_filter_id_mask_32bit_init (1, 0, 0, 1, false);
 
     canrxq = xQueueCreate (33, sizeof (struct canmsg));
 
