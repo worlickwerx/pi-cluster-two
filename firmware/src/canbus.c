@@ -22,6 +22,14 @@ static const uint32_t baudrate = 125000;
 
 static QueueHandle_t canrxq;
 
+/* Assume native little endian (ARM can be either, but usually this).
+ * Network byte order is big endian.
+ */
+static uint16_t htons (uint16_t val)
+{
+    return (val << 8) | (val >> 8);
+}
+
 static void canbus_xmit (uint32_t id,
                          bool ext,
                          bool rtr,
@@ -90,10 +98,6 @@ static void canbus_v1_power (const struct canmsg_v1 *request)
         power_set_state (false);
     else if (request->data[0] == 1)
         power_set_state (true);
-    else if (request->data[0] == 2)
-        goto error; /* TODO: shutdown */
-    else if (request->data[0] == 3)
-        power_set_state (!power_get_state ());
     else
         goto error;
 
@@ -103,6 +107,31 @@ static void canbus_v1_power (const struct canmsg_v1 *request)
 
     if (canbus_xmit_v1 (&msg) < 0)
         trace_printf ("canbus-rx: error encoding power response\n");
+    return;
+error:
+    canbus_v1_nak (request);
+}
+
+static void canbus_v1_power_measure (const struct canmsg_v1 *request)
+{
+    struct canmsg_v1 msg = *request;
+    uint16_t ma;
+
+    if (request->type != CANMSG_V1_TYPE_RO)
+        goto error;
+    if (request->dlen != 0)
+        goto error;
+
+    msg.type = CANMSG_V1_TYPE_ACK;
+    msg.dst = msg.src;
+    msg.src = msg.node = address_get ();
+
+    power_get_measurements (&ma, NULL);
+    msg.dlen = 2;
+    *(uint16_t *)msg.data = htons (ma);
+
+    if (canbus_xmit_v1 (&msg) < 0)
+        trace_printf ("canbus-rx: error encoding power measure response\n");
     return;
 error:
     canbus_v1_nak (request);
@@ -135,6 +164,9 @@ static void canbus_rx_task (void *arg __attribute((unused)))
                             break;
                         case CANMSG_V1_OBJ_POWER:
                             canbus_v1_power (&msg);
+                            break;
+                        case CANMSG_V1_OBJ_POWER_MEASURE:
+                            canbus_v1_power_measure (&msg);
                             break;
                         default: // unknown object id
                             canbus_v1_nak (&msg);
