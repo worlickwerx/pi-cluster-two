@@ -10,6 +10,7 @@ SRCFILES	= main.c \
 		  matrix.c \
 		  trace.c \
 		  canbus.c \
+		  canmsg_v1.c \
 		  rtos/heap_4.c \
 		  rtos/list.c \
 		  rtos/port.c \

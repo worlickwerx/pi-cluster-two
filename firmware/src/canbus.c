@@ -8,50 +8,81 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
+#include "string.h"
 
 #include "canbus.h"
+#include "matrix.h"
 #include "trace.h"
+#include "address.h"
+#include "canmsg.h"
+#include "canmsg_v1.h"
 
 static const uint32_t baudrate = 125000;
 
 static QueueHandle_t canrxq;
 
-struct canmsg {
-        uint32_t        msgid;          // Message ID
-        uint32_t        fmi;            // Filter index
-        uint8_t         length;         // Data length
-        uint8_t         data[8];        // Received data
-        uint8_t         xmsgidf:1;      // Extended message flag
-        uint8_t         rtrf:1;         // RTR flag
-        uint8_t         fifo:1;         // RX Fifo 0 or 1
-};
-
-static void canbus_rx_task (void *arg __attribute((unused)))
-{
-    struct canmsg msg;
-
-    for (;;) {
-        if (xQueueReceive (canrxq, &msg, portMAX_DELAY) == pdPASS) {
-            // FIXME: handle 'msg'
-        }
-    }
-}
-
-/*
 static void canbus_xmit (uint32_t id,
                          bool ext,
                          bool rtr,
                          uint8_t length,
                          void *data)
 {
+    matrix_pulse_green (); // blink the activity LED
+
     while (can_transmit (CAN1, id, ext, rtr, length, (uint8_t*)data) == -1)
         taskYIELD();
 }
-*/
+
+static int canbus_xmit_v1 (const struct canmsg_v1 *msg)
+{
+    struct canmsg_raw raw;
+
+    if (canmsg_v1_encode (msg, &raw) < 0)
+        return -1;
+    canmsg_v1_trace (msg);
+    canbus_xmit (raw.msgid, raw.xmsgidf, 0, raw.length, raw.data);
+    return 0;
+}
+
+static void canbus_rx_task (void *arg __attribute((unused)))
+{
+    struct canmsg_raw raw;
+    struct canmsg_v1 msg;
+
+    for (;;) {
+        if (xQueueReceive (canrxq, &raw, portMAX_DELAY) == pdPASS) {
+
+            matrix_pulse_green (); // blink the activity LED
+
+            if (canmsg_v1_decode (&raw, &msg) < 0) {
+                trace_printf ("canbus-rx: error decoding received message\n");
+                continue;
+            }
+
+            canmsg_v1_trace (&msg);
+
+            /* Echo (canping)
+             */
+            if (msg.type == CANMSG_V1_TYPE_WO
+                    && msg.object == CANMSG_V1_OBJ_ECHO) {
+
+                msg.type = CANMSG_V1_TYPE_ACK;
+                msg.dst = msg.src;
+                msg.src = msg.node = address_get ();
+
+                if (canbus_xmit_v1 (&msg) < 0) {
+                    trace_printf ("canbus-rx: error encoding echo response\n");
+                    continue;
+                }
+
+            }
+        }
+    }
+}
 
 static void canbus_rx_isr (uint8_t fifo, unsigned msgcount)
 {
-    struct canmsg msg;
+    struct canmsg_raw msg;
     bool xmsgidf, rtrf;
 
     while (msgcount-- > 0) {
@@ -118,6 +149,7 @@ static const struct canbaud *lookup_baud (uint32_t baud)
 void canbus_init (void)
 {
     const struct canbaud *baud;
+    uint8_t addr = address_get ();
 
     rcc_periph_clock_enable (RCC_AFIO);
     rcc_peripheral_enable_clock (&RCC_APB1ENR, RCC_APB1ENR_CAN1EN);
@@ -125,16 +157,15 @@ void canbus_init (void)
 
     gpio_set_mode (GPIOB,
                    GPIO_MODE_OUTPUT_50_MHZ,
-                   GPIO_CNF_OUTPUT_ALTFN_OPENDRAIN,
-                   GPIO_CAN_PB_TX);
+                   GPIO_CNF_OUTPUT_ALTFN_PUSHPULL,
+                   GPIO_CAN_PB_TX); // PB9
 
     gpio_set_mode(GPIOB,
                   GPIO_MODE_INPUT,
                   GPIO_CNF_INPUT_FLOAT,
-                  GPIO_CAN_PB_RX);
+                  GPIO_CAN_PB_RX); // PB8
 
-    // map CAN1 CAN_RX=PB8, CAN_TX=PB9
-    gpio_primary_remap (AFIO_MAPR_SWJ_CFG_JTAG_OFF_SW_OFF,
+    gpio_primary_remap (AFIO_MAPR_SWJ_CFG_FULL_SWJ,
                         AFIO_MAPR_CAN1_REMAP_PORTB);
 
     can_reset (CAN1);
@@ -156,25 +187,17 @@ void canbus_init (void)
               false,            // disable loopback mode
               false);           // disable silent mode
 
-    // FIXME set up filters for this node's CAN address and bcast
+    /* locally addressed - route to FIFO 0 */
+    can_filter_id_mask_32bit_init (0,                 // filter bank 0
+                                   (addr << CANMSG_V1_DST_SHIFT) << 3, // id
+                                   CANMSG_V1_DST_MASK << 3, // mask
+                                   0,                 // FIFO 0
+                                   true);             // enable
 
-    can_filter_id_mask_16bit_init (0,                // Filter bank 0
-                                   0x000 << 5,
-                                   0x001 << 5,       // LSB == 0
-                                   0x000 << 5,
-                                   0x001 << 5,       // Not used
-                                   0,                // FIFO 0
-                                   true);
+    /* (disabled) promiscuous - route to FIFO 1 */
+    can_filter_id_mask_32bit_init (1, 0, 0, 1, false);
 
-    can_filter_id_mask_16bit_init (1,                // Filter bank 1
-                                   0x010 << 5,
-                                   0x001 << 5,       // LSB == 1 (no match)
-                                   0x001 << 5,
-                                   0x001 << 5,       // Match when odd
-                                   1,                // FIFO 1
-                                   true);
-
-    canrxq = xQueueCreate (33, sizeof (struct canmsg));
+    canrxq = xQueueCreate (33, sizeof (struct canmsg_raw));
 
     nvic_enable_irq (NVIC_USB_LP_CAN_RX0_IRQ);
     nvic_enable_irq (NVIC_CAN_RX1_IRQ);
