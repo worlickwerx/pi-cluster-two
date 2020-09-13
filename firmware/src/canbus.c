@@ -16,10 +16,19 @@
 #include "address.h"
 #include "canmsg.h"
 #include "canmsg_v1.h"
+#include "power.h"
 
 static const uint32_t baudrate = 125000;
 
 static QueueHandle_t canrxq;
+
+/* Assume native little endian (ARM can be either, but usually this).
+ * Network byte order is big endian.
+ */
+static uint16_t htons (uint16_t val)
+{
+    return (val << 8) | (val >> 8);
+}
 
 static void canbus_xmit (uint32_t id,
                          bool ext,
@@ -44,6 +53,90 @@ static int canbus_xmit_v1 (const struct canmsg_v1 *msg)
     return 0;
 }
 
+static void canbus_v1_nak (const struct canmsg_v1 *request)
+{
+    struct canmsg_v1 msg = *request;
+
+    if (request->type == CANMSG_V1_TYPE_WNA)
+        return;
+
+    msg.type = CANMSG_V1_TYPE_NAK;
+    msg.dst = msg.src;
+    msg.src = msg.node = address_get ();
+    msg.dlen = 0;
+
+    if (canbus_xmit_v1 (&msg) < 0)
+        trace_printf ("canbus-rx: error encoding NAK response\n");
+}
+
+static void canbus_v1_echo (const struct canmsg_v1 *request)
+{
+    struct canmsg_v1 msg = *request;
+
+    if (request->type != CANMSG_V1_TYPE_WO) {
+        canbus_v1_nak (request);
+        return;
+    }
+
+    msg.type = CANMSG_V1_TYPE_ACK;
+    msg.dst = msg.src;
+    msg.src = msg.node = address_get ();
+
+    if (canbus_xmit_v1 (&msg) < 0)
+        trace_printf ("canbus-rx: error encoding echo response\n");
+}
+
+static void canbus_v1_power (const struct canmsg_v1 *request)
+{
+    struct canmsg_v1 msg = *request;
+
+    if (request->type != CANMSG_V1_TYPE_WO)
+        goto error;
+    if (request->dlen != 1)
+        goto error;
+    if (request->data[0] == 0)
+        power_set_state (false);
+    else if (request->data[0] == 1)
+        power_set_state (true);
+    else
+        goto error;
+
+    msg.type = CANMSG_V1_TYPE_ACK;
+    msg.dst = msg.src;
+    msg.src = msg.node = address_get ();
+
+    if (canbus_xmit_v1 (&msg) < 0)
+        trace_printf ("canbus-rx: error encoding power response\n");
+    return;
+error:
+    canbus_v1_nak (request);
+}
+
+static void canbus_v1_power_measure (const struct canmsg_v1 *request)
+{
+    struct canmsg_v1 msg = *request;
+    uint16_t ma;
+
+    if (request->type != CANMSG_V1_TYPE_RO)
+        goto error;
+    if (request->dlen != 0)
+        goto error;
+
+    msg.type = CANMSG_V1_TYPE_ACK;
+    msg.dst = msg.src;
+    msg.src = msg.node = address_get ();
+
+    power_get_measurements (&ma, NULL);
+    msg.dlen = 2;
+    *(uint16_t *)msg.data = htons (ma);
+
+    if (canbus_xmit_v1 (&msg) < 0)
+        trace_printf ("canbus-rx: error encoding power measure response\n");
+    return;
+error:
+    canbus_v1_nak (request);
+}
+
 static void canbus_rx_task (void *arg __attribute((unused)))
 {
     struct canmsg_raw raw;
@@ -61,20 +154,30 @@ static void canbus_rx_task (void *arg __attribute((unused)))
 
             canmsg_v1_trace (&msg);
 
-            /* Echo (canping)
-             */
-            if (msg.type == CANMSG_V1_TYPE_WO
-                    && msg.object == CANMSG_V1_OBJ_ECHO) {
-
-                msg.type = CANMSG_V1_TYPE_ACK;
-                msg.dst = msg.src;
-                msg.src = msg.node = address_get ();
-
-                if (canbus_xmit_v1 (&msg) < 0) {
-                    trace_printf ("canbus-rx: error encoding echo response\n");
-                    continue;
-                }
-
+            switch (msg.type) {
+                case CANMSG_V1_TYPE_WO:
+                case CANMSG_V1_TYPE_RO:
+                case CANMSG_V1_TYPE_WNA:
+                    switch (msg.object) {
+                        case CANMSG_V1_OBJ_ECHO:
+                            canbus_v1_echo (&msg);
+                            break;
+                        case CANMSG_V1_OBJ_POWER:
+                            canbus_v1_power (&msg);
+                            break;
+                        case CANMSG_V1_OBJ_POWER_MEASURE:
+                            canbus_v1_power_measure (&msg);
+                            break;
+                        default: // unknown object id
+                            canbus_v1_nak (&msg);
+                            break;
+                    }
+                    break;
+                case CANMSG_V1_TYPE_DAT:
+                case CANMSG_V1_TYPE_ACK:
+                case CANMSG_V1_TYPE_NAK:
+                case CANMSG_V1_TYPE_SIG:
+                    break;
             }
         }
     }

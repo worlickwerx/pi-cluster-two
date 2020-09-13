@@ -24,15 +24,20 @@ struct strtab typestr_v1[] = {
 
 struct strtab objstr_v1[] = {
     { CANMSG_V1_OBJ_HEARTBEAT,      "HB" },
-    { CANMSG_V1_OBJ_CONSOLECONN,    "CONSOLECONN" },
-    { CANMSG_V1_OBJ_CONSOLEDISC,    "CONSOLEDISC" },
-    { CANMSG_V1_OBJ_CONSOLESEND,    "CONSOLESEND" },
-    { CANMSG_V1_OBJ_CONSOLERECV,    "CONSOLERECV" },
-    { CANMSG_V1_OBJ_CONSOLERING,    "CONSOLERING" },
+    { CANMSG_V1_OBJ_CONSOLESEND,    "CONSOLE-SEND" },
+    { CANMSG_V1_OBJ_CONSOLERECV,    "CONSOLE-RECV" },
+    { CANMSG_V1_OBJ_LED_IDENTIFY,   "LED-IDENTIFY" },
     { CANMSG_V1_OBJ_POWER,          "POWER" },
-    { CANMSG_V1_OBJ_RESET,          "RESET" },
     { CANMSG_V1_OBJ_ECHO,           "ECHO" },
-    { CANMSG_V1_OBJ_LED_IDENTIFY,   "IDENTIFY" },
+    { CANMSG_V1_OBJ_RESET,          "RESET" },
+    { CANMSG_V1_OBJ_CONSOLECONN,    "CONSOLE-CONN" },
+    { CANMSG_V1_OBJ_CONSOLEDISC,    "CONSOLE-DISC" },
+    { CANMSG_V1_OBJ_CONSOLERING,    "CONSOLE-RING" },
+    { CANMSG_V1_OBJ_POWER_MEASURE,  "POWER-MEASURE" },
+    { CANMSG_V1_OBJ_CONSOLEBASE,    "CONSOLE-SEND-0" },
+    { CANMSG_V1_OBJ_CONSOLEBASE+1,  "CONSOLE-SEND-1" },
+    { CANMSG_V1_OBJ_CONSOLEBASE+2,  "CONSOLE-SEND-2" },
+    { CANMSG_V1_OBJ_CONSOLEBASE+3,  "CONSOLE-SEND-3" },
 };
 
 static const char *strtab_lookup (int id, const struct strtab *tab, size_t size)
@@ -67,7 +72,7 @@ int canmsg_v1_decode (const struct canmsg_raw *raw, struct canmsg_v1 *msg)
     msg->src = (raw->msgid>>18) & 0x1f;
     msg->dst = (raw->msgid>>23) & 0x1f;
     msg->pri = (raw->msgid>>28) & 1;
-    if (msg->object == 3) { // extended object id
+    if (msg->object == CANMSG_V1_OBJ_EXTENDED) {
         if (raw->length == 0)
             return -1;
         msg->object += raw->data[0];
@@ -94,8 +99,8 @@ int canmsg_v1_encode (const struct canmsg_v1 *msg, struct canmsg_raw *raw)
     raw->msgid |= msg->src<<18;
     raw->msgid |= msg->dst<<23;
     raw->msgid |= msg->pri<<28;
-    if (msg->object >= 3) { // extended object id
-        raw->data[0] = msg->object - 3;
+    if (msg->object >= CANMSG_V1_OBJ_EXTENDED) {
+        raw->data[0] = msg->object - CANMSG_V1_OBJ_EXTENDED;
         raw->length = msg->dlen + 1;
         memcpy (&raw->data[1], msg->data, msg->dlen);
     } else {

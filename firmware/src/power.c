@@ -28,6 +28,10 @@
 
 #include "trace.h"
 #include "power.h"
+#include "matrix.h"
+
+static uint16_t last_measure_mv;
+static uint16_t last_measure_ma;
 
 static void pulse_pa6 (void)
 {
@@ -44,8 +48,26 @@ bool power_get_state (void)
 
 void power_set_state (bool enable)
 {
-    if (power_get_state () != enable)
+    bool state;
+
+    taskENTER_CRITICAL ();
+    state = power_get_state ();
+    if (state != enable)
         pulse_pa6 ();
+    state = power_get_state ();
+    taskEXIT_CRITICAL ();
+
+    matrix_set_red (state ? 1 : 0);
+}
+
+void power_get_measurements (uint16_t *ma, uint16_t *mv)
+{
+    taskENTER_CRITICAL ();
+    if (ma)
+        *ma = last_measure_ma;
+    if (mv)
+        *mv = last_measure_mv;
+    taskEXIT_CRITICAL ();
 }
 
 static uint16_t read_adc (uint8_t channel)
@@ -60,8 +82,9 @@ static uint16_t read_adc (uint8_t channel)
 
 /* Measure 5V output through 50/50 voltage divider.
  * With 3V3 reference and 12 bit range, 5.0V should read as 3103.
+ * Can sleep.
  */
-uint16_t power_measure_mv (void)
+static uint16_t power_measure_mv (void)
 {
     uint16_t val = read_adc (ADC_CHANNEL9);
     return (val * 1000) / 620;
@@ -70,8 +93,9 @@ uint16_t power_measure_mv (void)
 /* Assumes INA169 R_l=10K (gain 10X), R_shunt=0.1 ohm, V_ref=3.3V.
  * ADC range is 12 bits = 4096 values.
  * N.B. R_shunt drops 5V to 4.8V at 2A
+ * Can sleep.
  */
-uint16_t power_measure_ma (void)
+static uint16_t power_measure_ma (void)
 {
     uint16_t val = read_adc (ADC_CHANNEL8);
     return (val * 1000) / 1230;
@@ -79,10 +103,19 @@ uint16_t power_measure_ma (void)
 
 static void measure_task (void *args __attribute((unused)))
 {
+    bool state = power_get_state ();
+
+    matrix_set_red (state ? 1 : 0);
+
     for (;;) {
-        trace_printf ("%u mA %u mV\n",
-                      power_measure_ma (),
-                      power_measure_mv ());
+        uint16_t ma = power_measure_ma ();
+        uint16_t mv = power_measure_mv ();
+
+        taskENTER_CRITICAL ();
+        last_measure_ma = ma;
+        last_measure_mv = mv;
+        taskEXIT_CRITICAL ();
+
         vTaskDelay (pdMS_TO_TICKS (500));
     }
 }
