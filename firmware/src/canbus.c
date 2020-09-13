@@ -8,6 +8,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
+#include "string.h"
 
 #include "canbus.h"
 #include "matrix.h"
@@ -18,7 +19,7 @@ static const uint32_t baudrate = 125000;
 
 static QueueHandle_t canrxq;
 
-struct canmsg {
+struct canmsg_raw {
         uint32_t        msgid;          // Message ID
         uint32_t        fmi;            // Filter index
         uint8_t         length;         // Data length
@@ -28,15 +29,177 @@ struct canmsg {
         uint8_t         fifo:1;         // RX Fifo 0 or 1
 };
 
+struct canmsg_v1 {
+    /* 29 bit id */
+    uint16_t pri:1; // 0=high, 1=low
+    uint16_t dst:5;
+    uint16_t src:5;
+    uint32_t xpri:1; // 0=high, 1=low
+    uint32_t type:3;
+    uint32_t module:6;
+    uint32_t node:6;
+    uint32_t object:8; // only 2 bits in id; if >= uses data[0]
+    /* 8 byte payload */
+    uint8_t dlen;
+    uint8_t data[8];
+};
+
+#define CANMSG_V1_DST_SHIFT (23)
+#define CANMSG_V1_DST_MASK (0x1f << CANMSG_V1_DST_SHIFT)
+
+#define CANMSG_V1_LEADER_ADDR (0x1d)
+#define CANMSG_V1_BCAST_ADDR (0x1e)
+#define CANMSG_V1_NOROUTE_ADDR (0x1f)
+
+enum {
+    CANMSG_V1_TYPE_RO = 0,
+    CANMSG_V1_TYPE_WO = 1,
+    CANMSG_V1_TYPE_WNA = 2,
+    CANMSG_V1_TYPE_DAT = 3,
+    CANMSG_V1_TYPE_ACK = 4,
+    CANMSG_V1_TYPE_NAK = 6,
+    CANMSG_V1_TYPE_SIG = 7,
+};
+
+enum {
+    /* these ids are represented in 2 bit object id,
+     * leaving the full data[0:7] for payload
+     */
+    CANMSG_V1_OBJ_HEARTBEAT     = 0,
+    CANMSG_V1_OBJ_CONSOLERECV   = 1,
+    CANMSG_V1_OBJ_CONSOLESEND   = 2,
+
+    /* these ids are represented in 2 bits object id + 6 bits data[0],
+     * leaving data[1:7] for payload
+     */
+    CANMSG_V1_OBJ_LED_IDENTIFY  = 3,
+    CANMSG_V1_OBJ_POWER         = 4,
+    CANMSG_V1_OBJ_ECHO          = 5,
+    CANMSG_V1_OBJ_RESET         = 6,
+    CANMSG_V1_OBJ_CONSOLECONN   = 7,
+    CANMSG_V1_OBJ_CONSOLEDISC   = 8,
+    CANMSG_V1_OBJ_CONSOLERING   = 9,
+    CANMSG_V1_OBJ_POWER_MEASURE = 10,
+    /* 0x80 - 0xff reserved for dynamically allocated CONSOLESEND objects */
+    CANMSG_V1_OBJ_CONSOLEBASE = 0x80,
+};
+
+struct strtab {
+    int id;
+    const char *name;
+};
+
+struct strtab typestr_v1[] = {
+    { CANMSG_V1_TYPE_RO,    "RO" },
+    { CANMSG_V1_TYPE_WO,    "WO" },
+    { CANMSG_V1_TYPE_WNA,   "WNA" },
+    { CANMSG_V1_TYPE_DAT,   "D" },
+    { CANMSG_V1_TYPE_ACK,   "ACK" },
+    { CANMSG_V1_TYPE_NAK,   "NAK" },
+    { CANMSG_V1_TYPE_SIG,   "SIG" },
+};
+
+struct strtab objstr_v1[] = {
+    { CANMSG_V1_OBJ_HEARTBEAT,      "HB" },
+    { CANMSG_V1_OBJ_CONSOLECONN,    "CONSOLECONN" },
+    { CANMSG_V1_OBJ_CONSOLEDISC,    "CONSOLEDISC" },
+    { CANMSG_V1_OBJ_CONSOLESEND,    "CONSOLESEND" },
+    { CANMSG_V1_OBJ_CONSOLERECV,    "CONSOLERECV" },
+    { CANMSG_V1_OBJ_CONSOLERING,    "CONSOLERING" },
+    { CANMSG_V1_OBJ_POWER,          "POWER" },
+    { CANMSG_V1_OBJ_RESET,          "RESET" },
+    { CANMSG_V1_OBJ_ECHO,           "ECHO" },
+    { CANMSG_V1_OBJ_LED_IDENTIFY,   "IDENTIFY" },
+};
+
+static const char *strtab_lookup (int id, const struct strtab *tab, size_t size)
+{
+    uint8_t i;
+    for (i = 0; i < size / sizeof (struct strtab); i++) {
+        if (tab[i].id == id)
+            return tab[i].name;
+    }
+    return "?";
+}
+
+static int canmsg_v1_decode (const struct canmsg_raw *raw,
+                             struct canmsg_v1 *msg)
+{
+    if (!raw->xmsgidf)
+        return -1;
+    msg->object = raw->msgid & 3;
+    msg->node = (raw->msgid>>2) & 0x3f;
+    msg->module = (raw->msgid>>8) & 0x3f;
+    msg->type = (raw->msgid>>14) & 7;
+    msg->xpri = (raw->msgid>>17) & 1;
+    msg->src = (raw->msgid>>18) & 0x1f;
+    msg->dst = (raw->msgid>>23) & 0x1f;
+    msg->pri = (raw->msgid>>28) & 1;
+    if (msg->object == 3) { // extended object id
+        if (raw->length == 0)
+            return -1;
+        msg->object += raw->data[0];
+        msg->dlen = raw->length - 1;
+        memcpy (msg->data, &raw->data[1], msg->dlen);
+    } else {
+        msg->dlen = raw->length;
+        memcpy (msg->data, raw->data, msg->dlen);
+    }
+    return 0;
+}
+
+static int canmsg_v1_encode (const struct canmsg_v1 *msg,
+                             struct canmsg_raw *raw)
+{
+    int maxdata = msg->object >= 3 ? 7 : 8;
+
+   if (msg->dlen > maxdata)
+        return -1;
+    raw->msgid = msg->object > 3 ? 3 : msg->object;
+    raw->msgid |= msg->node<<2;
+    raw->msgid |= msg->module<<8;
+    raw->msgid |= msg->type<<14;
+    raw->msgid |= msg->xpri<<17;
+    raw->msgid |= msg->src<<18;
+    raw->msgid |= msg->dst<<23;
+    raw->msgid |= msg->pri<<28;
+    if (msg->object >= 3) { // extended object id
+        raw->data[0] = msg->object - 3;
+        raw->length = msg->dlen + 1;
+        memcpy (&raw->data[1], msg->data, msg->dlen);
+    } else {
+        raw->length = msg->dlen;
+        memcpy (raw->data, msg->data, msg->dlen);
+    }
+    raw->fmi = 0;
+    raw->xmsgidf = 1;
+    raw->rtrf = 0;
+    raw->fifo = 0;
+    return 0;
+}
+
+static void canmsg_v1_trace (const struct canmsg_v1 *msg)
+{
+    trace_printf ("%x->%x %s %s [%d bytes]\n",
+                  msg->src,
+                  msg->dst,
+                  strtab_lookup (msg->type, typestr_v1, sizeof (typestr_v1)),
+                  strtab_lookup (msg->object, objstr_v1, sizeof (objstr_v1)),
+                  msg->dlen);
+}
+
 static void canbus_rx_task (void *arg __attribute((unused)))
 {
-    struct canmsg msg;
+    struct canmsg_raw raw;
+    struct canmsg_v1 msg;
 
     for (;;) {
-        if (xQueueReceive (canrxq, &msg, portMAX_DELAY) == pdPASS) {
+        if (xQueueReceive (canrxq, &raw, portMAX_DELAY) == pdPASS) {
+
             matrix_pulse_green (); // blink the activity LED
-            trace_printf ("canbus: canbus: rx to 0x%lx\n",
-                          (msg.msgid >> 23) & 0x1f);
+
+            if (canmsg_v1_decode (&raw, &msg) == 0)
+                canmsg_v1_trace (&msg);
         }
     }
 }
@@ -55,7 +218,7 @@ static void canbus_xmit (uint32_t id,
 
 static void canbus_rx_isr (uint8_t fifo, unsigned msgcount)
 {
-    struct canmsg msg;
+    struct canmsg_raw msg;
     bool xmsgidf, rtrf;
 
     while (msgcount-- > 0) {
@@ -122,6 +285,7 @@ static const struct canbaud *lookup_baud (uint32_t baud)
 void canbus_init (void)
 {
     const struct canbaud *baud;
+    uint8_t addr = address_get ();
 
     rcc_periph_clock_enable (RCC_AFIO);
     rcc_peripheral_enable_clock (&RCC_APB1ENR, RCC_APB1ENR_CAN1EN);
@@ -161,15 +325,15 @@ void canbus_init (void)
 
     /* locally addressed - route to FIFO 0 */
     can_filter_id_mask_32bit_init (0,                 // filter bank 0
-                                   (address_get () << 23) << 3, // id
-                                   (0x1f << 23) << 3, // mask
+                                   (addr << CANMSG_V1_DST_SHIFT) << 3, // id
+                                   CANMSG_V1_DST_MASK << 3, // mask
                                    0,                 // FIFO 0
                                    true);             // enable
 
     /* (disabled) promiscuous - route to FIFO 1 */
     can_filter_id_mask_32bit_init (1, 0, 0, 1, false);
 
-    canrxq = xQueueCreate (33, sizeof (struct canmsg));
+    canrxq = xQueueCreate (33, sizeof (struct canmsg_raw));
 
     nvic_enable_irq (NVIC_USB_LP_CAN_RX0_IRQ);
     nvic_enable_irq (NVIC_CAN_RX1_IRQ);
