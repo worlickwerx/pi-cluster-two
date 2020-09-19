@@ -653,17 +653,6 @@ Connection ~ 3950 3900
 Wire Wire Line
 	3950 3900 3650 3900
 $Comp
-L Device:CP C11
-U 1 1 6680D782
-P 9400 3200
-F 0 "C11" H 9518 3246 50  0000 L CNN
-F 1 "10uF" H 9518 3155 50  0000 L CNN
-F 2 "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm" H 9438 3050 50  0001 C CNN
-F 3 "~" H 9400 3200 50  0001 C CNN
-	1    9400 3200
-	0    -1   -1   0   
-$EndComp
-$Comp
 L power:GND #PWR049
 U 1 1 6680EF8A
 P 9550 3200
@@ -1728,5 +1717,16 @@ F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 3338 6850 50  
 F 3 "~" H 3300 7000 50  0001 C CNN
 	1    3300 7000
 	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C11
+U 1 1 5F663778
+P 9400 3200
+F 0 "C11" V 9500 3300 50  0000 L CNN
+F 1 "10uF" V 9250 3100 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 9438 3050 50  0001 C CNN
+F 3 "~" H 9400 3200 50  0001 C CNN
+	1    9400 3200
+	0    1    1    0   
 $EndComp
 $EndSCHEMATC
