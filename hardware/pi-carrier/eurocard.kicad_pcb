@@ -2,7 +2,7 @@
 
   (general
     (thickness 1.6)
-    (drawings 40)
+    (drawings 43)
     (tracks 563)
     (zones 0)
     (modules 42)
@@ -2551,6 +2551,15 @@
       (net 121 "Net-(MK1-Pad1)"))
   )
 
+  (gr_text SWDIO (at 179.032 50.442 270) (layer F.SilkS)
+    (effects (font (size 1.5 1.5) (thickness 0.3)))
+  )
+  (gr_text SWCLK (at 176.746 50.696 270) (layer F.SilkS)
+    (effects (font (size 1.5 1.5) (thickness 0.3)))
+  )
+  (gr_text USB (at 179.286 108.354) (layer F.SilkS)
+    (effects (font (size 1.5 1.5) (thickness 0.3)))
+  )
   (gr_text CERN-OHL-1.2 (at 114.262 51.712) (layer F.SilkS) (tstamp 5F34B8DA)
     (effects (font (size 1.5 1.5) (thickness 0.3)))
   )
