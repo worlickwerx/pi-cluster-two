@@ -1744,4 +1744,6 @@ Connection ~ 1600 6100
 NoConn ~ 600  5000
 NoConn ~ 600  5100
 NoConn ~ 600  5200
+Text Notes 5650 2250 0    50   ~ 0
+1% divider
 $EndSCHEMATC
