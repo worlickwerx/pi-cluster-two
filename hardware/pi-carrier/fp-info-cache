@@ -1,4 +1,4 @@
-0
+18357279074397683
 Battery
 BatteryHolder_Bulgin_BX0036_1xC
 Bulgin Battery Holder, BX0036, Battery Type C (https://www.bulgin.com/products/pub/media/bulgin/data/Battery_holders.pdf)
@@ -6334,13 +6334,6 @@ XT60 female vertical
 0
 2
 2
-Connector_Amphenol
-Amphenol_M8S-03PMMR-SF8001
-M8 Male connector for panel, 90° PCB mount (https://www.amphenolltw.com/2012download/2D%20PDF/03_M%20Series%20Sensor%20Connectors/M8S-XXPMMR-SF8001.pdf)
-three-pin M8
-0
-5
-4
 Connector_Audio
 Jack_3.5mm_CUI_SJ-3523-SMT_Horizontal
 3.5 mm, Stereo, Right Angle, Surface Mount (SMT), Audio Jack Connector (https://www.cui.com/product/resource/sj-352x-smt-series.pdf)
@@ -46871,69 +46864,6 @@ MesurementPoint Square SMDPad 5mmx10mm
 0
 1
 1
-Connector_Wuerth
-Wuerth_WR-WTB_64800211622_1x02_P1.50mm_Vertical
-Wuerth WR-WTB series connector, 64800211622 (https://katalog.we-online.com/em/datasheet/6480xx11622.pdf), generated with kicad-footprint-generator
-connector Wuerth WR-WTB vertical
-0
-2
-2
-Connector_Wuerth
-Wuerth_WR-WTB_64800311622_1x03_P1.50mm_Vertical
-Wuerth WR-WTB series connector, 64800311622 (https://katalog.we-online.com/em/datasheet/6480xx11622.pdf), generated with kicad-footprint-generator
-connector Wuerth WR-WTB vertical
-0
-3
-3
-Connector_Wuerth
-Wuerth_WR-WTB_64800411622_1x04_P1.50mm_Vertical
-Wuerth WR-WTB series connector, 64800411622 (https://katalog.we-online.com/em/datasheet/6480xx11622.pdf), generated with kicad-footprint-generator
-connector Wuerth WR-WTB vertical
-0
-4
-4
-Connector_Wuerth
-Wuerth_WR-WTB_64800511622_1x05_P1.50mm_Vertical
-Wuerth WR-WTB series connector, 64800511622 (https://katalog.we-online.com/em/datasheet/6480xx11622.pdf), generated with kicad-footprint-generator
-connector Wuerth WR-WTB vertical
-0
-5
-5
-Connector_Wuerth
-Wuerth_WR-WTB_64800611622_1x06_P1.50mm_Vertical
-Wuerth WR-WTB series connector, 64800611622 (https://katalog.we-online.com/em/datasheet/6480xx11622.pdf), generated with kicad-footprint-generator
-connector Wuerth WR-WTB vertical
-0
-6
-6
-Connector_Wuerth
-Wuerth_WR-WTB_64800711622_1x07_P1.50mm_Vertical
-Wuerth WR-WTB series connector, 64800711622 (https://katalog.we-online.com/em/datasheet/6480xx11622.pdf), generated with kicad-footprint-generator
-connector Wuerth WR-WTB vertical
-0
-7
-7
-Connector_Wuerth
-Wuerth_WR-WTB_64800811622_1x08_P1.50mm_Vertical
-Wuerth WR-WTB series connector, 64800811622 (https://katalog.we-online.com/em/datasheet/6480xx11622.pdf), generated with kicad-footprint-generator
-connector Wuerth WR-WTB vertical
-0
-8
-8
-Connector_Wuerth
-Wuerth_WR-WTB_64800911622_1x09_P1.50mm_Vertical
-Wuerth WR-WTB series connector, 64800911622 (https://katalog.we-online.com/em/datasheet/6480xx11622.pdf), generated with kicad-footprint-generator
-connector Wuerth WR-WTB vertical
-0
-9
-9
-Connector_Wuerth
-Wuerth_WR-WTB_64801011622_1x10_P1.50mm_Vertical
-Wuerth WR-WTB series connector, 64801011622 (https://katalog.we-online.com/em/datasheet/6480xx11622.pdf), generated with kicad-footprint-generator
-connector Wuerth WR-WTB vertical
-0
-10
-10
 Converter_ACDC
 Converter_ACDC_CUI_PBO-3-Sxx_THT_Vertical
 ACDC-Converter, 3W, CUI PBO-3, THT https://www.cui.com/product/resource/pbo-3.pdf
@@ -74556,20 +74486,6 @@ Current transducer
 0
 10
 10
-Sensor_Distance
-ST_VL53L1x
-VL53L1x distance sensor
-VL53L1CXV0FY1 VL53L1x
-0
-13
-12
-Sensor_Humidity
-Sensirion_DFN-4-1EP_2x2mm_P1mm_EP0.7x1.6mm
-DFN, 4 Pin (https://www.sensirion.com/fileadmin/user_upload/customers/sensirion/Dokumente/0_Datasheets/Humidity/Sensirion_Humidity_Sensors_SHTC3_Datasheet.pdf)
-Sensirion DFN NoLead
-0
-10
-5
 Sensor_Motion
 InvenSense_QFN-24_3x3mm_P0.4mm
 24-Lead Plastic QFN (3mm x 3mm); Pitch 0.4mm; EP 1.7x1.54mm; for InvenSense motion sensors; keepout area marked (Package see: https://store.invensense.com/datasheets/invensense/MPU9250REV1.0.pdf; See also https://www.invensense.com/wp-content/uploads/2015/02/InvenSense-MEMS-Handling.pdf)
@@ -80926,3 +80842,10 @@ Rasp_pi4_mounted
 0
 40
 40
+project_footprints
+protopad
+
+
+0
+64
+8
