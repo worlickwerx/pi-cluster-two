@@ -5,12 +5,6 @@ D STM32 Blue Pill
 K STM32 Blue Pill BluePill
 $ENDCMP
 #
-$CMP molliebus
-D Connector Europe, 96 contacts, ranges A,B,C
-K connector
-F  ~
-$ENDCMP
-#
 $CMP C64AC
 D Connector Europe 64 contacts, ranges A,B,C
 K connector DIN
@@ -31,6 +25,12 @@ $CMP TPS27081ADDCR
 D IC LOAD SW HIGH SIDE 6SOT
 K 296-34970-1-ND
 F http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Ftps27081a
+$ENDCMP
+#
+$CMP molliebus
+D Connector Europe, 96 contacts, ranges A,B,C
+K connector
+F  ~
 $ENDCMP
 #
 #End Doc Library
