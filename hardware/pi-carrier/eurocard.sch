@@ -2062,10 +2062,6 @@ Wire Wire Line
 	9500 5100 9000 5100
 Text Label 9000 5100 0    50   ~ 0
 PI_GPIO13
-Wire Wire Line
-	10000 5000 10500 5000
-Text Label 10500 5000 2    50   ~ 0
-PI_GPIO12
 Connection ~ 8400 4600
 Wire Wire Line
 	8400 4600 8950 4600
@@ -2218,10 +2214,6 @@ Wire Wire Line
 	6800 4700 6250 4700
 Text Label 6250 4700 0    50   ~ 0
 PI_SPI1_CE0
-Wire Wire Line
-	10000 5200 10500 5200
-Text Label 10500 5200 2    50   ~ 0
-PI_SPI1_CE2
 Wire Wire Line
 	9500 4000 9000 4000
 Text Label 9000 4000 0    50   ~ 0
@@ -3223,4 +3215,6 @@ Wire Wire Line
 	3650 7200 3250 7200
 Text Label 3250 7200 0    50   ~ 0
 PI_GPIO12
+NoConn ~ 10000 5200
+NoConn ~ 10000 5000
 $EndSCHEMATC
