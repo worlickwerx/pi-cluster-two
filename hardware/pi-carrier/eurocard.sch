@@ -3005,41 +3005,10 @@ Wire Wire Line
 	10000 5300 10500 5300
 Text Label 10500 5300 2    50   ~ 0
 PI_SPI1_MOSI
-$Comp
-L Connector_Generic:Conn_01x08 J8
-U 1 1 6696D208
-P 2900 5850
-F 0 "J8" H 2980 5796 50  0000 L CNN
-F 1 "Conn_01x08" H 2980 5751 50  0001 L CNN
-F 2 "project_footprints:protopad" H 2900 5850 50  0001 C CNN
-F 3 "~" H 2900 5850 50  0001 C CNN
-	1    2900 5850
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
-	2700 5550 2400 5550
-Wire Wire Line
-	2700 5750 2650 5750
-Wire Wire Line
-	2700 5850 2650 5850
-Text Label 2400 5550 0    50   ~ 0
+	3300 5600 3650 5600
+Text Label 3650 5600 2    50   ~ 0
 ~RST~
-Wire Wire Line
-	2700 5950 2400 5950
-Text Label 2400 5950 0    50   ~ 0
-PA0
-Wire Wire Line
-	2700 6050 2400 6050
-Text Label 2400 6050 0    50   ~ 0
-PA1
-Wire Wire Line
-	2700 6150 2400 6150
-Text Label 2400 6150 0    50   ~ 0
-PA2
-Text Label 2400 6250 0    50   ~ 0
-PA3
-Wire Wire Line
-	2400 6250 2700 6250
 Wire Wire Line
 	5600 4550 6100 4550
 Text Label 6100 4550 2    50   ~ 0
@@ -3057,26 +3026,25 @@ PA3
 $Comp
 L power:GND #PWR0130
 U 1 1 66E3D030
-P 2650 5750
-F 0 "#PWR0130" H 2650 5500 50  0001 C CNN
-F 1 "GND" V 2650 5550 50  0000 C CNN
-F 2 "" H 2650 5750 50  0001 C CNN
-F 3 "" H 2650 5750 50  0001 C CNN
-	1    2650 5750
-	0    1    1    0   
+P 3400 5700
+F 0 "#PWR0130" H 3400 5450 50  0001 C CNN
+F 1 "GND" V 3400 5500 50  0000 C CNN
+F 2 "" H 3400 5700 50  0001 C CNN
+F 3 "" H 3400 5700 50  0001 C CNN
+	1    3400 5700
+	0    -1   -1   0   
 $EndComp
 $Comp
 L power:+3V3 #PWR0131
 U 1 1 66E3DC7E
-P 2650 5850
-F 0 "#PWR0131" H 2650 5700 50  0001 C CNN
-F 1 "+3V3" V 2650 6050 50  0000 C CNN
-F 2 "" H 2650 5850 50  0001 C CNN
-F 3 "" H 2650 5850 50  0001 C CNN
-	1    2650 5850
-	0    -1   -1   0   
+P 3300 5900
+F 0 "#PWR0131" H 3300 5750 50  0001 C CNN
+F 1 "+3V3" V 3300 6100 50  0000 C CNN
+F 2 "" H 3300 5900 50  0001 C CNN
+F 3 "" H 3300 5900 50  0001 C CNN
+	1    3300 5900
+	0    1    1    0   
 $EndComp
-NoConn ~ 2700 5650
 NoConn ~ 4300 4750
 NoConn ~ 4300 5750
 NoConn ~ 5600 5150
@@ -3084,4 +3052,90 @@ NoConn ~ 5600 5450
 NoConn ~ 5600 5550
 NoConn ~ 5600 5850
 NoConn ~ 4650 5250
+$Comp
+L Connector_Generic:Conn_02x08_Counter_Clockwise J8
+U 1 1 6736F073
+P 3000 5900
+F 0 "J8" H 3050 6325 50  0000 C CNN
+F 1 "Conn_02x08_Counter_Clockwise" H 3050 6326 50  0001 C CNN
+F 2 "project_footprints:protopad" H 3000 5900 50  0001 C CNN
+F 3 "~" H 3000 5900 50  0001 C CNN
+	1    3000 5900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3650 6300 3300 6300
+Text Label 3650 6300 2    50   ~ 0
+PA3
+Text Label 3650 6200 2    50   ~ 0
+PA2
+Wire Wire Line
+	3300 6200 3650 6200
+Text Label 3650 6100 2    50   ~ 0
+PA1
+Wire Wire Line
+	3300 6100 3650 6100
+Text Label 3650 6000 2    50   ~ 0
+PA0
+Wire Wire Line
+	3300 6000 3650 6000
+Wire Wire Line
+	3300 5700 3350 5700
+Wire Wire Line
+	3300 5800 3350 5800
+Wire Wire Line
+	3350 5800 3350 5700
+Connection ~ 3350 5700
+Wire Wire Line
+	3350 5700 3400 5700
+$Comp
+L power:GND #PWR?
+U 1 1 6789E4DE
+P 2700 6300
+F 0 "#PWR?" H 2700 6050 50  0001 C CNN
+F 1 "GND" V 2700 6100 50  0000 C CNN
+F 2 "" H 2700 6300 50  0001 C CNN
+F 3 "" H 2700 6300 50  0001 C CNN
+	1    2700 6300
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	2700 6300 2750 6300
+Wire Wire Line
+	2800 5600 2750 5600
+Wire Wire Line
+	2750 5600 2750 5700
+Connection ~ 2750 6300
+Wire Wire Line
+	2750 6300 2800 6300
+Wire Wire Line
+	2800 5700 2750 5700
+Connection ~ 2750 5700
+Wire Wire Line
+	2750 5700 2750 5800
+Wire Wire Line
+	2800 5800 2750 5800
+Connection ~ 2750 5800
+Wire Wire Line
+	2750 5800 2750 5900
+Wire Wire Line
+	2800 5900 2750 5900
+Connection ~ 2750 5900
+Wire Wire Line
+	2750 5900 2750 6000
+Wire Wire Line
+	2800 6000 2750 6000
+Connection ~ 2750 6000
+Wire Wire Line
+	2750 6000 2750 6100
+Wire Wire Line
+	2800 6100 2750 6100
+Connection ~ 2750 6100
+Wire Wire Line
+	2750 6100 2750 6200
+Wire Wire Line
+	2800 6200 2750 6200
+Connection ~ 2750 6200
+Wire Wire Line
+	2750 6200 2750 6300
 $EndSCHEMATC
