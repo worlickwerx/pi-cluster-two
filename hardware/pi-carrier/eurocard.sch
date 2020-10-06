@@ -1214,7 +1214,7 @@ L power:GND #PWR01
 U 1 1 5F4288C2
 P 1800 6550
 F 0 "#PWR01" H 1800 6300 50  0001 C CNN
-F 1 "GND" H 1805 6377 50  0000 C CNN
+F 1 "GND" V 1850 6400 50  0000 C CNN
 F 2 "" H 1800 6550 50  0001 C CNN
 F 3 "" H 1800 6550 50  0001 C CNN
 	1    1800 6550
@@ -1291,10 +1291,6 @@ Wire Wire Line
 	8400 4500 8500 4500
 Wire Wire Line
 	8500 4000 8500 4500
-NoConn ~ 1750 4050
-NoConn ~ 1750 4150
-NoConn ~ 1750 4250
-NoConn ~ 1750 4350
 NoConn ~ 800  5950
 NoConn ~ 800  6050
 NoConn ~ 800  6150
@@ -1795,8 +1791,8 @@ Text Label 2100 6150 2    50   ~ 0
 CAN+
 Text Label 2100 6250 2    50   ~ 0
 CAN-
-Text Label 2050 6750 2    50   ~ 0
-BUS5V
+Text Label 2100 6750 2    50   ~ 0
+BUS5V_1
 Wire Wire Line
 	3600 5150 4300 5150
 Wire Wire Line
@@ -1812,11 +1808,11 @@ CAN+
 Wire Wire Line
 	1750 6150 2100 6150
 Wire Wire Line
-	1750 6750 2050 6750
+	1750 6750 2100 6750
 Wire Wire Line
 	800  7150 550  7150
 Text Label 550  7150 0    50   ~ 0
-BUS5V
+BUS5V_1
 Wire Notes Line
 	6150 6350 2250 6350
 Wire Notes Line
@@ -2372,10 +2368,6 @@ Wire Wire Line
 Wire Wire Line
 	1550 1250 1850 1250
 Wire Wire Line
-	1550 850  1850 850 
-Wire Wire Line
-	1550 750  1850 750 
-Wire Wire Line
 	1050 1450 750  1450
 Wire Wire Line
 	1550 2550 1850 2550
@@ -2396,8 +2388,6 @@ Wire Wire Line
 Wire Wire Line
 	1050 1350 750  1350
 Wire Wire Line
-	1550 650  1850 650 
-Wire Wire Line
 	1550 1950 1850 1950
 Wire Wire Line
 	1550 2450 1750 2450
@@ -2407,10 +2397,6 @@ Wire Wire Line
 	1050 1950 750  1950
 Wire Wire Line
 	1550 1350 1850 1350
-Wire Wire Line
-	1550 1050 1850 1050
-Wire Wire Line
-	1550 950  1850 950 
 Text Label 750  650  0    50   ~ 0
 USER13
 Text Label 750  750  0    50   ~ 0
@@ -2468,24 +2454,7 @@ $EndComp
 Text Label 750  1850 0    50   ~ 0
 USER25
 Text Label 750  2550 0    50   ~ 0
-BUS5V
-NoConn ~ 1850 650 
-NoConn ~ 1850 750 
-NoConn ~ 1850 850 
-NoConn ~ 1850 950 
-NoConn ~ 1850 1050
-NoConn ~ 1850 1150
-NoConn ~ 1850 1250
-NoConn ~ 1850 1350
-NoConn ~ 1850 1450
-NoConn ~ 1850 1650
-NoConn ~ 1850 1750
-NoConn ~ 1850 1850
-NoConn ~ 1850 1950
-NoConn ~ 1850 2050
-NoConn ~ 1850 2150
-NoConn ~ 1850 2250
-NoConn ~ 1850 2350
+BUS5V_2
 $Comp
 L power:GND #PWR0118
 U 1 1 639D2C6A
@@ -2509,7 +2478,7 @@ F 3 "" H 1750 1550 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 Text Label 1850 2550 2    50   ~ 0
-BUS5V
+BUS5V_2
 Wire Wire Line
 	800  3850 500  3850
 Text Label 500  3850 0    50   ~ 0
@@ -3000,7 +2969,6 @@ Wire Wire Line
 Wire Wire Line
 	8700 4200 8950 4200
 NoConn ~ 9500 4100
-NoConn ~ 10200 5100
 Wire Wire Line
 	10000 5300 10500 5300
 Text Label 10500 5300 2    50   ~ 0
@@ -3051,7 +3019,6 @@ NoConn ~ 5600 5150
 NoConn ~ 5600 5450
 NoConn ~ 5600 5550
 NoConn ~ 5600 5850
-NoConn ~ 4650 5250
 $Comp
 L Connector_Generic:Conn_02x08_Counter_Clockwise J8
 U 1 1 6736F073
@@ -3089,10 +3056,10 @@ Connection ~ 3350 5700
 Wire Wire Line
 	3350 5700 3400 5700
 $Comp
-L power:GND #PWR?
+L power:GND #PWR0132
 U 1 1 6789E4DE
 P 2700 6300
-F 0 "#PWR?" H 2700 6050 50  0001 C CNN
+F 0 "#PWR0132" H 2700 6050 50  0001 C CNN
 F 1 "GND" V 2700 6100 50  0000 C CNN
 F 2 "" H 2700 6300 50  0001 C CNN
 F 3 "" H 2700 6300 50  0001 C CNN
@@ -3138,4 +3105,88 @@ Wire Wire Line
 Connection ~ 2750 6200
 Wire Wire Line
 	2750 6200 2750 6300
+Text Label 1850 2350 2    50   ~ 0
+RSV30
+Text Label 1850 2250 2    50   ~ 0
+RSV29
+Text Label 1850 2150 2    50   ~ 0
+RSV28
+Text Label 1850 2050 2    50   ~ 0
+RSV27
+Text Label 1850 1950 2    50   ~ 0
+RSV26
+Text Label 1850 1850 2    50   ~ 0
+RSV25
+Text Label 1850 1750 2    50   ~ 0
+RSV24
+Text Label 1850 1650 2    50   ~ 0
+RSV23
+Wire Wire Line
+	1750 2750 2100 2750
+Text Label 2100 2750 2    50   ~ 0
+RSV30
+Wire Wire Line
+	1750 2850 2100 2850
+Text Label 2100 2850 2    50   ~ 0
+RSV29
+Wire Wire Line
+	1750 2950 2100 2950
+Text Label 2100 2950 2    50   ~ 0
+RSV28
+Wire Wire Line
+	1750 3050 2100 3050
+Text Label 2100 3050 2    50   ~ 0
+RSV27
+Wire Wire Line
+	1750 3150 2100 3150
+Text Label 2100 3150 2    50   ~ 0
+RSV26
+Wire Wire Line
+	1750 3250 2100 3250
+Text Label 2100 3250 2    50   ~ 0
+RSV25
+Wire Wire Line
+	1750 3350 2100 3350
+Text Label 2100 3350 2    50   ~ 0
+RSV24
+Wire Wire Line
+	1750 3450 2100 3450
+Text Label 2100 3450 2    50   ~ 0
+RSV23
+Wire Wire Line
+	1750 4050 2100 4050
+Text Label 2100 4050 2    50   ~ 0
+RSV21
+Wire Wire Line
+	1750 4150 2100 4150
+Text Label 2100 4150 2    50   ~ 0
+RSV20
+Wire Wire Line
+	1750 4250 2100 4250
+Text Label 2100 4250 2    50   ~ 0
+RSV19
+Wire Wire Line
+	1750 4350 2100 4350
+Text Label 2100 4350 2    50   ~ 0
+RSV18
+Text Label 1850 1150 2    50   ~ 0
+RSV18
+Text Label 1850 1250 2    50   ~ 0
+RSV19
+Text Label 1850 1350 2    50   ~ 0
+RSV20
+Text Label 1850 1450 2    50   ~ 0
+RSV21
+NoConn ~ 1550 650 
+NoConn ~ 1550 750 
+NoConn ~ 1550 850 
+NoConn ~ 1550 950 
+NoConn ~ 1550 1050
+NoConn ~ 1750 3750
+NoConn ~ 1750 3650
+NoConn ~ 1750 3550
+Wire Wire Line
+	1750 6650 2100 6650
+Text Label 2100 6650 2    50   ~ 0
+BUS5V_2
 $EndSCHEMATC
