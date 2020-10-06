@@ -2889,7 +2889,6 @@ Wire Wire Line
 	10400 5600 10100 5600
 Wire Wire Line
 	10100 5600 10100 5650
-NoConn ~ 3650 7200
 NoConn ~ 3650 7100
 NoConn ~ 3650 7000
 NoConn ~ 3650 6900
@@ -3220,4 +3219,8 @@ Wire Wire Line
 Text Label 1850 950  2    50   ~ 0
 ~RST~
 NoConn ~ 1550 850 
+Wire Wire Line
+	3650 7200 3250 7200
+Text Label 3250 7200 0    50   ~ 0
+PI_GPIO12
 $EndSCHEMATC
