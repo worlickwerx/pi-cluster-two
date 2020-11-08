@@ -1993,12 +1993,12 @@ Wire Wire Line
 Text Label 8950 5600 2    50   ~ 0
 PI_SPI0_SCLK
 Wire Wire Line
-	8400 5800 8800 5800
-Text Label 8800 5800 2    50   ~ 0
-PI_GPIO12
+	8400 5800 8950 5800
+Text Label 8950 5800 2    50   ~ 0
+PI_SPI1_INT
 Wire Wire Line
-	8400 5900 8800 5900
-Text Label 8800 5900 2    50   ~ 0
+	8400 5900 8950 5900
+Text Label 8950 5900 2    50   ~ 0
 PI_GPIO13
 Wire Wire Line
 	10000 4700 10500 4700
@@ -3137,9 +3137,9 @@ Text Label 1850 950  2    50   ~ 0
 ~RST~
 NoConn ~ 1550 850 
 Wire Wire Line
-	3650 7200 3250 7200
-Text Label 3250 7200 0    50   ~ 0
-PI_GPIO12
+	3650 7200 3200 7200
+Text Label 3200 7200 0    50   ~ 0
+PI_SPI1_INT
 NoConn ~ 10000 5200
 NoConn ~ 10000 5000
 NoConn ~ 4300 5750
