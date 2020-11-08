@@ -3215,6 +3215,12 @@ Text Label 1850 850  2    50   ~ 0
 RSV15
 NoConn ~ 5600 5550
 NoConn ~ 5600 5450
-NoConn ~ 1550 650 
-NoConn ~ 1550 750 
+Wire Wire Line
+	1550 650  1850 650 
+Text Label 1850 650  2    50   ~ 0
+CAN+
+Wire Wire Line
+	1550 750  1850 750 
+Text Label 1850 750  2    50   ~ 0
+CAN-
 $EndSCHEMATC
