@@ -3203,10 +3203,6 @@ PA12
 Text Label 1850 750  2    50   ~ 0
 PA11
 Wire Wire Line
-	4300 5750 3700 5750
-Text Label 3700 5750 0    50   ~ 0
-PB14
-Wire Wire Line
 	1550 950  1850 950 
 Text Label 1850 950  2    50   ~ 0
 ~RST~
@@ -3217,4 +3213,5 @@ Text Label 3250 7200 0    50   ~ 0
 PI_GPIO12
 NoConn ~ 10000 5200
 NoConn ~ 10000 5000
+NoConn ~ 4300 5750
 $EndSCHEMATC
