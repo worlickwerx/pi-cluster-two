@@ -1076,17 +1076,6 @@ Wire Wire Line
 Text Label 6400 2350 2    50   ~ 0
 PWR_MEASURE_V
 $Comp
-L Connector:Conn_01x03_Male J3
-U 1 1 5F59F6E6
-P 3200 800
-F 0 "J3" V 3100 850 50  0000 R CNN
-F 1 "Conn_01x03_Male" V 3172 823 50  0001 R CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 3200 800 50  0001 C CNN
-F 3 "~" H 3200 800 50  0001 C CNN
-	1    3200 800 
-	0    1    1    0   
-$EndComp
-$Comp
 L power:GND #PWR014
 U 1 1 5F6581B7
 P 3300 1000
@@ -1097,9 +1086,9 @@ F 3 "" H 3300 1000 50  0001 C CNN
 	1    3300 1000
 	1    0    0    -1  
 $EndComp
-Text Notes 3250 800  0    50   ~ 0
+Text Notes 3250 700  0    50   ~ 0
 on\n
-Text Notes 3000 800  0    50   ~ 0
+Text Notes 3000 700  0    50   ~ 0
 ctrl
 Wire Wire Line
 	2750 1000 2750 1050
@@ -1852,47 +1841,36 @@ Text Notes 3750 6350 0    59   ~ 0
 Service Processor
 Wire Wire Line
 	3600 3100 3400 3100
-Text Label 5600 3000 0    50   ~ 0
+Text Label 5500 3000 0    50   ~ 0
 BOOT1
 $Comp
 L power:GND #PWR0116
 U 1 1 61A6DB8C
-P 5850 3150
-F 0 "#PWR0116" H 5850 2900 50  0001 C CNN
-F 1 "GND" H 5950 3050 50  0000 C CNN
-F 2 "" H 5850 3150 50  0001 C CNN
-F 3 "" H 5850 3150 50  0001 C CNN
-	1    5850 3150
+P 5750 3150
+F 0 "#PWR0116" H 5750 2900 50  0001 C CNN
+F 1 "GND" H 5850 3050 50  0000 C CNN
+F 2 "" H 5750 3150 50  0001 C CNN
+F 3 "" H 5750 3150 50  0001 C CNN
+	1    5750 3150
 	1    0    0    -1  
 $EndComp
 $Comp
 L power:+3V3 #PWR0119
 U 1 1 61A8054A
-P 5850 2850
-F 0 "#PWR0119" H 5850 2700 50  0001 C CNN
-F 1 "+3V3" H 5700 2900 50  0000 C CNN
-F 2 "" H 5850 2850 50  0001 C CNN
-F 3 "" H 5850 2850 50  0001 C CNN
-	1    5850 2850
+P 5750 2850
+F 0 "#PWR0119" H 5750 2700 50  0001 C CNN
+F 1 "+3V3" H 5600 2900 50  0000 C CNN
+F 2 "" H 5750 2850 50  0001 C CNN
+F 3 "" H 5750 2850 50  0001 C CNN
+	1    5750 2850
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
 	4250 4550 4300 4550
 Wire Wire Line
 	3950 4550 3700 4550
-$Comp
-L Connector:Conn_01x03_Male J2
-U 1 1 62665477
-P 6150 3000
-F 0 "J2" V 6050 3050 50  0000 R CNN
-F 1 "Conn_01x03_Male" V 6122 3023 50  0001 R CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 6150 3000 50  0001 C CNN
-F 3 "~" H 6150 3000 50  0001 C CNN
-	1    6150 3000
-	-1   0    0    1   
-$EndComp
 Wire Wire Line
-	5950 3000 5600 3000
+	5850 3000 5500 3000
 Wire Wire Line
 	5100 3050 5200 3050
 Connection ~ 5100 3050
@@ -1914,13 +1892,13 @@ F 3 "http://www.st.com/st-web-ui/static/active/en/resource/technical/document/da
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	5950 2900 5850 2900
+	5850 2900 5750 2900
 Wire Wire Line
-	5850 2900 5850 2850
+	5750 2900 5750 2850
 Wire Wire Line
-	5950 3100 5850 3100
+	5850 3100 5750 3100
 Wire Wire Line
-	5850 3100 5850 3150
+	5750 3100 5750 3150
 $Comp
 L power:GND #PWR0114
 U 1 1 626CB5B5
@@ -3209,4 +3187,26 @@ PI_GPIO12
 NoConn ~ 10000 5200
 NoConn ~ 10000 5000
 NoConn ~ 4300 5750
+$Comp
+L Connector_Generic:Conn_01x03 J3
+U 1 1 5FD503F1
+P 6050 3000
+F 0 "J3" H 5968 2767 50  0000 C CNN
+F 1 "Conn_01x03" H 6130 2951 50  0001 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 6050 3000 50  0001 C CNN
+F 3 "~" H 6050 3000 50  0001 C CNN
+	1    6050 3000
+	1    0    0    1   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x03 J2
+U 1 1 5FD98DF2
+P 3200 800
+F 0 "J2" V 3118 980 50  0000 L CNN
+F 1 "Conn_01x03" H 3280 751 50  0001 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 3200 800 50  0001 C CNN
+F 3 "~" H 3200 800 50  0001 C CNN
+	1    3200 800 
+	0    1    -1   0   
+$EndComp
 $EndSCHEMATC
