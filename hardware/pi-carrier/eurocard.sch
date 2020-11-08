@@ -2849,10 +2849,6 @@ Wire Wire Line
 Wire Wire Line
 	7800 3700 8400 3700
 Wire Wire Line
-	7750 3700 7800 3700
-Wire Wire Line
-	7700 3700 7800 3700
-Wire Wire Line
 	8400 4000 8400 4600
 Wire Wire Line
 	8700 4200 8950 4200
@@ -3222,4 +3218,6 @@ Wire Wire Line
 Connection ~ 9000 6200
 Wire Wire Line
 	9000 6200 9000 6400
+Wire Wire Line
+	7700 3700 7800 3700
 $EndSCHEMATC
