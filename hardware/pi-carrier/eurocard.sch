@@ -680,7 +680,6 @@ F 3 "" H 4500 1050 50  0001 C CNN
 	1    4500 1050
 	1    0    0    -1  
 $EndComp
-NoConn ~ 150  4500
 Wire Wire Line
 	800  7350 900  7350
 Connection ~ 900  7350
@@ -1881,9 +1880,6 @@ Wire Wire Line
 	4250 4550 4300 4550
 Wire Wire Line
 	3950 4550 3700 4550
-NoConn ~ 6600 3350
-NoConn ~ 3900 800 
-NoConn ~ 4050 7600
 $Comp
 L Connector:Conn_01x03_Male J2
 U 1 1 62665477
@@ -2271,7 +2267,6 @@ Text Label 9000 4200 0    50   ~ 0
 PI_GPIO22
 NoConn ~ 10000 4800
 NoConn ~ 9500 4800
-NoConn ~ 12400 4200
 $Comp
 L Connector_Generic:Conn_02x20_Odd_Even J6
 U 1 1 63307F9E
