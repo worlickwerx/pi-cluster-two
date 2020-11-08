@@ -6,7 +6,7 @@ encoding utf-8
 Sheet 1 1
 Title "Molliebus Pi Carrier"
 Date "2020-01-24"
-Rev "1"
+Rev "2"
 Comp "WorlickWerx"
 Comment1 "SPDX-License-Identifier: CERN-OHL-1.2"
 Comment2 ""
