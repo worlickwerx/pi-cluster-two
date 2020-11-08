@@ -1469,12 +1469,12 @@ Wire Wire Line
 Text Label 3700 5450 0    50   ~ 0
 PI_SDA
 Wire Wire Line
-	4300 4450 3700 4450
-Text Label 3700 4450 0    50   ~ 0
+	4300 4450 3650 4450
+Text Label 3650 4450 0    50   ~ 0
 PWR_MEASURE_V
 Wire Wire Line
-	4300 4350 3700 4350
-Text Label 3700 4350 0    50   ~ 0
+	4300 4350 3650 4350
+Text Label 3650 4350 0    50   ~ 0
 PWR_MEASURE_I
 Wire Wire Line
 	5600 5050 6100 5050
