@@ -2456,17 +2456,6 @@ Wire Wire Line
 Text Label 500  5650 0    50   ~ 0
 USER13
 $Comp
-L eurocard:molliebus J1
-U 1 1 5F10A3E3
-P 1600 2700
-F 0 "J1" H 1925 2533 50  0000 C CNN
-F 1 "molliebus" H 1925 2624 50  0000 C CNN
-F 2 "Connector_DIN:DIN41612_C_3x32_Male_Horizontal_THT" H 3500 3300 50  0001 C CNN
-F 3 " ~" H 3500 3300 50  0001 C CNN
-	1    1600 2700
-	-1   0    0    1   
-$EndComp
-$Comp
 L Interface_CAN_LIN:TCAN332 U11
 U 1 1 63D2A82D
 P 2900 7600
@@ -3094,39 +3083,9 @@ F 3 "~" H 2550 4500 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 Wire Wire Line
-	1550 650  1850 650 
-$Comp
-L power:GND #PWR0133
-U 1 1 6856049C
-P 1750 1050
-F 0 "#PWR0133" H 1750 800 50  0001 C CNN
-F 1 "GND" V 1800 900 50  0000 C CNN
-F 2 "" H 1750 1050 50  0001 C CNN
-F 3 "" H 1750 1050 50  0001 C CNN
-	1    1750 1050
-	0    -1   -1   0   
-$EndComp
-Wire Wire Line
-	5600 5450 6100 5450
-Text Label 6100 5450 2    50   ~ 0
-PA11
-Wire Wire Line
-	5600 5550 6100 5550
-Text Label 6100 5550 2    50   ~ 0
-PA12
-Wire Wire Line
-	1550 1050 1750 1050
-Wire Wire Line
-	1550 750  1850 750 
-Text Label 1850 650  2    50   ~ 0
-PA12
-Text Label 1850 750  2    50   ~ 0
-PA11
+	1550 1050 1850 1050
 Wire Wire Line
 	1550 950  1850 950 
-Text Label 1850 950  2    50   ~ 0
-~RST~
-NoConn ~ 1550 850 
 Wire Wire Line
 	3650 7200 3200 7200
 Text Label 3200 7200 0    50   ~ 0
@@ -3192,9 +3151,6 @@ Wire Wire Line
 	3250 4100 3500 4100
 Text Label 3500 4100 2    50   ~ 0
 SWO
-NoConn ~ 1750 4850
-NoConn ~ 1750 4750
-NoConn ~ 1750 4650
 Wire Wire Line
 	9850 6200 10150 6200
 Wire Wire Line
@@ -3226,4 +3182,39 @@ Wire Wire Line
 	9500 5300 9000 5300
 Text Label 9000 5300 0    50   ~ 0
 PI_SPI1_CE0
+Text Label 1850 1050 2    50   ~ 0
+RSV17
+Text Label 1850 950  2    50   ~ 0
+RSV16
+$Comp
+L eurocard:molliebus J1
+U 1 1 5F10A3E3
+P 1600 2700
+F 0 "J1" H 2150 6850 50  0000 C CNN
+F 1 "molliebus" H 1900 6850 50  0000 C CNN
+F 2 "Connector_DIN:DIN41612_C_3x32_Male_Horizontal_THT" H 3500 3300 50  0001 C CNN
+F 3 " ~" H 3500 3300 50  0001 C CNN
+	1    1600 2700
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	1750 4650 2100 4650
+Text Label 2100 4650 2    50   ~ 0
+RSV17
+Wire Wire Line
+	1750 4750 2100 4750
+Text Label 2100 4750 2    50   ~ 0
+RSV16
+Wire Wire Line
+	1750 4850 2100 4850
+Text Label 2100 4850 2    50   ~ 0
+RSV15
+Wire Wire Line
+	1550 850  1850 850 
+Text Label 1850 850  2    50   ~ 0
+RSV15
+NoConn ~ 5600 5550
+NoConn ~ 5600 5450
+NoConn ~ 1550 650 
+NoConn ~ 1550 750 
 $EndSCHEMATC
