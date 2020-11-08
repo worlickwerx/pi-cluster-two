@@ -2147,7 +2147,6 @@ Wire Wire Line
 	9500 4300 9000 4300
 Text Label 9000 4300 0    50   ~ 0
 PI_3V3
-NoConn ~ 9500 5300
 Wire Wire Line
 	10000 5400 10500 5400
 Text Label 10500 5400 2    50   ~ 0
@@ -3132,7 +3131,6 @@ Wire Wire Line
 	3650 7200 3200 7200
 Text Label 3200 7200 0    50   ~ 0
 PI_SPI1_INT
-NoConn ~ 10000 5000
 NoConn ~ 4300 5750
 $Comp
 L Connector_Generic:Conn_01x03 J3
@@ -3220,4 +3218,12 @@ Text Label 6250 4500 0    50   ~ 0
 PI_GPIO16
 Text Label 10500 4500 2    50   ~ 0
 PI_GPIO25
+Wire Wire Line
+	10000 5000 10500 5000
+Text Label 10500 5000 2    50   ~ 0
+PI_SPI1_INT
+Wire Wire Line
+	9500 5300 9000 5300
+Text Label 9000 5300 0    50   ~ 0
+PI_SPI1_CE0
 $EndSCHEMATC
