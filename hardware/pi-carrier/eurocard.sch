@@ -2175,8 +2175,6 @@ Text Label 6250 4700 0    50   ~ 0
 PI_SPI1_CE0
 Wire Wire Line
 	9500 4000 9000 4000
-Text Label 9000 4000 0    50   ~ 0
-PI_GPIO17
 $Comp
 L Connector:Raspberry_Pi_2_3 J5
 U 1 1 5EEAE6EB
@@ -2832,7 +2830,7 @@ Wire Wire Line
 	8400 4000 8400 4600
 Wire Wire Line
 	8700 4200 8950 4200
-NoConn ~ 9500 4100
+NoConn ~ 9000 4100
 Wire Wire Line
 	10000 5300 10500 5300
 Text Label 10500 5300 2    50   ~ 0
@@ -3169,7 +3167,6 @@ Wire Wire Line
 	10000 5200 10500 5200
 Text Label 10500 5200 2    50   ~ 0
 PI_GPIO16
-NoConn ~ 10000 4000
 Text Label 6250 4500 0    50   ~ 0
 PI_GPIO16
 Text Label 10500 4500 2    50   ~ 0
@@ -3223,4 +3220,15 @@ Wire Wire Line
 	1550 750  1850 750 
 Text Label 1850 750  2    50   ~ 0
 CAN-
+Wire Wire Line
+	10000 4000 10500 4000
+Text Label 10500 4000 2    50   ~ 0
+PI_GPIO17
+NoConn ~ 9000 4000
+Wire Wire Line
+	9500 4100 9000 4100
+Text Label 9000 4000 0    50   ~ 0
+PI_USB_D+
+Text Label 9000 4100 0    50   ~ 0
+PI_USB_D-
 $EndSCHEMATC
