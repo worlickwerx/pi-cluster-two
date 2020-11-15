@@ -14,18 +14,6 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L eurocard:Mounting_Hole_PAD-Mechanical MK1
-U 1 1 5A6CFFFA
-P 5750 7900
-F 0 "MK1" H 5850 7951 50  0000 L CNN
-F 1 "Mounting_Hole_PAD" H 5850 7860 50  0001 L CNN
-F 2 "Mounting_Holes:MountingHole_2.7mm" H 5750 7900 50  0001 C CNN
-F 3 "" H 5750 7900 50  0001 C CNN
-	1    5750 7900
-	0    -1   -1   0   
-$EndComp
-NoConn ~ 5850 7900
-$Comp
 L power:GND #PWR047
 U 1 1 5EB080FB
 P 8400 2900
@@ -1244,17 +1232,6 @@ NoConn ~ 800  6550
 NoConn ~ 800  6650
 NoConn ~ 800  6750
 $Comp
-L eurocard:Mounting_Hole_PAD-Mechanical MK4
-U 1 1 5F1A7E7B
-P 6050 7900
-F 0 "MK4" H 6150 7949 50  0000 L CNN
-F 1 "Mounting_Hole_PAD-Mechanical" H 6150 7858 50  0001 L CNN
-F 2 "Mounting_Holes:MountingHole_2.7mm" H 6050 7900 50  0001 C CNN
-F 3 "" H 6050 7900 50  0001 C CNN
-	1    6050 7900
-	0    -1   -1   0   
-$EndComp
-$Comp
 L Device:LED_Dual_AACC D2
 U 1 1 5F119CD6
 P 9800 1000
@@ -1296,7 +1273,6 @@ Text Notes 9400 1100 0    50   ~ 0
 red
 Text Notes 9400 900  0    50   ~ 0
 green
-NoConn ~ 6150 7900
 $Comp
 L Device:C C2
 U 1 1 5F6CE1BF
