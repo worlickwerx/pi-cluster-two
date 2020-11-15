@@ -3148,7 +3148,7 @@ L Oscillator:ASE-xxxMHz X1
 U 1 1 5FD24B79
 P 5600 6900
 F 0 "X1" H 5350 7050 50  0000 R CNN
-F 1 "ASE-8.000MHz-LR" H 5600 7150 50  0000 R CNN
+F 1 "ASE-8.000MHz-LC" H 5600 7150 50  0000 R CNN
 F 2 "Oscillator:Oscillator_SMD_Abracon_ASE-4Pin_3.2x2.5mm" H 6300 6550 50  0001 C CNN
 F 3 "http://www.abracon.com/Oscillators/ASV.pdf" H 5500 6900 50  0001 C CNN
 	1    5600 6900
@@ -3174,7 +3174,7 @@ L Oscillator:ASE-xxxMHz X2
 U 1 1 60E06DDA
 P 3000 4050
 F 0 "X2" H 2850 4300 50  0000 R CNN
-F 1 "ASE-8.000MHz-LR" H 3750 4300 50  0000 R CNN
+F 1 "ASE-8.000MHz-LC" H 3750 4300 50  0000 R CNN
 F 2 "Oscillator:Oscillator_SMD_Abracon_ASE-4Pin_3.2x2.5mm" H 3700 3700 50  0001 C CNN
 F 3 "http://www.abracon.com/Oscillators/ASV.pdf" H 2900 4050 50  0001 C CNN
 	1    3000 4050
