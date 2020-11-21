@@ -52,10 +52,11 @@ $Comp
 L 00_eurocard:LTP747 U10
 U 1 1 5EA6059F
 P 9850 2150
-F 0 "U10" H 9700 1550 50  0000 L CNN
-F 1 "LTP747" H 9900 1550 50  0000 L CNN
+F 0 "U10" H 9800 2200 50  0000 L CNN
+F 1 "Lite-on LTP747KR" H 9500 1550 50  0000 L CNN
 F 2 "00_eurocard:DIP-12_W7.62mm_right_angle" H 9750 2700 50  0001 C CNN
 F 3 "" H 9750 2700 50  0001 C CNN
+F 4 "160-1554-5-ND" H 9850 2150 50  0001 C CNN "digkey.com"
 	1    9850 2150
 	1    0    0    -1  
 $EndComp
@@ -68,9 +69,10 @@ L Driver_LED:MAX7219 U9
 U 1 1 5EABAF43
 P 8400 1900
 F 0 "U9" H 8600 3000 50  0000 C CNN
-F 1 "MAX7219" H 8700 2900 50  0000 C CNN
+F 1 "MAX7219CWG" H 8700 2900 50  0000 C CNN
 F 2 "Package_SO:SOIC-24W_7.5x15.4mm_P1.27mm" H 8350 1950 50  0001 C CNN
 F 3 "https://datasheets.maximintegrated.com/en/ds/MAX7219-MAX7221.pdf" H 8450 1750 50  0001 C CNN
+F 4 "MAX7219CWG+TTR-ND" H 8400 1900 50  0001 C CNN "digkey.com"
 	1    8400 1900
 	1    0    0    -1  
 $EndComp
@@ -79,10 +81,10 @@ L 00_eurocard:SN74AHCT125N-dk_Logic-Buffers-Drivers-Receivers-Transceivers U8
 U 1 1 5ECD43F7
 P 7350 1700
 F 0 "U8" H 6850 2350 60  0000 C CNN
-F 1 "SN74AHCT125N" H 7000 2250 39  0000 C CNN
+F 1 "SN74AHCT125PWR" H 7000 2250 39  0000 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 7550 1900 60  0001 L CNN
 F 3 "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Fsn74ahct125" H 7550 2000 60  0001 L CNN
-F 4 "296-4655-5-ND" H 7550 2100 60  0001 L CNN "Digi-Key_PN"
+F 4 "" H 7550 2100 60  0001 L CNN "Digi-Key_PN"
 F 5 "SN74AHCT125N" H 7550 2200 60  0001 L CNN "MPN"
 F 6 "Integrated Circuits (ICs)" H 7550 2300 60  0001 L CNN "Category"
 F 7 "Logic - Buffers, Drivers, Receivers, Transceivers" H 7550 2400 60  0001 L CNN "Family"
@@ -91,6 +93,7 @@ F 9 "/product-detail/en/texas-instruments/SN74AHCT125N/296-4655-5-ND/375798" H 7
 F 10 "IC BUF NON-INVERT 5.5V 14DIP" H 7550 2700 60  0001 L CNN "Description"
 F 11 "Texas Instruments" H 7550 2800 60  0001 L CNN "Manufacturer"
 F 12 "Active" H 7550 2900 60  0001 L CNN "Status"
+F 13 "296-1108-1-ND" H 7350 1700 50  0001 C CNN "digkey.com"
 	1    7350 1700
 	1    0    0    -1  
 $EndComp
@@ -328,12 +331,13 @@ PI_SCL
 $Comp
 L Device:Polyfuse_Small F1
 U 1 1 61AEBF24
-P 800 7250
-F 0 "F1" H 900 7250 50  0000 C CNN
-F 1 "3A" H 700 7200 50  0000 C CNN
-F 2 "Fuse:Fuse_1812_4532Metric_Pad1.30x3.40mm_HandSolder" H 850 7050 50  0001 L CNN
-F 3 "~" H 800 7250 50  0001 C CNN
-	1    800  7250
+P 850 7250
+F 0 "F1" H 950 7250 50  0000 C CNN
+F 1 "PTC 3A 6V" H 1050 7350 50  0000 C CNN
+F 2 "Fuse:Fuse_1812_4532Metric_Pad1.30x3.40mm_HandSolder" H 900 7050 50  0001 L CNN
+F 3 "~" H 850 7250 50  0001 C CNN
+F 4 "MINISMDC300F-2TR-ND" H 850 7250 50  0001 C CNN "digkey.com"
+	1    850  7250
 	-1   0    0    1   
 $EndComp
 Wire Wire Line
@@ -369,12 +373,12 @@ Wire Wire Line
 $Comp
 L power:PWR_FLAG #FLG01
 U 1 1 63F4497D
-P 900 7350
-F 0 "#FLG01" H 900 7425 50  0001 C CNN
-F 1 "PWR_FLAG" H 1150 7450 50  0001 C CNN
-F 2 "" H 900 7350 50  0001 C CNN
-F 3 "~" H 900 7350 50  0001 C CNN
-	1    900  7350
+P 950 7350
+F 0 "#FLG01" H 950 7425 50  0001 C CNN
+F 1 "PWR_FLAG" H 1200 7450 50  0001 C CNN
+F 2 "" H 950 7350 50  0001 C CNN
+F 3 "~" H 950 7350 50  0001 C CNN
+	1    950  7350
 	1    0    0    -1  
 $EndComp
 Wire Notes Line
@@ -497,10 +501,10 @@ L 00_eurocard:INA169NA_3K U7
 U 1 1 65FAADB1
 P 5500 1550
 F 0 "U7" H 4950 2100 60  0000 L CNN
-F 1 "INA169NA_3K" H 4950 2000 39  0000 L CNN
+F 1 "INA169NA" H 4950 2000 39  0000 L CNN
 F 2 "Package_TO_SOT_SMD:SOT-23-5_HandSoldering" H 5700 1750 60  0001 L CNN
 F 3 "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Fina139" H 5700 1850 60  0001 L CNN
-F 4 "296-26063-1-ND" H 5700 1950 60  0001 L CNN "Digi-Key_PN"
+F 4 "" H 5700 1950 60  0001 L CNN "Digi-Key_PN"
 F 5 "INA169NA/3K" H 5700 2050 60  0001 L CNN "MPN"
 F 6 "Integrated Circuits (ICs)" H 5700 2150 60  0001 L CNN "Category"
 F 7 "PMIC - Current Regulation/Management" H 5700 2250 60  0001 L CNN "Family"
@@ -509,6 +513,7 @@ F 9 "/product-detail/en/texas-instruments/INA169NA-3K/296-26063-1-ND/2254837" H 
 F 10 "IC CURRENT MONITOR 0.5% SOT23-5" H 5700 2550 60  0001 L CNN "Description"
 F 11 "Texas Instruments" H 5700 2650 60  0001 L CNN "Manufacturer"
 F 12 "Active" H 5700 2750 60  0001 L CNN "Status"
+F 13 "296-26063-2-ND" H 5500 1550 50  0001 C CNN "digkey.com"
 	1    5500 1550
 	1    0    0    -1  
 $EndComp
@@ -534,15 +539,15 @@ F 0 "U5" H 3850 1850 60  0000 L CNN
 F 1 "TPS27081ADDCR" H 3850 1750 39  0000 L CNN
 F 2 "Package_TO_SOT_SMD:SOT-23-6_Handsoldering" H 4250 1600 60  0001 L CNN
 F 3 "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Ftps27081a" H 4250 1700 60  0001 L CNN
-F 4 "296-34970-1-ND" H 4250 1800 60  0001 L CNN "Digi-Key_PN"
-F 5 "TPS27081ADDCR" H 4250 1900 60  0001 L CNN "MPN"
-F 6 "Integrated Circuits (ICs)" H 4250 2000 60  0001 L CNN "Category"
-F 7 "PMIC - Power Distribution Switches, Load Drivers" H 4250 2100 60  0001 L CNN "Family"
-F 8 "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Ftps27081a" H 4250 2200 60  0001 L CNN "DK_Datasheet_Link"
-F 9 "/product-detail/en/texas-instruments/TPS27081ADDCR/296-34970-1-ND/3671576" H 4250 2300 60  0001 L CNN "DK_Detail_Page"
-F 10 "IC LOAD SW HIGH SIDE 6SOT" H 4250 2400 60  0001 L CNN "Description"
-F 11 "Texas Instruments" H 4250 2500 60  0001 L CNN "Manufacturer"
-F 12 "Active" H 4250 2600 60  0001 L CNN "Status"
+F 4 "TPS27081ADDCR" H 4250 1900 60  0001 L CNN "MPN"
+F 5 "Integrated Circuits (ICs)" H 4250 2000 60  0001 L CNN "Category"
+F 6 "PMIC - Power Distribution Switches, Load Drivers" H 4250 2100 60  0001 L CNN "Family"
+F 7 "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Ftps27081a" H 4250 2200 60  0001 L CNN "DK_Datasheet_Link"
+F 8 "/product-detail/en/texas-instruments/TPS27081ADDCR/296-34970-1-ND/3671576" H 4250 2300 60  0001 L CNN "DK_Detail_Page"
+F 9 "IC LOAD SW HIGH SIDE 6SOT" H 4250 2400 60  0001 L CNN "Description"
+F 10 "Texas Instruments" H 4250 2500 60  0001 L CNN "Manufacturer"
+F 11 "Active" H 4250 2600 60  0001 L CNN "Status"
+F 12 "296-34970-2-ND" H 4050 1400 50  0001 C CNN "digkey.com"
 	1    4050 1400
 	1    0    0    -1  
 $EndComp
@@ -566,15 +571,14 @@ $Comp
 L Device:R R6
 U 1 1 5E56C384
 P 4950 1900
-F 0 "R6" V 4743 1900 50  0000 C CNN
-F 1 "0.1" V 4834 1900 50  0000 C CNN
+F 0 "R6" V 4850 1900 50  0000 C CNN
+F 1 "0.1 (1%) 2W" V 5050 2000 50  0000 C CNN
 F 2 "Resistor_SMD:R_2512_6332Metric_Pad1.52x3.35mm_HandSolder" V 4880 1900 50  0001 C CNN
 F 3 "~" H 4950 1900 50  0001 C CNN
+F 4 "CSR2512C0R1F" H 4950 1900 50  0001 C CNN "digkey.com"
 	1    4950 1900
 	0    1    1    0   
 $EndComp
-Text Notes 4800 2050 0    50   ~ 0
-2W 1% shunt
 Wire Wire Line
 	4800 1900 4800 1250
 Connection ~ 4800 1900
@@ -669,17 +673,17 @@ F 3 "" H 4500 1050 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	800  7350 900  7350
-Connection ~ 900  7350
+	850  7350 950  7350
+Connection ~ 950  7350
 $Comp
 L power:+5V #PWR05
 U 1 1 5EB514FF
-P 1150 7300
-F 0 "#PWR05" H 1150 7150 50  0001 C CNN
-F 1 "+5V" H 1165 7473 50  0000 C CNN
-F 2 "" H 1150 7300 50  0001 C CNN
-F 3 "" H 1150 7300 50  0001 C CNN
-	1    1150 7300
+P 1200 7300
+F 0 "#PWR05" H 1200 7150 50  0001 C CNN
+F 1 "+5V" H 1215 7473 50  0000 C CNN
+F 2 "" H 1200 7300 50  0001 C CNN
+F 3 "" H 1200 7300 50  0001 C CNN
+	1    1200 7300
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -687,9 +691,10 @@ L 74xGxx:74AUP1G74 U4
 U 1 1 5E67B39C
 P 3200 1500
 F 0 "U4" H 3100 1850 50  0000 C CNN
-F 1 "74AUP1G74" H 3000 1750 39  0000 C CNN
+F 1 "SN74AUP1G74DCUR" H 3000 1750 39  0000 C CNN
 F 2 "Package_SO:VSSOP-8_2.4x2.1mm_P0.5mm" H 3200 1500 50  0001 C CNN
 F 3 "http://www.ti.com/lit/sg/scyt129e/scyt129e.pdf" H 3200 1500 50  0001 C CNN
+F 4 "296-19761-1-ND" H 3200 1500 50  0001 C CNN "digkey.com"
 	1    3200 1500
 	1    0    0    -1  
 $EndComp
@@ -780,12 +785,12 @@ Wire Notes Line
 $Comp
 L power:VCC #PWR017
 U 1 1 5E98CF8F
-P 2000 7350
-F 0 "#PWR017" H 2000 7200 50  0001 C CNN
-F 1 "VCC" V 1950 7500 50  0000 C CNN
-F 2 "" H 2000 7350 50  0001 C CNN
-F 3 "" H 2000 7350 50  0001 C CNN
-	1    2000 7350
+P 2050 7350
+F 0 "#PWR017" H 2050 7200 50  0001 C CNN
+F 1 "VCC" V 2000 7500 50  0000 C CNN
+F 2 "" H 2050 7350 50  0001 C CNN
+F 3 "" H 2050 7350 50  0001 C CNN
+	1    2050 7350
 	0    1    1    0   
 $EndComp
 $Comp
@@ -895,9 +900,10 @@ L Device:R R8
 U 1 1 5EC208D2
 P 5500 2250
 F 0 "R8" V 5600 2300 50  0000 R CNN
-F 1 "10K" V 5500 2300 50  0000 R CNN
+F 1 "10K (0.1%)" V 5600 2150 50  0000 R CNN
 F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 5430 2250 50  0001 C CNN
 F 3 "~" H 5500 2250 50  0001 C CNN
+F 4 "P10KDACT-ND" V 5500 2250 50  0001 C CNN "digkey.com"
 	1    5500 2250
 	0    -1   -1   0   
 $EndComp
@@ -906,9 +912,10 @@ L Device:R R9
 U 1 1 5EC21465
 P 5500 2350
 F 0 "R9" V 5400 2400 50  0000 R CNN
-F 1 "10K" V 5500 2400 50  0000 R CNN
+F 1 "10K (0.1%)" V 5400 2250 50  0000 R CNN
 F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 5430 2350 50  0001 C CNN
 F 3 "~" H 5500 2350 50  0001 C CNN
+F 4 "P10KDACT-ND" H 5500 2350 50  0001 C CNN "digkey.com"
 	1    5500 2350
 	0    -1   -1   0   
 $EndComp
@@ -951,7 +958,7 @@ L Device:LED D1
 U 1 1 5ED1CB4E
 P 4200 2250
 F 0 "D1" H 4200 2150 50  0000 C CNN
-F 1 "LED" H 4200 2350 50  0001 C CNN
+F 1 "LED_RED" H 4200 2350 50  0000 C CNN
 F 2 "LED_SMD:LED_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4200 2250 50  0001 C CNN
 F 3 "~" H 4200 2250 50  0001 C CNN
 	1    4200 2250
@@ -977,83 +984,85 @@ Wire Wire Line
 $Comp
 L Regulator_Linear:LM1117-3.3 U3
 U 1 1 5EF8444B
-P 1500 7350
-F 0 "U3" H 1500 7592 50  0000 C CNN
-F 1 "LM1117-3.3" H 1500 7501 50  0000 C CNN
-F 2 "Package_TO_SOT_SMD:SOT-223-3_TabPin2" H 1500 7350 50  0001 C CNN
-F 3 "http://www.ti.com/lit/ds/symlink/lm1117.pdf" H 1500 7350 50  0001 C CNN
-	1    1500 7350
+P 1550 7350
+F 0 "U3" H 1550 7592 50  0000 C CNN
+F 1 "LM1117IMPX-3.3" H 1550 7501 50  0000 C CNN
+F 2 "Package_TO_SOT_SMD:SOT-223-3_TabPin2" H 1550 7350 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/lm1117.pdf" H 1550 7350 50  0001 C CNN
+F 4 "LM1117IMPX-3.3/NOPBTR-NC" H 1550 7350 50  0001 C CNN "digkey.com"
+	1    1550 7350
 	1    0    0    -1  
 $EndComp
 $Comp
 L Device:CP C1
 U 1 1 5F00A499
-P 900 7500
-F 0 "C1" H 900 7600 50  0000 L CNN
-F 1 "100uF" H 900 7400 50  0000 L CNN
-F 2 "Capacitor_SMD:CP_Elec_6.3x7.7" H 938 7350 50  0001 C CNN
-F 3 "~" H 900 7500 50  0001 C CNN
-	1    900  7500
+P 950 7500
+F 0 "C1" H 950 7600 50  0000 L CNN
+F 1 "100uF" H 950 7400 50  0000 L CNN
+F 2 "Capacitor_SMD:CP_Elec_6.3x7.7" H 988 7350 50  0001 C CNN
+F 3 "~" H 950 7500 50  0001 C CNN
+F 4 "PCE3750CT-ND" H 950 7500 50  0001 C CNN "digkey.com"
+	1    950  7500
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	1200 7350 1150 7350
+	1250 7350 1200 7350
 Wire Wire Line
-	1800 7350 1850 7350
+	1850 7350 1900 7350
 $Comp
 L power:GND #PWR06
 U 1 1 5F1B6B38
-P 1150 7650
-F 0 "#PWR06" H 1150 7400 50  0001 C CNN
-F 1 "GND" H 1155 7477 50  0000 C CNN
-F 2 "" H 1150 7650 50  0001 C CNN
-F 3 "" H 1150 7650 50  0001 C CNN
-	1    1150 7650
+P 1200 7650
+F 0 "#PWR06" H 1200 7400 50  0001 C CNN
+F 1 "GND" H 1205 7477 50  0000 C CNN
+F 2 "" H 1200 7650 50  0001 C CNN
+F 3 "" H 1200 7650 50  0001 C CNN
+	1    1200 7650
 	1    0    0    -1  
 $EndComp
 $Comp
 L power:GND #PWR016
 U 1 1 5F1C5AD0
-P 1850 7650
-F 0 "#PWR016" H 1850 7400 50  0001 C CNN
-F 1 "GND" H 1855 7477 50  0000 C CNN
-F 2 "" H 1850 7650 50  0001 C CNN
-F 3 "" H 1850 7650 50  0001 C CNN
-	1    1850 7650
+P 1900 7650
+F 0 "#PWR016" H 1900 7400 50  0001 C CNN
+F 1 "GND" H 1905 7477 50  0000 C CNN
+F 2 "" H 1900 7650 50  0001 C CNN
+F 3 "" H 1900 7650 50  0001 C CNN
+	1    1900 7650
 	1    0    0    -1  
 $EndComp
 $Comp
 L power:+3V3 #PWR015
 U 1 1 5F217C02
-P 1850 7300
-F 0 "#PWR015" H 1850 7150 50  0001 C CNN
-F 1 "+3V3" H 1865 7473 50  0000 C CNN
-F 2 "" H 1850 7300 50  0001 C CNN
-F 3 "" H 1850 7300 50  0001 C CNN
-	1    1850 7300
+P 1900 7300
+F 0 "#PWR015" H 1900 7150 50  0001 C CNN
+F 1 "+3V3" H 1915 7473 50  0000 C CNN
+F 2 "" H 1900 7300 50  0001 C CNN
+F 3 "" H 1900 7300 50  0001 C CNN
+	1    1900 7300
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	1850 7350 1850 7300
-Connection ~ 1850 7350
+	1900 7350 1900 7300
+Connection ~ 1900 7350
 Wire Wire Line
-	1850 7350 2000 7350
+	1900 7350 2050 7350
 $Comp
 L power:GND #PWR012
 U 1 1 5F3325EB
-P 1500 7650
-F 0 "#PWR012" H 1500 7400 50  0001 C CNN
-F 1 "GND" H 1505 7477 50  0000 C CNN
-F 2 "" H 1500 7650 50  0001 C CNN
-F 3 "" H 1500 7650 50  0001 C CNN
-	1    1500 7650
+P 1550 7650
+F 0 "#PWR012" H 1550 7400 50  0001 C CNN
+F 1 "GND" H 1555 7477 50  0000 C CNN
+F 2 "" H 1550 7650 50  0001 C CNN
+F 3 "" H 1550 7650 50  0001 C CNN
+	1    1550 7650
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	1150 7300 1150 7350
-Connection ~ 1150 7350
+	1200 7300 1200 7350
+Connection ~ 1200 7350
 Wire Wire Line
-	900  7350 1150 7350
+	950  7350 1200 7350
 Connection ~ 5700 2350
 Wire Wire Line
 	5700 2250 5700 2350
@@ -1129,7 +1138,7 @@ F 0 "U1" H 2750 3450 60  0000 L CNN
 F 1 "SN74LVC1G07DBVR" H 2600 3250 39  0000 L CNN
 F 2 "Package_TO_SOT_SMD:SOT-23-5_HandSoldering" H 3200 3300 60  0001 L CNN
 F 3 "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Fsn74lvc1g07" H 3200 3400 60  0001 L CNN
-F 4 "296-8485-1-ND" H 3200 3500 60  0001 L CNN "Digi-Key_PN"
+F 4 "" H 3200 3500 60  0001 L CNN "Digi-Key_PN"
 F 5 "SN74LVC1G07DBVR" H 3200 3600 60  0001 L CNN "MPN"
 F 6 "Integrated Circuits (ICs)" H 3200 3700 60  0001 L CNN "Category"
 F 7 "Logic - Buffers, Drivers, Receivers, Transceivers" H 3200 3800 60  0001 L CNN "Family"
@@ -1138,18 +1147,19 @@ F 9 "/product-detail/en/texas-instruments/SN74LVC1G07DBVR/296-8485-1-ND/377454" 
 F 10 "IC BUF NON-INVERT 5.5V SOT23-5" H 3200 4100 60  0001 L CNN "Description"
 F 11 "Texas Instruments" H 3200 4200 60  0001 L CNN "Manufacturer"
 F 12 "Active" H 3200 4300 60  0001 L CNN "Status"
+F 13 "296-8485-1-ND" H 3000 3100 50  0001 C CNN "digkey.com"
 	1    3000 3100
 	1    0    0    -1  
 $EndComp
 $Comp
 L power:GND #PWR02
 U 1 1 5EB7FE80
-P 900 7650
-F 0 "#PWR02" H 900 7400 50  0001 C CNN
-F 1 "GND" H 905 7477 50  0000 C CNN
-F 2 "" H 900 7650 50  0001 C CNN
-F 3 "" H 900 7650 50  0001 C CNN
-	1    900  7650
+P 950 7650
+F 0 "#PWR02" H 950 7400 50  0001 C CNN
+F 1 "GND" H 955 7477 50  0000 C CNN
+F 2 "" H 950 7650 50  0001 C CNN
+F 3 "" H 950 7650 50  0001 C CNN
+	1    950  7650
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -1201,9 +1211,10 @@ L Interface_CAN_LIN:TCAN332 U2
 U 1 1 632F3C6C
 P 3100 5050
 F 0 "U2" H 3350 4700 50  0000 C CNN
-F 1 "TCAN332" H 3100 5050 50  0000 C CNN
+F 1 "TCAN332DR" H 3100 5050 50  0000 C CNN
 F 2 "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm" H 3100 4550 50  0001 C CIN
 F 3 "http://www.ti.com/lit/ds/symlink/tcan337.pdf" H 3100 5050 50  0001 C CNN
+F 4 "296-43711-1-ND" H 3100 5050 50  0001 C CNN "digkey.com"
 	1    3100 5050
 	-1   0    0    1   
 $EndComp
@@ -1236,9 +1247,10 @@ L Device:LED_Dual_AACC D2
 U 1 1 5F119CD6
 P 9800 1000
 F 0 "D2" H 9800 1250 50  0000 C CNN
-F 1 "LED_Dual_AACC" H 9800 1334 50  0001 C CNN
+F 1 "Lumex SSF-LXH240IGO" H 9850 750 50  0000 C CNN
 F 2 "00_eurocard:LED_Dual_RG_discrete" H 9830 1000 50  0001 C CNN
 F 3 "~" H 9830 1000 50  0001 C CNN
+F 4 "67-2201-ND" H 9800 1000 50  0001 C CNN "digkey.com"
 	1    9800 1000
 	1    0    0    -1  
 $EndComp
@@ -1276,23 +1288,25 @@ green
 $Comp
 L Device:C C2
 U 1 1 5F6CE1BF
-P 1150 7500
-F 0 "C2" H 1150 7600 50  0000 L CNN
-F 1 "10uF" H 1150 7400 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 1188 7350 50  0001 C CNN
-F 3 "~" H 1150 7500 50  0001 C CNN
-	1    1150 7500
+P 1200 7500
+F 0 "C2" H 1200 7600 50  0000 L CNN
+F 1 "10uF" H 1200 7400 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 1238 7350 50  0001 C CNN
+F 3 "~" H 1200 7500 50  0001 C CNN
+F 4 "1276-2893-1-ND" H 1200 7500 50  0001 C CNN "digkey.com"
+	1    1200 7500
 	1    0    0    -1  
 $EndComp
 $Comp
 L Device:C C4
 U 1 1 5F6D12C7
-P 1850 7500
-F 0 "C4" H 1850 7600 50  0000 L CNN
-F 1 "22uF" H 1850 7400 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 1888 7350 50  0001 C CNN
-F 3 "~" H 1850 7500 50  0001 C CNN
-	1    1850 7500
+P 1900 7500
+F 0 "C4" H 1900 7600 50  0000 L CNN
+F 1 "22uF" H 1900 7400 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 1938 7350 50  0001 C CNN
+F 3 "~" H 1900 7500 50  0001 C CNN
+F 4 "1276-6780-1-ND" H 1900 7500 50  0001 C CNN "digkey.com"
+	1    1900 7500
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -1303,6 +1317,7 @@ F 0 "C11" V 9200 3050 50  0000 L CNN
 F 1 "10uF" V 8900 3000 50  0000 L CNN
 F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 9088 2950 50  0001 C CNN
 F 3 "~" H 9050 3100 50  0001 C CNN
+F 4 "1276-2893-1-ND" H 9050 3100 50  0001 C CNN "digkey.com"
 	1    9050 3100
 	0    1    1    0   
 $EndComp
@@ -1318,8 +1333,6 @@ F 3 "~" H 1800 6550 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Connection ~ 1800 6550
-Text Notes 5650 2250 0    50   ~ 0
-1% divider
 $Comp
 L Device:C C14
 U 1 1 5F7EF160
@@ -1369,7 +1382,7 @@ L Device:LED D3
 U 1 1 5F847300
 P 3900 3950
 F 0 "D3" H 3900 3850 50  0000 C CNN
-F 1 "LED" H 3900 4050 50  0001 C CNN
+F 1 "LED_GREEN" H 3800 3750 50  0000 C CNN
 F 2 "LED_SMD:LED_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 3900 3950 50  0001 C CNN
 F 3 "~" H 3900 3950 50  0001 C CNN
 	1    3900 3950
@@ -1658,8 +1671,8 @@ Wire Wire Line
 Wire Wire Line
 	1750 6750 2100 6750
 Wire Wire Line
-	800  7150 550  7150
-Text Label 550  7150 0    50   ~ 0
+	850  7150 600  7150
+Text Label 600  7150 0    50   ~ 0
 BUS5V_1
 Wire Notes Line
 	6150 6350 2250 6350
@@ -1732,9 +1745,10 @@ L MCU_ST_STM32F1:STM32F103C8Tx U6
 U 1 1 5F7ED446
 P 5000 4550
 F 0 "U6" H 4950 4250 50  0000 C CNN
-F 1 "STM32F103C8Tx" H 4950 4350 50  0000 C CNN
+F 1 "STM32F103C8T6" H 4950 4350 50  0000 C CNN
 F 2 "Package_QFP:LQFP-48_7x7mm_P0.5mm" H 4400 3150 50  0001 R CNN
 F 3 "http://www.st.com/st-web-ui/static/active/en/resource/technical/document/datasheet/CD00161566.pdf" H 5000 4550 50  0001 C CNN
+F 4 "497-6063-ND" H 5000 4550 50  0001 C CNN "digkey.com"
 	1    5000 4550
 	1    0    0    -1  
 $EndComp
@@ -2039,7 +2053,7 @@ L Connector:Raspberry_Pi_2_3 J5
 U 1 1 5EEAE6EB
 P 7600 5100
 F 0 "J5" H 7000 6350 50  0000 C CNN
-F 1 "Raspberry_Pi_2_3" V 7600 5150 50  0000 C CNN
+F 1 "Raspberry_Pi_4B" V 7600 5150 50  0000 C CNN
 F 2 "00_eurocard:Rasp_pi4_mounted" H 7600 5100 50  0001 C CNN
 F 3 "https://www.raspberrypi.org/documentation/hardware/raspberrypi/schematics/rpi_SCH_3bplus_1p0_reduced.pdf" H 7600 5100 50  0001 C CNN
 	1    7600 5100
@@ -2317,9 +2331,10 @@ L Interface_CAN_LIN:TCAN332 U11
 U 1 1 63D2A82D
 P 2900 7600
 F 0 "U11" H 3150 7250 50  0000 C CNN
-F 1 "TCAN332" H 2900 7600 50  0000 C CNN
+F 1 "TCAN332DR" H 2900 7600 50  0000 C CNN
 F 2 "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm" H 2900 7100 50  0001 C CIN
 F 3 "http://www.ti.com/lit/ds/symlink/tcan337.pdf" H 2900 7600 50  0001 C CNN
+F 4 "296-43711-1-ND" H 2900 7600 50  0001 C CNN "digkey.com"
 	1    2900 7600
 	-1   0    0    1   
 $EndComp
@@ -2384,9 +2399,10 @@ L Interface_CAN_LIN:MCP2515-xSO U12
 U 1 1 63D29889
 P 4250 7200
 F 0 "U12" H 4450 7950 50  0000 C CNN
-F 1 "MCP2515-xSO" H 4200 7250 50  0000 C CNN
+F 1 "MCP2515-I/SO" H 4200 7250 50  0000 C CNN
 F 2 "Package_SO:SOIC-18W_7.5x11.6mm_P1.27mm" H 4250 6300 50  0001 C CIN
 F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/21801e.pdf" H 4350 6400 50  0001 C CNN
+F 4 "MCP2515T-I/SOTR-ND" H 4250 7200 50  0001 C CNN "digkey.com"
 	1    4250 7200
 	-1   0    0    1   
 $EndComp
@@ -2442,9 +2458,10 @@ L Memory_EEPROM:CAT24C128 U13
 U 1 1 64923BAD
 P 9450 6100
 F 0 "U13" H 9250 5850 50  0000 C CNN
-F 1 "CAT24C128" H 9700 6350 50  0000 C CNN
+F 1 "CAT24C128WI" H 9700 6350 50  0000 C CNN
 F 2 "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm" H 9450 6100 50  0001 C CNN
 F 3 "https://www.onsemi.com/pub/Collateral/CAT24C128-D.PDF" H 9450 6100 50  0001 C CNN
+F 4 "CAT24C128WI-GT3TR-ND" H 9450 6100 50  0001 C CNN "digkey.com"
 	1    9450 6100
 	1    0    0    -1  
 $EndComp
@@ -2649,7 +2666,7 @@ L Connector_Generic:Conn_02x08_Counter_Clockwise J8
 U 1 1 6736F073
 P 2850 5900
 F 0 "J8" H 2900 6325 50  0000 C CNN
-F 1 "Conn_02x08_Counter_Clockwise" H 2900 6326 50  0001 C CNN
+F 1 "8x10 prototype area" H 2900 6326 50  0001 C CNN
 F 2 "00_eurocard:protopad" H 2850 5900 50  0001 C CNN
 F 3 "~" H 2850 5900 50  0001 C CNN
 	1    2850 5900
@@ -2953,8 +2970,8 @@ $Comp
 L 00_eurocard:molliebus J1
 U 1 1 5F10A3E3
 P 1600 2700
-F 0 "J1" H 2150 6850 50  0000 C CNN
-F 1 "molliebus" H 1900 6850 50  0000 C CNN
+F 0 "J1" H 1900 6950 50  0000 C CNN
+F 1 "DIN41612_C96_male_molliebus" H 1900 6850 50  0000 C CNN
 F 2 "Connector_DIN:DIN41612_C_3x32_Male_Horizontal_THT" H 3500 3300 50  0001 C CNN
 F 3 " ~" H 3500 3300 50  0001 C CNN
 	1    1600 2700
@@ -3124,9 +3141,10 @@ L Oscillator:ASE-xxxMHz X1
 U 1 1 5FD24B79
 P 5600 6900
 F 0 "X1" H 5350 7050 50  0000 R CNN
-F 1 "ASE-8.000MHz-LC" H 5600 7150 50  0000 R CNN
+F 1 "Abracon ASE-8.000MHz-LC" H 5600 7150 50  0000 R CNN
 F 2 "Oscillator:Oscillator_SMD_Abracon_ASE-4Pin_3.2x2.5mm" H 6300 6550 50  0001 C CNN
 F 3 "http://www.abracon.com/Oscillators/ASV.pdf" H 5500 6900 50  0001 C CNN
+F 4 "535-9558-1-ND" H 5600 6900 50  0001 C CNN "digkey.com"
 	1    5600 6900
 	-1   0    0    -1  
 $EndComp
@@ -3150,9 +3168,10 @@ L Oscillator:ASE-xxxMHz X2
 U 1 1 60E06DDA
 P 3000 4050
 F 0 "X2" H 2850 4300 50  0000 R CNN
-F 1 "ASE-8.000MHz-LC" H 3750 4300 50  0000 R CNN
+F 1 "Abracon ASE-8.000MHz-LC" H 4300 3900 50  0000 R CNN
 F 2 "Oscillator:Oscillator_SMD_Abracon_ASE-4Pin_3.2x2.5mm" H 3700 3700 50  0001 C CNN
 F 3 "http://www.abracon.com/Oscillators/ASV.pdf" H 2900 4050 50  0001 C CNN
+F 4 "535-9558-1-ND" H 3000 4050 50  0001 C CNN "digkey.com"
 	1    3000 4050
 	1    0    0    -1  
 $EndComp
