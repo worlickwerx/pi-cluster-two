@@ -54,7 +54,7 @@ U 1 1 5EA6059F
 P 9850 2150
 F 0 "U10" H 9700 1550 50  0000 L CNN
 F 1 "LTP747" H 9900 1550 50  0000 L CNN
-F 2 "project_footprints:DIP-12_W7.62mm_right_angle" H 9750 2700 50  0001 C CNN
+F 2 "00_eurocard:DIP-12_W7.62mm_right_angle" H 9750 2700 50  0001 C CNN
 F 3 "" H 9750 2700 50  0001 C CNN
 	1    9850 2150
 	1    0    0    -1  
@@ -1237,7 +1237,7 @@ U 1 1 5F119CD6
 P 9800 1000
 F 0 "D2" H 9800 1250 50  0000 C CNN
 F 1 "LED_Dual_AACC" H 9800 1334 50  0001 C CNN
-F 2 "project_footprints:LED_Dual_RG_discrete" H 9830 1000 50  0001 C CNN
+F 2 "00_eurocard:LED_Dual_RG_discrete" H 9830 1000 50  0001 C CNN
 F 3 "~" H 9830 1000 50  0001 C CNN
 	1    9800 1000
 	1    0    0    -1  
@@ -2040,7 +2040,7 @@ U 1 1 5EEAE6EB
 P 7600 5100
 F 0 "J5" H 7000 6350 50  0000 C CNN
 F 1 "Raspberry_Pi_2_3" V 7600 5150 50  0000 C CNN
-F 2 "project_footprints:Rasp_pi4_mounted" H 7600 5100 50  0001 C CNN
+F 2 "00_eurocard:Rasp_pi4_mounted" H 7600 5100 50  0001 C CNN
 F 3 "https://www.raspberrypi.org/documentation/hardware/raspberrypi/schematics/rpi_SCH_3bplus_1p0_reduced.pdf" H 7600 5100 50  0001 C CNN
 	1    7600 5100
 	1    0    0    -1  
@@ -2650,7 +2650,7 @@ U 1 1 6736F073
 P 2850 5900
 F 0 "J8" H 2900 6325 50  0000 C CNN
 F 1 "Conn_02x08_Counter_Clockwise" H 2900 6326 50  0001 C CNN
-F 2 "project_footprints:protopad" H 2850 5900 50  0001 C CNN
+F 2 "00_eurocard:protopad" H 2850 5900 50  0001 C CNN
 F 3 "~" H 2850 5900 50  0001 C CNN
 	1    2850 5900
 	1    0    0    -1  

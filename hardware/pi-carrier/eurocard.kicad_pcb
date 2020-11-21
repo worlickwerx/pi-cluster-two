@@ -1889,7 +1889,7 @@
     )
   )
 
-  (module project_footprints:protopad (layer F.Cu) (tedit 5F7BA046) (tstamp 5F8608D6)
+  (module 00_eurocard:protopad (layer F.Cu) (tedit 5F7BA046) (tstamp 5F8608D6)
     (at 154.14 57.808)
     (path /6736F073)
     (fp_text reference J8 (at 20.32 0.5) (layer F.SilkS) hide
@@ -2594,7 +2594,7 @@
     )
   )
 
-  (module project_footprints:DIP-12_W7.62mm_right_angle (layer F.Cu) (tedit 5F137695) (tstamp 5F14A2CF)
+  (module 00_eurocard:DIP-12_W7.62mm_right_angle (layer F.Cu) (tedit 5F137695) (tstamp 5F14A2CF)
     (at 68.88 111.33)
     (path /5EA6059F)
     (fp_text reference U10 (at -0.084 17.852) (layer F.SilkS)
@@ -2649,7 +2649,7 @@
       (net 78 "Net-(U10-Pad1)"))
   )
 
-  (module project_footprints:Rasp_pi4_mounted (layer F.Cu) (tedit 5F1380CD) (tstamp 5FAC4094)
+  (module 00_eurocard:Rasp_pi4_mounted (layer F.Cu) (tedit 5F1380CD) (tstamp 5FAC4094)
     (at 55.61 110.48 90)
     (path /5EEAE6EB)
     (fp_text reference J5 (at -3.5 51.37) (layer F.SilkS)
@@ -3759,7 +3759,7 @@
     )
   )
 
-  (module project_footprints:LED_Dual_RG_discrete (layer F.Cu) (tedit 5F0FB0C0) (tstamp 5F101BAE)
+  (module 00_eurocard:LED_Dual_RG_discrete (layer F.Cu) (tedit 5F0FB0C0) (tstamp 5F101BAE)
     (at 55.08 134.43 90)
     (path /5F119CD6)
     (fp_text reference D2 (at -0.848 5.842 180) (layer F.SilkS)
