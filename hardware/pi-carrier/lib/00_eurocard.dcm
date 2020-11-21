@@ -1,16 +1,5 @@
 EESchema-DOCLIB  Version 2.0
 #
-$CMP BluePill_1
-D STM32 Blue Pill
-K STM32 Blue Pill BluePill
-$ENDCMP
-#
-$CMP C64AC
-D Connector Europe 64 contacts, ranges A,B,C
-K connector DIN
-F  ~
-$ENDCMP
-#
 $CMP INA169NA_3K
 D IC CURRENT MONITOR 0.5% SOT23-5
 K 296-26063-1-ND
