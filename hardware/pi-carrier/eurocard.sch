@@ -49,7 +49,7 @@ F 3 "~" H 7850 1100 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L eurocard:LTP747 U10
+L 00_eurocard:LTP747 U10
 U 1 1 5EA6059F
 P 9850 2150
 F 0 "U10" H 9700 1550 50  0000 L CNN
@@ -75,7 +75,7 @@ F 3 "https://datasheets.maximintegrated.com/en/ds/MAX7219-MAX7221.pdf" H 8450 17
 	1    0    0    -1  
 $EndComp
 $Comp
-L eurocard:SN74AHCT125N-dk_Logic-Buffers-Drivers-Receivers-Transceivers U8
+L 00_eurocard:SN74AHCT125N-dk_Logic-Buffers-Drivers-Receivers-Transceivers U8
 U 1 1 5ECD43F7
 P 7350 1700
 F 0 "U8" H 6850 2350 60  0000 C CNN
@@ -493,7 +493,7 @@ NoConn ~ 8800 1800
 Wire Wire Line
 	5300 1900 6400 1900
 $Comp
-L eurocard:INA169NA_3K U7
+L 00_eurocard:INA169NA_3K U7
 U 1 1 65FAADB1
 P 5500 1550
 F 0 "U7" H 4950 2100 60  0000 L CNN
@@ -527,7 +527,7 @@ $EndComp
 Wire Wire Line
 	4050 1900 4800 1900
 $Comp
-L eurocard:TPS27081ADDCR U5
+L 00_eurocard:TPS27081ADDCR U5
 U 1 1 65F1C805
 P 4050 1400
 F 0 "U5" H 3850 1850 60  0000 L CNN
@@ -1122,7 +1122,7 @@ $EndComp
 Wire Wire Line
 	3300 3100 3400 3100
 $Comp
-L eurocard:SN74LVC1G07DBVR-dk_Logic-Buffers-Drivers-Receivers-Transceivers U1
+L 00_eurocard:SN74LVC1G07DBVR-dk_Logic-Buffers-Drivers-Receivers-Transceivers U1
 U 1 1 5E488A75
 P 3000 3100
 F 0 "U1" H 2750 3450 60  0000 L CNN
@@ -2950,7 +2950,7 @@ RSV17
 Text Label 1850 950  2    50   ~ 0
 RSV16
 $Comp
-L eurocard:molliebus J1
+L 00_eurocard:molliebus J1
 U 1 1 5F10A3E3
 P 1600 2700
 F 0 "J1" H 2150 6850 50  0000 C CNN

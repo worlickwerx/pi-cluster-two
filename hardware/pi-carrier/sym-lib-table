@@ -1,3 +1,3 @@
 (sym_lib_table
-  (lib (name eurocard)(type Legacy)(uri ${KIPRJMOD}/project_components/eurocard.lib)(options "")(descr ""))
+  (lib (name 00_eurocard)(type Legacy)(uri ${KIPRJMOD}/lib/00_eurocard.lib)(options "")(descr ""))
 )
