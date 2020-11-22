@@ -14,10 +14,10 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L 00_cm4-compute:ComputeModule4-CM4 Module?
+L 00_cm4-compute:ComputeModule4-CM4 Module1
 U 2 1 5FBFD563
 P 8200 1150
-F 0 "Module?" H 5350 1497 50  0000 C CNN
+F 0 "Module1" H 5350 1497 50  0000 C CNN
 F 1 "ComputeModule4-CM4" H 5350 1406 50  0000 C CNN
 F 2 "00_cm4-compute:rpiCM4" H 6600 1050 50  0001 C CNN
 F 3 "" H 6600 1050 50  0001 C CNN

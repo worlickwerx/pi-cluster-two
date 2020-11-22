@@ -14,10 +14,10 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L 00_cm4-compute:ComputeModule4-CM4 Module?
+L 00_cm4-compute:ComputeModule4-CM4 Module1
 U 1 1 5FC03064
 P 5550 1000
-F 0 "Module?" H 2700 1347 50  0000 C CNN
+F 0 "Module1" H 2700 1347 50  0000 C CNN
 F 1 "ComputeModule4-CM4" H 2700 1256 50  0000 C CNN
 F 2 "00_cm4-compute:rpiCM4" H 3950 900 50  0001 C CNN
 F 3 "" H 3950 900 50  0001 C CNN
@@ -27,10 +27,10 @@ F 5 "2x DF40C-100DS-0.4V(51)" H 2700 1074 50  0000 C CNN "Manufacturer Part Numb
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR?
+L power:GND #PWR0101
 U 1 1 5FC29B9C
 P 3950 6300
-F 0 "#PWR?" H 3950 6050 50  0001 C CNN
+F 0 "#PWR0101" H 3950 6050 50  0001 C CNN
 F 1 "GND" H 3955 6127 50  0000 C CNN
 F 2 "" H 3950 6300 50  0001 C CNN
 F 3 "" H 3950 6300 50  0001 C CNN
@@ -87,10 +87,10 @@ Connection ~ 3950 4600
 Wire Wire Line
 	3950 4600 3950 4300
 $Comp
-L power:GND #PWR?
+L power:GND #PWR0102
 U 1 1 5FC36D46
 P 1450 6300
-F 0 "#PWR?" H 1450 6050 50  0001 C CNN
+F 0 "#PWR0102" H 1450 6050 50  0001 C CNN
 F 1 "GND" H 1455 6127 50  0000 C CNN
 F 2 "" H 1450 6300 50  0001 C CNN
 F 3 "" H 1450 6300 50  0001 C CNN
@@ -152,10 +152,10 @@ Connection ~ 1450 5900
 Wire Wire Line
 	1450 5900 1450 6300
 $Comp
-L Device:LED D?
+L Device:LED D1
 U 1 1 5FC40399
 P 4550 1350
-F 0 "D?" V 4589 1232 50  0000 R CNN
+F 0 "D1" V 4589 1232 50  0000 R CNN
 F 1 "LED Green" V 4498 1232 50  0000 R CNN
 F 2 "" H 4550 1350 50  0001 C CNN
 F 3 "~" H 4550 1350 50  0001 C CNN
@@ -167,10 +167,10 @@ Wire Wire Line
 Wire Wire Line
 	4550 2100 4550 1900
 $Comp
-L Device:R R?
+L Device:R R1
 U 1 1 5FC51414
 P 4550 1750
-F 0 "R?" H 4620 1796 50  0000 L CNN
+F 0 "R1" H 4620 1796 50  0000 L CNN
 F 1 "1K" H 4620 1705 50  0000 L CNN
 F 2 "" V 4480 1750 50  0001 C CNN
 F 3 "~" H 4550 1750 50  0001 C CNN
@@ -230,10 +230,10 @@ SCL0
 Text HLabel 1000 5100 0    50   Output ~ 0
 SDA0
 $Comp
-L Connector:Micro_SD_Card_Det J?
+L Connector:Micro_SD_Card_Det J1
 U 1 1 5FC64856
 P 9250 5150
-F 0 "J?" H 9200 5967 50  0000 C CNN
+F 0 "J1" H 9200 5967 50  0000 C CNN
 F 1 "Micro_SD_Card_Det" H 9200 5876 50  0000 C CNN
 F 2 "" H 11300 5850 50  0001 C CNN
 F 3 "https://www.hirose.com/product/en/download_file/key_name/DM3/category/Catalog/doc_file_id/49662/?file_category_id=4&item_id=195&is_series=1" H 9250 5250 50  0001 C CNN
