@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name 00_cm4-compute)(type KiCad)(uri ${KIPRJMOD}/lib.pretty)(options "")(descr ""))
+)
