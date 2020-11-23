@@ -19,7 +19,7 @@ U 1 1 5F07A6EA
 P 4350 3450
 F 0 "J2" H 4400 4475 50  0000 C CNN
 F 1 "Conn_02x20_Odd_Even" H 4400 4476 50  0001 C CNN
-F 2 "Connector_Samtec_HLE_SMD:Samtec_HLE-120-02-xxx-DV-BE-A_2x20_P2.54mm_Horizontal" H 4350 3450 50  0001 C CNN
+F 2 "00_40pin-connector:Samtec_HLE-120-02-xxx-DV-BE-A_2x20_P2.54mm_Horizontal" H 4350 3450 50  0001 C CNN
 F 3 "~" H 4350 3450 50  0001 C CNN
 	1    4350 3450
 	1    0    0    -1  
@@ -186,7 +186,7 @@ U 1 1 5F0BCD9D
 P 2700 3450
 F 0 "J1" H 2750 4475 50  0000 C CNN
 F 1 "Conn_02x20_Odd_Even" H 2750 4476 50  0001 C CNN
-F 2 "Connector_Samtec_HLE_SMD:Samtec_HLE-120-02-xxx-DV-BE-A_2x20_P2.54mm_Horizontal" H 2700 3450 50  0001 C CNN
+F 2 "00_40pin-connector:Samtec_HLE-120-02-xxx-DV-BE-A_2x20_P2.54mm_Horizontal" H 2700 3450 50  0001 C CNN
 F 3 "~" H 2700 3450 50  0001 C CNN
 	1    2700 3450
 	1    0    0    -1  
