@@ -1,51 +1,35 @@
 ## pi-cluster-two
 
-Second personal pi cluster attempt, influenced by the first one:
+This project is a redesign of
 [pi-cluster-one](https://github.com/garlick/pi-cluster-one).
 
-A compute element is built as a 3U "molleibus" carrier for Raspberry Pi.
-The intent is gang up multiple Pi's in a eurocard crate for parallel
-computation.  The Pi is monitored and controlled with a _service processor_,
-embedded on each carrier board.
+The planned scale of this design is 16 nodes, and its primary intended use
+is as a vehicle for learning about HPC cluster internals, hardware design,
+and the open source ecosystem for hardware design.
 
-### service processor
+This cluster is implemented on 100 x 160mm Eurocards plugged into a 16-slot
+custom backplane with 96-pin DIN 41612 connectors.
 
-The service processor is based on the STM32F1 ARM Cortex-M3 microprocessor
-running FreeRTOS.  It communicates with the molliebus crate controller
-over the CAN control bus, and with the Pi over I2C.  It offers the following
-functions:
+A compute board carries a Raspberry Pi 4B with support circuitry including
+a service processor for remote management and monitoring over CAN bus,
+a 5x7 LED bargraph for status display, a CAN adapter for the Pi, and a
+mezzanine slot for a communications adapter.
 
-* Remote CAN power on/off of Pi 5V supply
-* Remote CAN current monitoring of the Pi 5V supply
-* Remote CAN temperature sensing
-* Remote CAN reset of the Pi
-* Remote CAN _soft shutdown_ of the Pi
-* Remote CAN and I2C control of a 5x7 LED matrix
-* Remote CAN access to the Pi console serial port
+The backplane supports power distribution, geographic slot addressing,
+the CAN mangement/monitoring bus, a wired-OR hardware barrier network,
+a tree network for optimized MPI collectives, and a 2D torus mesh network.
+Since the backplane connector is not optimized for differential signaling,
+serial channels for these networks will operate at a few megabits per second.
 
-### molliebus
+### status Nov 2020
 
-Molliebus is a (work in progress) bus design utilizing Eurocard 3U
-and 6U (160mm depth) boards with DIN 41612 connectors.  It can coexist
-with VME, utilizing rows a and c of the P2 connector, or be implemented
-as a standalone bus.  The "bus" portion thus far
-* distributes power (5V)
-* provides a crate-wide reset signal
-* implements a 1 mbps CAN control bus
-* provides _geographic slot addressing_
-* specifes a slot 1 "crate controller" role
+The [second version](hardware/pi-carrier/README.md) of the compute board
+PCB was just sent out for fabrication.  Three boards of the first version
+are functional with the CAN management software from pi-cluster-one.
 
-There can be up to 31 slots per crate, including the crate controller.
+Firmware TODO: remote serial console, I2C slave.
 
-Half of the available pins (row c, pins 1-32) are left to be user-defined,
-with the idea that high speed communication between boards will require
-point to point or switched differential pair signaling (such as USB or
-ethernet).  The design of these interconnects can be application specific,
-and need not be specified as part of the bus design.
-
-Row c is not used by the Pi carrier, as the Pi already has appropriately
-terminated USB and ethernet connectors, and these are made available via
-the Pi carrier faceplate.
+Hardware TODO:  design full 16-slot backplane, design comms mezzanine card.
 
 ### origin and license
 
@@ -57,6 +41,9 @@ This project includes parts of:
 The CAN control bus and LED matrix were influenced by similar features
 of the [Meiko CS/2](https://github.com/garlick/meiko-cs2), a ground breaking
 supercomputer of the 1990's.
+
+The communcations design is patterned after
+[Blue Gene/L](https://en.wikipedia.org/wiki/IBM_Blue_Gene), circa 2005.
 
 #### software
 
