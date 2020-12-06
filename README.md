@@ -87,7 +87,7 @@ pi-cluster-one.  A compute node that uses the Pi CM4 is in design.
 Five [backplanes](hardware/bus-8/README.md) were just commissioned for
 assembly at pcbway.
 
-The [supervisor board](hardware/supervisor) design was just completed.
+The [supervisor board](hardware/supervisor/README.md) design was just completed.
 
 The communications adapter is not yet designed. This would ideally be an
 FPGA based design that speaks to the compute node via PCIe, however a first
