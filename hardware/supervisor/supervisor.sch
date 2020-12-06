@@ -298,7 +298,7 @@ F 0 "U2" H 4150 5850 50  0000 C CNN
 F 1 "TCAN332DR" H 4150 5750 50  0000 C CNN
 F 2 "Package_TO_SOT_SMD:SOT-23-8" H 4150 4600 50  0001 C CIN
 F 3 "http://www.ti.com/lit/ds/symlink/tcan337.pdf" H 4150 5100 50  0001 C CNN
-F 4 "can transceiver" H 4150 5100 50  0001 C CNN "description"
+F 4 "can transceiver 8-SOIC (3.9mm width)" H 4150 5100 50  0001 C CNN "description"
 F 5 "TCAN332DR" H 4150 5100 50  0001 C CNN "MPN"
 F 6 "TI" H 4150 5100 50  0001 C CNN "manufacturer"
 	1    4150 5100
@@ -462,7 +462,7 @@ F 0 "SW1" H 3900 4100 50  0000 R CNN
 F 1 "SW_Push" V 3955 3952 50  0001 R CNN
 F 2 "Button_Switch_THT:SW_Tactile_SPST_Angled_PTS645Vx83-2LFS" H 4000 4200 50  0001 C CNN
 F 3 "~" H 4000 4200 50  0001 C CNN
-F 4 "momentary NO, 8.35mm actuator leng, horizontal, TH" H 4000 4000 50  0001 C CNN "description"
+F 4 "momentary 6x6mm NO, 8.35mm shaft, horizontal, TH" H 4000 4000 50  0001 C CNN "description"
 F 5 "PTS645-VH83-2 LFS" H 4000 4000 50  0001 C CNN "MPN"
 F 6 "C&K" H 4000 4000 50  0001 C CNN "manufacturer"
 	1    4000 4000
@@ -476,7 +476,7 @@ F 0 "SW3" H 6900 1600 50  0000 R CNN
 F 1 "SW_Push" V 6955 1452 50  0001 R CNN
 F 2 "Button_Switch_THT:SW_Tactile_SPST_Angled_PTS645Vx83-2LFS" H 7000 1700 50  0001 C CNN
 F 3 "~" H 7000 1700 50  0001 C CNN
-F 4 "momentary NO, 8.35mm actuator leng, horizontal, TH" H 7000 1500 50  0001 C CNN "description"
+F 4 "momentary 6x6mm NO, 8.35mm shaft, horizontal, TH" H 7000 1500 50  0001 C CNN "description"
 F 5 "PTS645-VH83-2 LFS" H 7000 1500 50  0001 C CNN "MPN"
 F 6 "C&K" H 7000 1500 50  0001 C CNN "manufacturer"
 	1    7000 1500
@@ -822,7 +822,7 @@ F 0 "U8" H 8900 3500 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 8950 3274 50  0001 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 8950 3500 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 8950 3500 50  0001 C CNN
-F 4 "LVC open drain driver" H 8950 3500 50  0001 C CNN "description"
+F 4 "LVC hex open drain driver 14-SSOP (5.3mm width)" H 8950 3500 50  0001 C CNN "description"
 F 5 "SN74LVC07ADB" H 8950 3500 50  0001 C CNN "MPN"
 F 6 "TI" H 8950 3500 50  0001 C CNN "manufacturer"
 	2    8950 3500
@@ -836,7 +836,7 @@ F 0 "U8" H 8950 4300 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 9000 4526 50  0001 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 9000 4300 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 9000 4300 50  0001 C CNN
-F 4 "LVC open drain driver" H 9000 4300 50  0001 C CNN "description"
+F 4 "LVC hex open drain driver 14-SSOP (5.3mm width)" H 9000 4300 50  0001 C CNN "description"
 F 5 "SN74LVC07ADB" H 9000 4300 50  0001 C CNN "MPN"
 F 6 "TI" H 9000 4300 50  0001 C CNN "manufacturer"
 	3    9000 4300
@@ -850,7 +850,7 @@ F 0 "U8" H 8950 4500 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 9000 4274 50  0001 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 9000 4500 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 9000 4500 50  0001 C CNN
-F 4 "LVC open drain driver" H 9000 4500 50  0001 C CNN "description"
+F 4 "LVC hex open drain driver 14-SSOP (5.3mm width)" H 9000 4500 50  0001 C CNN "description"
 F 5 "SN74LVC07ADB" H 9000 4500 50  0001 C CNN "MPN"
 F 6 "TI" H 9000 4500 50  0001 C CNN "manufacturer"
 	4    9000 4500
@@ -864,7 +864,7 @@ F 0 "U8" H 8950 5300 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 9000 5526 50  0001 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 9000 5300 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 9000 5300 50  0001 C CNN
-F 4 "LVC open drain driver" H 9000 5300 50  0001 C CNN "description"
+F 4 "LVC hex open drain driver 14-SSOP (5.3mm width)" H 9000 5300 50  0001 C CNN "description"
 F 5 "SN74LVC07ADB" H 9000 5300 50  0001 C CNN "MPN"
 F 6 "TI" H 9000 5300 50  0001 C CNN "manufacturer"
 	5    9000 5300
@@ -878,7 +878,7 @@ F 0 "U8" H 8950 5500 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 9000 5274 50  0001 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 9000 5500 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 9000 5500 50  0001 C CNN
-F 4 "LVC open drain driver" H 9000 5500 50  0001 C CNN "description"
+F 4 "LVC hex open drain driver 14-SSOP (5.3mm width)" H 9000 5500 50  0001 C CNN "description"
 F 5 "SN74LVC07ADB" H 9000 5500 50  0001 C CNN "MPN"
 F 6 "TI" H 9000 5500 50  0001 C CNN "manufacturer"
 	6    9000 5500
@@ -892,7 +892,7 @@ F 0 "U1" H 9050 1500 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 9100 1726 50  0001 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 9100 1500 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 9100 1500 50  0001 C CNN
-F 4 "LVC open drain driver" H 9100 1500 50  0001 C CNN "description"
+F 4 "LVC hex open drain driver 14-SSOP (5.3mm width)" H 9100 1500 50  0001 C CNN "description"
 F 5 "SN74LVC07ADB" H 9100 1500 50  0001 C CNN "MPN"
 F 6 "TI" H 9100 1500 50  0001 C CNN "manufacturer"
 	2    9100 1500
@@ -906,7 +906,7 @@ F 0 "U1" H 7200 5100 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 7250 5326 50  0000 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 7250 5100 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 7250 5100 50  0001 C CNN
-F 4 "LVC open drain driver" H 7250 5100 50  0001 C CNN "description"
+F 4 "LVC hex open drain driver 14-SSOP (5.3mm width)" H 7250 5100 50  0001 C CNN "description"
 F 5 "SN74LVC07ADB" H 7250 5100 50  0001 C CNN "MPN"
 F 6 "TI" H 7250 5100 50  0001 C CNN "manufacturer"
 	3    7250 5100
@@ -999,7 +999,7 @@ F 0 "U1" H 9050 1150 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 9050 1350 50  0000 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 9100 1150 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 9100 1150 50  0001 C CNN
-F 4 "LVC open drain driver" H 9100 1150 50  0001 C CNN "description"
+F 4 "LVC hex open drain driver 14-SSOP (5.3mm width)" H 9100 1150 50  0001 C CNN "description"
 F 5 "SN74LVC07ADB" H 9100 1150 50  0001 C CNN "MPN"
 F 6 "TI" H 9100 1150 50  0001 C CNN "manufacturer"
 	1    9100 1150
@@ -1038,7 +1038,7 @@ F 0 "U8" H 8900 3300 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 8950 3100 50  0000 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 8950 3300 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 8950 3300 50  0001 C CNN
-F 4 "LVC open drain driver" H 8950 3300 50  0001 C CNN "description"
+F 4 "LVC hex open drain driver 14-SSOP (5.3mm width)" H 8950 3300 50  0001 C CNN "description"
 F 5 "SN74LVC07ADB" H 8950 3300 50  0001 C CNN "MPN"
 F 6 "TI" H 8950 3300 50  0001 C CNN "manufacturer"
 	1    8950 3300
@@ -1200,7 +1200,7 @@ F 0 "U5" H 4950 1700 50  0000 C CNN
 F 1 "SN74LVC2G74DCUR" H 4950 1600 50  0000 C CNN
 F 2 "Package_SO:VSSOP-8_2.3x2mm_P0.5mm" H 4950 1300 50  0001 C CNN
 F 3 "http://www.ti.com/lit/sg/scyt129e/scyt129e.pdf" H 4950 1300 50  0001 C CNN
-F 4 "LVC single D flip flop" H 4950 1300 50  0001 C CNN "description"
+F 4 "LVC single D flip flop, 8-VFSOP (2.3mm width" H 4950 1300 50  0001 C CNN "description"
 F 5 "SN74LVC2G74DCUR" H 4950 1300 50  0001 C CNN "MPN"
 F 6 "TI" H 4950 1300 50  0001 C CNN "manufacturer"
 	1    4950 1300
@@ -1216,7 +1216,7 @@ F 0 "U4" H 4300 1750 50  0000 C CNN
 F 1 "SN74LVC1G86DBV" H 4350 1650 50  0000 C CNN
 F 2 "Package_TO_SOT_SMD:SOT-23-5" H 4300 1400 50  0001 C CNN
 F 3 "http://www.ti.com/lit/sg/scyt129e/scyt129e.pdf" H 4300 1400 50  0001 C CNN
-F 4 "LVC single XOR gate" H 4300 1400 50  0001 C CNN "description"
+F 4 "LVC single XOR gate, SOT-753" H 4300 1400 50  0001 C CNN "description"
 F 5 "SNLVC1G86DBV" H 4300 1400 50  0001 C CNN "MPN"
 F 6 "TI" H 4300 1400 50  0001 C CNN "manufacturer"
 	1    4300 1400
@@ -1291,8 +1291,8 @@ F 0 "U6" H 6150 4300 50  0000 C CNN
 F 1 "STM32F103C8T6" H 6200 4200 50  0000 C CNN
 F 2 "Package_QFP:LQFP-48_7x7mm_P0.5mm" H 5600 2800 50  0001 R CNN
 F 3 "http://www.st.com/st-web-ui/static/active/en/resource/technical/document/datasheet/CD00161566.pdf" H 6200 4200 50  0001 C CNN
-F 4 "microprocessor LQFP-48" H 6200 4200 50  0001 C CNN "description"
-F 5 "STM32F103C8T6" H 6200 4200 50  0001 C CNN "MPN"
+F 4 "microprocessor 48-LQFP" H 6200 4200 50  0001 C CNN "description"
+F 5 "STM32F103C8T6TR" H 6200 4200 50  0001 C CNN "MPN"
 F 6 "STMicrodevices" H 6200 4200 50  0001 C CNN "manufacturer"
 	1    6200 4200
 	1    0    0    -1  
@@ -1307,7 +1307,7 @@ F 0 "U1" H 9050 1850 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 9100 2076 50  0001 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 9100 1850 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 9100 1850 50  0001 C CNN
-F 4 "LVC open drain driver" H 9100 1850 50  0001 C CNN "description"
+F 4 "LVC hex open drain driver 14-SSOP (5.3mm width)" H 9100 1850 50  0001 C CNN "description"
 F 5 "SN74LVC07ADB" H 9100 1850 50  0001 C CNN "MPN"
 F 6 "TI" H 9100 1850 50  0001 C CNN "manufacturer"
 	4    9100 1850
@@ -1321,7 +1321,7 @@ F 0 "U1" H 1050 6150 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 1100 6376 50  0001 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 1100 6150 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 1100 6150 50  0001 C CNN
-F 4 "LVC open drain driver" H 1100 6150 50  0001 C CNN "description"
+F 4 "LVC hex open drain driver 14-SSOP (5.3mm width)" H 1100 6150 50  0001 C CNN "description"
 F 5 "SN74LVC07ADB" H 1100 6150 50  0001 C CNN "MPN"
 F 6 "TI" H 1100 6150 50  0001 C CNN "manufacturer"
 	5    1100 6150
@@ -1335,7 +1335,7 @@ F 0 "U1" H 1050 6500 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 1100 6726 50  0001 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 1100 6500 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 1100 6500 50  0001 C CNN
-F 4 "LVC open drain driver" H 1100 6500 50  0001 C CNN "description"
+F 4 "LVC hex open drain driver 14-SSOP (5.3mm width)" H 1100 6500 50  0001 C CNN "description"
 F 5 "SN74LVC07ADB" H 1100 6500 50  0001 C CNN "MPN"
 F 6 "TI" H 1100 6500 50  0001 C CNN "manufacturer"
 	6    1100 6500
@@ -1849,7 +1849,7 @@ F 0 "U1" H 1800 6200 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 1850 6900 50  0000 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 1800 6200 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 1800 6200 50  0001 C CNN
-F 4 "LVC open drain driver" H 1800 6200 50  0001 C CNN "description"
+F 4 "LVC hex open drain driver 14-SSOP (5.3mm width)" H 1800 6200 50  0001 C CNN "description"
 F 5 "SN74LVC07ADB" H 1800 6200 50  0001 C CNN "MPN"
 F 6 "TI" H 1800 6200 50  0001 C CNN "manufacturer"
 	7    1800 6200
@@ -1885,7 +1885,7 @@ F 0 "U8" H 2500 6200 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 2550 6900 50  0000 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 2500 6200 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 2500 6200 50  0001 C CNN
-F 4 "LVC open drain driver" H 2500 6200 50  0001 C CNN "description"
+F 4 "LVC hex open drain driver 14-SSOP (5.3mm width)" H 2500 6200 50  0001 C CNN "description"
 F 5 "SN74LVC07ADB" H 2500 6200 50  0001 C CNN "MPN"
 F 6 "TI" H 2500 6200 50  0001 C CNN "manufacturer"
 	7    2500 6200
