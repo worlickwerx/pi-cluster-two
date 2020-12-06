@@ -21,6 +21,8 @@ F 0 "J3" H 1300 1575 50  0000 C CNN
 F 1 "Conn_02x07_Odd_Even" H 1300 1576 50  0001 C CNN
 F 2 "00_supervisor:IDC-Header_2x07_P2.54mm_Latch_Horizontal" H 1250 1150 50  0001 C CNN
 F 3 "~" H 1250 1150 50  0001 C CNN
+F 4 "2.54mm 2x7 14 pin male RA ejector header with latch, TH" H 1250 1150 50  0001 C CNN "description"
+F 5 "any" H 1250 1150 50  0001 C CNN "manufacturer"
 	1    1250 1150
 	1    0    0    -1  
 $EndComp
@@ -100,8 +102,10 @@ U 1 1 5FC1F1BA
 P 8050 1800
 F 0 "R11" H 8250 1800 50  0000 R CNN
 F 1 "100K" V 8050 1900 50  0000 R CNN
-F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" V 7980 1800 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 7980 1800 50  0001 C CNN
 F 3 "~" H 8050 1800 50  0001 C CNN
+F 4 "1/8W 1 pct 0805" H 8050 1800 50  0001 C CNN "description"
+F 5 "any" H 8050 1800 50  0001 C CNN "manufacturer"
 	1    8050 1800
 	1    0    0    1   
 $EndComp
@@ -128,6 +132,9 @@ F 0 "U3" H 3000 7442 50  0000 C CNN
 F 1 "LM1117-IMPX3.3" H 3000 7351 50  0000 C CNN
 F 2 "Package_TO_SOT_SMD:SOT-223-3_TabPin2" H 3000 7200 50  0001 C CNN
 F 3 "http://www.ti.com/lit/ds/symlink/lm1117.pdf" H 3000 7200 50  0001 C CNN
+F 4 "3V3 800ma SMT linear regulator, SOT-223-4" H 3000 7200 50  0001 C CNN "description"
+F 5 "LM1117IMPX-3.3/NOPB" H 3000 7200 50  0001 C CNN "MPN"
+F 6 "TI" H 3000 7200 50  0001 C CNN "manufacturer"
 	1    3000 7200
 	1    0    0    -1  
 $EndComp
@@ -169,6 +176,8 @@ F 0 "C1" H 1668 7496 50  0000 L CNN
 F 1 "100uF 16V" H 1668 7405 50  0000 L CNN
 F 2 "Capacitor_SMD:CP_Elec_6.3x7.7" H 1588 7300 50  0001 C CNN
 F 3 "~" H 1550 7450 50  0001 C CNN
+F 4 "electrolytic 0805" H 1550 7450 50  0001 C CNN "description"
+F 5 "any" H 1550 7450 50  0001 C CNN "manufacturer"
 	1    1550 7450
 	1    0    0    -1  
 $EndComp
@@ -192,8 +201,10 @@ U 1 1 5FC293AC
 P 2200 7450
 F 0 "C2" H 2315 7496 50  0000 L CNN
 F 1 "10uF 16V" H 2315 7405 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 2238 7300 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 2238 7300 50  0001 C CNN
 F 3 "~" H 2200 7450 50  0001 C CNN
+F 4 "ceramic 0805" H 2200 7450 50  0001 C CNN "description"
+F 5 "any" H 2200 7450 50  0001 C CNN "manufacturer"
 	1    2200 7450
 	1    0    0    -1  
 $EndComp
@@ -216,8 +227,10 @@ U 1 1 5FC2AB96
 P 3750 7450
 F 0 "C3" H 3865 7496 50  0000 L CNN
 F 1 "22uF 16V" H 3865 7405 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 3788 7300 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 3788 7300 50  0001 C CNN
 F 3 "~" H 3750 7450 50  0001 C CNN
+F 4 "ceramic 0805" H 3750 7450 50  0001 C CNN "description"
+F 5 "any" H 3750 7450 50  0001 C CNN "manufacturer"
 	1    3750 7450
 	1    0    0    -1  
 $EndComp
@@ -283,8 +296,11 @@ U 1 1 5FC8C28F
 P 4150 5100
 F 0 "U2" H 4150 5850 50  0000 C CNN
 F 1 "TCAN332DR" H 4150 5750 50  0000 C CNN
-F 2 "Package_TO_SOT_SMD:SOT-23-8_Handsoldering" H 4150 4600 50  0001 C CIN
+F 2 "Package_TO_SOT_SMD:SOT-23-8" H 4150 4600 50  0001 C CIN
 F 3 "http://www.ti.com/lit/ds/symlink/tcan337.pdf" H 4150 5100 50  0001 C CNN
+F 4 "can transceiver" H 4150 5100 50  0001 C CNN "description"
+F 5 "TCAN332DR" H 4150 5100 50  0001 C CNN "MPN"
+F 6 "TI" H 4150 5100 50  0001 C CNN "manufacturer"
 	1    4150 5100
 	-1   0    0    -1  
 $EndComp
@@ -324,8 +340,10 @@ U 1 1 5FCADA8B
 P 4750 4200
 F 0 "R5" V 4850 4200 50  0000 C CNN
 F 1 "10K" V 4750 4200 50  0000 C CNN
-F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" V 4680 4200 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 4680 4200 50  0001 C CNN
 F 3 "~" H 4750 4200 50  0001 C CNN
+F 4 "1/8 W 1 pct 0805" H 4750 4200 50  0001 C CNN "description"
+F 5 "any" H 4750 4200 50  0001 C CNN "manufacturer"
 	1    4750 4200
 	0    1    -1   0   
 $EndComp
@@ -396,8 +414,10 @@ U 1 1 5FEFDC98
 P 4400 3600
 F 0 "D1" H 4400 3500 50  0000 C CNN
 F 1 "LED GREEN" H 4400 3700 50  0000 C CNN
-F 2 "LED_SMD:LED_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4400 3600 50  0001 C CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 4400 3600 50  0001 C CNN
 F 3 "~" H 4400 3600 50  0001 C CNN
+F 4 "green led 0805" H 4400 3600 50  0001 C CNN "description"
+F 5 "any" H 4400 3600 50  0001 C CNN "manufacturer"
 	1    4400 3600
 	-1   0    0    1   
 $EndComp
@@ -420,8 +440,10 @@ U 1 1 5FF08FA9
 P 4750 3600
 F 0 "R8" V 4850 3650 50  0000 R CNN
 F 1 "510" V 4750 3650 50  0000 R CNN
-F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" V 4680 3600 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 4680 3600 50  0001 C CNN
 F 3 "~" H 4750 3600 50  0001 C CNN
+F 4 "1/8W 1 pct 0805" H 4750 3600 50  0001 C CNN "description"
+F 5 "any" H 4750 3600 50  0001 C CNN "manufacturer"
 	1    4750 3600
 	0    1    -1   0   
 $EndComp
@@ -440,6 +462,9 @@ F 0 "SW1" H 3900 4100 50  0000 R CNN
 F 1 "SW_Push" V 3955 3952 50  0001 R CNN
 F 2 "Button_Switch_THT:SW_Tactile_SPST_Angled_PTS645Vx83-2LFS" H 4000 4200 50  0001 C CNN
 F 3 "~" H 4000 4200 50  0001 C CNN
+F 4 "momentary NO, 8.35mm actuator leng, horizontal, TH" H 4000 4000 50  0001 C CNN "description"
+F 5 "PTS645-VH83-2 LFS" H 4000 4000 50  0001 C CNN "MPN"
+F 6 "C&K" H 4000 4000 50  0001 C CNN "manufacturer"
 	1    4000 4000
 	1    0    0    -1  
 $EndComp
@@ -451,6 +476,9 @@ F 0 "SW3" H 6900 1600 50  0000 R CNN
 F 1 "SW_Push" V 6955 1452 50  0001 R CNN
 F 2 "Button_Switch_THT:SW_Tactile_SPST_Angled_PTS645Vx83-2LFS" H 7000 1700 50  0001 C CNN
 F 3 "~" H 7000 1700 50  0001 C CNN
+F 4 "momentary NO, 8.35mm actuator leng, horizontal, TH" H 7000 1500 50  0001 C CNN "description"
+F 5 "PTS645-VH83-2 LFS" H 7000 1500 50  0001 C CNN "MPN"
+F 6 "C&K" H 7000 1500 50  0001 C CNN "manufacturer"
 	1    7000 1500
 	1    0    0    -1  
 $EndComp
@@ -478,8 +506,10 @@ U 1 1 60041C0B
 P 9700 1200
 F 0 "R16" H 9900 1200 50  0000 R CNN
 F 1 "10K" V 9700 1300 50  0000 R CNN
-F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" V 9630 1200 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 9630 1200 50  0001 C CNN
 F 3 "~" H 9700 1200 50  0001 C CNN
+F 4 "1/8 W 1 pct 0805" H 9700 1200 50  0001 C CNN "description"
+F 5 "any" H 9700 1200 50  0001 C CNN "manufacturer"
 	1    9700 1200
 	1    0    0    1   
 $EndComp
@@ -502,8 +532,10 @@ U 1 1 600F8245
 P 5950 7250
 F 0 "C10" H 6000 7350 50  0000 L CNN
 F 1 "100nF 16V" H 5100 7500 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 5988 7100 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 5988 7100 50  0001 C CNN
 F 3 "~" H 5950 7250 50  0001 C CNN
+F 4 "ceramic 0805" H 5950 7250 50  0001 C CNN "description"
+F 5 "any" H 5950 7250 50  0001 C CNN "manufacturer"
 	1    5950 7250
 	1    0    0    -1  
 $EndComp
@@ -513,8 +545,10 @@ U 1 1 600F89A1
 P 5700 7250
 F 0 "C9" H 5750 7350 50  0000 L CNN
 F 1 "100nF 16V" H 5500 6900 50  0001 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 5738 7100 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 5738 7100 50  0001 C CNN
 F 3 "~" H 5700 7250 50  0001 C CNN
+F 4 "ceramic 0805" H 5700 7250 50  0001 C CNN "description"
+F 5 "any" H 5700 7250 50  0001 C CNN "manufacturer"
 	1    5700 7250
 	1    0    0    -1  
 $EndComp
@@ -524,8 +558,10 @@ U 1 1 600F9A22
 P 5450 7250
 F 0 "C8" H 5500 7350 50  0000 L CNN
 F 1 "100nF 16V" H 5250 6900 50  0001 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 5488 7100 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 5488 7100 50  0001 C CNN
 F 3 "~" H 5450 7250 50  0001 C CNN
+F 4 "ceramic 0805" H 5450 7250 50  0001 C CNN "description"
+F 5 "any" H 5450 7250 50  0001 C CNN "manufacturer"
 	1    5450 7250
 	1    0    0    -1  
 $EndComp
@@ -535,8 +571,10 @@ U 1 1 600F9F63
 P 5200 7250
 F 0 "C7" H 5250 7350 50  0000 L CNN
 F 1 "100nF 16V" H 5000 6900 50  0001 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 5238 7100 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 5238 7100 50  0001 C CNN
 F 3 "~" H 5200 7250 50  0001 C CNN
+F 4 "ceramic 0805" H 5200 7250 50  0001 C CNN "description"
+F 5 "any" H 5200 7250 50  0001 C CNN "manufacturer"
 	1    5200 7250
 	1    0    0    -1  
 $EndComp
@@ -546,8 +584,10 @@ U 1 1 600FA81A
 P 4950 7250
 F 0 "C6" H 5000 7350 50  0000 L CNN
 F 1 "100nF 16V" H 4750 6900 50  0001 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 4988 7100 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 4988 7100 50  0001 C CNN
 F 3 "~" H 4950 7250 50  0001 C CNN
+F 4 "ceramic 0805" H 4950 7250 50  0001 C CNN "description"
+F 5 "any" H 4950 7250 50  0001 C CNN "manufacturer"
 	1    4950 7250
 	1    0    0    -1  
 $EndComp
@@ -557,8 +597,10 @@ U 1 1 600FAA57
 P 4700 7250
 F 0 "C5" H 4750 7350 50  0000 L CNN
 F 1 "100nF 16V" H 4500 6900 50  0001 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 4738 7100 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 4738 7100 50  0001 C CNN
 F 3 "~" H 4700 7250 50  0001 C CNN
+F 4 "ceramic 0805" H 4700 7250 50  0001 C CNN "description"
+F 5 "any" H 4700 7250 50  0001 C CNN "manufacturer"
 	1    4700 7250
 	1    0    0    -1  
 $EndComp
@@ -645,6 +687,8 @@ F 0 "M1" H 9908 3496 50  0000 L CNN
 F 1 "Fan_4pin" H 9908 3405 50  0000 L CNN
 F 2 "Connector:FanPinHeader_1x04_P2.54mm_Vertical" H 9750 3410 50  0001 C CNN
 F 3 "http://www.formfactors.org/developer%5Cspecs%5Crev1_2_public.pdf" H 9750 3410 50  0001 C CNN
+F 4 "std 4-pin PC fan header" H 9750 3400 50  0001 C CNN "description"
+F 5 "any" H 9750 3400 50  0001 C CNN "manufacturer"
 	1    9750 3400
 	1    0    0    -1  
 $EndComp
@@ -660,6 +704,9 @@ F 0 "U7" H 7600 2200 50  0000 L CNN
 F 1 "CAT811TTBI-GT3" H 7400 2100 50  0000 L CNN
 F 2 "Package_TO_SOT_SMD:SOT-143" H 7750 1200 50  0001 L CNN
 F 3 "" H 7300 800 50  0001 C CNN
+F 4 "3V3 voltage supervisor SOT123-4" H 7650 1500 50  0001 C CNN "description"
+F 5 "CAT811TTBI-GT3" H 7650 1500 50  0001 C CNN "MPN"
+F 6 "ON Semi" H 7650 1500 50  0001 C CNN "manufacturer"
 	1    7650 1500
 	1    0    0    -1  
 $EndComp
@@ -693,6 +740,8 @@ F 0 "M2" H 9908 4496 50  0000 L CNN
 F 1 "Fan_4pin" H 9908 4405 50  0000 L CNN
 F 2 "Connector:FanPinHeader_1x04_P2.54mm_Vertical" H 9750 4410 50  0001 C CNN
 F 3 "http://www.formfactors.org/developer%5Cspecs%5Crev1_2_public.pdf" H 9750 4410 50  0001 C CNN
+F 4 "std 4-pin PC fan header" H 9750 4400 50  0001 C CNN "description"
+F 5 "any" H 9750 4400 50  0001 C CNN "manufacturer"
 	1    9750 4400
 	1    0    0    -1  
 $EndComp
@@ -730,6 +779,8 @@ F 0 "M3" H 9908 5496 50  0000 L CNN
 F 1 "Fan_4pin" H 9908 5405 50  0000 L CNN
 F 2 "Connector:FanPinHeader_1x04_P2.54mm_Vertical" H 9750 5410 50  0001 C CNN
 F 3 "http://www.formfactors.org/developer%5Cspecs%5Crev1_2_public.pdf" H 9750 5410 50  0001 C CNN
+F 4 "std 4-pin PC fan header" H 9750 5400 50  0001 C CNN "description"
+F 5 "any" H 9750 5400 50  0001 C CNN "manufacturer"
 	1    9750 5400
 	1    0    0    -1  
 $EndComp
@@ -771,6 +822,9 @@ F 0 "U8" H 8900 3500 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 8950 3274 50  0001 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 8950 3500 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 8950 3500 50  0001 C CNN
+F 4 "LVC open drain driver" H 8950 3500 50  0001 C CNN "description"
+F 5 "SN74LVC07ADB" H 8950 3500 50  0001 C CNN "MPN"
+F 6 "TI" H 8950 3500 50  0001 C CNN "manufacturer"
 	2    8950 3500
 	1    0    0    -1  
 $EndComp
@@ -782,6 +836,9 @@ F 0 "U8" H 8950 4300 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 9000 4526 50  0001 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 9000 4300 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 9000 4300 50  0001 C CNN
+F 4 "LVC open drain driver" H 9000 4300 50  0001 C CNN "description"
+F 5 "SN74LVC07ADB" H 9000 4300 50  0001 C CNN "MPN"
+F 6 "TI" H 9000 4300 50  0001 C CNN "manufacturer"
 	3    9000 4300
 	-1   0    0    1   
 $EndComp
@@ -793,6 +850,9 @@ F 0 "U8" H 8950 4500 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 9000 4274 50  0001 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 9000 4500 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 9000 4500 50  0001 C CNN
+F 4 "LVC open drain driver" H 9000 4500 50  0001 C CNN "description"
+F 5 "SN74LVC07ADB" H 9000 4500 50  0001 C CNN "MPN"
+F 6 "TI" H 9000 4500 50  0001 C CNN "manufacturer"
 	4    9000 4500
 	1    0    0    -1  
 $EndComp
@@ -804,6 +864,9 @@ F 0 "U8" H 8950 5300 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 9000 5526 50  0001 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 9000 5300 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 9000 5300 50  0001 C CNN
+F 4 "LVC open drain driver" H 9000 5300 50  0001 C CNN "description"
+F 5 "SN74LVC07ADB" H 9000 5300 50  0001 C CNN "MPN"
+F 6 "TI" H 9000 5300 50  0001 C CNN "manufacturer"
 	5    9000 5300
 	-1   0    0    1   
 $EndComp
@@ -815,6 +878,9 @@ F 0 "U8" H 8950 5500 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 9000 5274 50  0001 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 9000 5500 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 9000 5500 50  0001 C CNN
+F 4 "LVC open drain driver" H 9000 5500 50  0001 C CNN "description"
+F 5 "SN74LVC07ADB" H 9000 5500 50  0001 C CNN "MPN"
+F 6 "TI" H 9000 5500 50  0001 C CNN "manufacturer"
 	6    9000 5500
 	1    0    0    -1  
 $EndComp
@@ -826,6 +892,9 @@ F 0 "U1" H 9050 1500 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 9100 1726 50  0001 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 9100 1500 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 9100 1500 50  0001 C CNN
+F 4 "LVC open drain driver" H 9100 1500 50  0001 C CNN "description"
+F 5 "SN74LVC07ADB" H 9100 1500 50  0001 C CNN "MPN"
+F 6 "TI" H 9100 1500 50  0001 C CNN "manufacturer"
 	2    9100 1500
 	1    0    0    -1  
 $EndComp
@@ -837,6 +906,9 @@ F 0 "U1" H 7200 5100 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 7250 5326 50  0000 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 7250 5100 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 7250 5100 50  0001 C CNN
+F 4 "LVC open drain driver" H 7250 5100 50  0001 C CNN "description"
+F 5 "SN74LVC07ADB" H 7250 5100 50  0001 C CNN "MPN"
+F 6 "TI" H 7250 5100 50  0001 C CNN "manufacturer"
 	3    7250 5100
 	1    0    0    -1  
 $EndComp
@@ -896,8 +968,10 @@ U 1 1 6036CE49
 P 4450 7250
 F 0 "C4" H 4500 7350 50  0000 L CNN
 F 1 "100nF 16V" H 4250 6900 50  0001 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 4488 7100 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 4488 7100 50  0001 C CNN
 F 3 "~" H 4450 7250 50  0001 C CNN
+F 4 "ceramic 0805" H 4450 7250 50  0001 C CNN "description"
+F 5 "any" H 4450 7250 50  0001 C CNN "manufacturer"
 	1    4450 7250
 	1    0    0    -1  
 $EndComp
@@ -925,6 +999,9 @@ F 0 "U1" H 9050 1150 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 9050 1350 50  0000 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 9100 1150 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 9100 1150 50  0001 C CNN
+F 4 "LVC open drain driver" H 9100 1150 50  0001 C CNN "description"
+F 5 "SN74LVC07ADB" H 9100 1150 50  0001 C CNN "MPN"
+F 6 "TI" H 9100 1150 50  0001 C CNN "manufacturer"
 	1    9100 1150
 	1    0    0    -1  
 $EndComp
@@ -961,6 +1038,9 @@ F 0 "U8" H 8900 3300 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 8950 3100 50  0000 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 8950 3300 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 8950 3300 50  0001 C CNN
+F 4 "LVC open drain driver" H 8950 3300 50  0001 C CNN "description"
+F 5 "SN74LVC07ADB" H 8950 3300 50  0001 C CNN "MPN"
+F 6 "TI" H 8950 3300 50  0001 C CNN "manufacturer"
 	1    8950 3300
 	-1   0    0    1   
 $EndComp
@@ -970,8 +1050,10 @@ U 1 1 6055BA62
 P 9300 5100
 F 0 "R15" H 9350 5100 50  0000 L CNN
 F 1 "10K" V 9300 5000 50  0000 L CNN
-F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" V 9230 5100 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 9230 5100 50  0001 C CNN
 F 3 "~" H 9300 5100 50  0001 C CNN
+F 4 "1/8 W 1 pct 0805" H 9300 5100 50  0001 C CNN "description"
+F 5 "any" H 9300 5100 50  0001 C CNN "manufacturer"
 	1    9300 5100
 	1    0    0    -1  
 $EndComp
@@ -995,8 +1077,10 @@ U 1 1 6056C770
 P 9300 4100
 F 0 "R14" H 9350 4100 50  0000 L CNN
 F 1 "10K" V 9300 4000 50  0000 L CNN
-F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" V 9230 4100 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 9230 4100 50  0001 C CNN
 F 3 "~" H 9300 4100 50  0001 C CNN
+F 4 "1/8 W 1 pct 0805" H 9300 4100 50  0001 C CNN "description"
+F 5 "any" H 9300 4100 50  0001 C CNN "manufacturer"
 	1    9300 4100
 	1    0    0    -1  
 $EndComp
@@ -1020,8 +1104,10 @@ U 1 1 60581965
 P 9300 3100
 F 0 "R13" H 9350 3100 50  0000 L CNN
 F 1 "10K" V 9300 3000 50  0000 L CNN
-F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" V 9230 3100 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 9230 3100 50  0001 C CNN
 F 3 "~" H 9300 3100 50  0001 C CNN
+F 4 "1/8 W 1 pct 0805" H 9300 3100 50  0001 C CNN "description"
+F 5 "any" H 9300 3100 50  0001 C CNN "manufacturer"
 	1    9300 3100
 	1    0    0    -1  
 $EndComp
@@ -1062,8 +1148,10 @@ U 1 1 6077749B
 P 3450 1150
 F 0 "R3" H 3500 1150 50  0000 L CNN
 F 1 "10K" V 3450 1050 50  0000 L CNN
-F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" V 3380 1150 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 3380 1150 50  0001 C CNN
 F 3 "~" H 3450 1150 50  0001 C CNN
+F 4 "1/8 W 1 pct 0805" H 3450 1150 50  0001 C CNN "description"
+F 5 "any" H 3450 1150 50  0001 C CNN "manufacturer"
 	1    3450 1150
 	1    0    0    -1  
 $EndComp
@@ -1073,8 +1161,10 @@ U 1 1 6078CAAC
 P 3700 1150
 F 0 "R4" H 3750 1150 50  0000 L CNN
 F 1 "10K" V 3700 1050 50  0000 L CNN
-F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" V 3630 1150 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 3630 1150 50  0001 C CNN
 F 3 "~" H 3700 1150 50  0001 C CNN
+F 4 "1/8 W 1 pct 0805" H 3700 1150 50  0001 C CNN "description"
+F 5 "any" H 3700 1150 50  0001 C CNN "manufacturer"
 	1    3700 1150
 	1    0    0    -1  
 $EndComp
@@ -1110,6 +1200,9 @@ F 0 "U5" H 4950 1700 50  0000 C CNN
 F 1 "SN74LVC2G74DCUR" H 4950 1600 50  0000 C CNN
 F 2 "Package_SO:VSSOP-8_2.3x2mm_P0.5mm" H 4950 1300 50  0001 C CNN
 F 3 "http://www.ti.com/lit/sg/scyt129e/scyt129e.pdf" H 4950 1300 50  0001 C CNN
+F 4 "LVC single D flip flop" H 4950 1300 50  0001 C CNN "description"
+F 5 "SN74LVC2G74DCUR" H 4950 1300 50  0001 C CNN "MPN"
+F 6 "TI" H 4950 1300 50  0001 C CNN "manufacturer"
 	1    4950 1300
 	1    0    0    -1  
 $EndComp
@@ -1123,6 +1216,9 @@ F 0 "U4" H 4300 1750 50  0000 C CNN
 F 1 "SN74LVC1G86DBV" H 4350 1650 50  0000 C CNN
 F 2 "Package_TO_SOT_SMD:SOT-23-5" H 4300 1400 50  0001 C CNN
 F 3 "http://www.ti.com/lit/sg/scyt129e/scyt129e.pdf" H 4300 1400 50  0001 C CNN
+F 4 "LVC single XOR gate" H 4300 1400 50  0001 C CNN "description"
+F 5 "SNLVC1G86DBV" H 4300 1400 50  0001 C CNN "MPN"
+F 6 "TI" H 4300 1400 50  0001 C CNN "manufacturer"
 	1    4300 1400
 	1    0    0    -1  
 $EndComp
@@ -1132,8 +1228,10 @@ U 1 1 608D831C
 P 5500 1050
 F 0 "R10" V 5400 1000 50  0000 L CNN
 F 1 "10K" V 5500 950 50  0000 L CNN
-F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" V 5430 1050 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 5430 1050 50  0001 C CNN
 F 3 "~" H 5500 1050 50  0001 C CNN
+F 4 "1/8 W 1 pct 0805" H 5500 1050 50  0001 C CNN "description"
+F 5 "any" H 5500 1050 50  0001 C CNN "manufacturer"
 	1    5500 1050
 	0    1    1    0   
 $EndComp
@@ -1193,6 +1291,9 @@ F 0 "U6" H 6150 4300 50  0000 C CNN
 F 1 "STM32F103C8T6" H 6200 4200 50  0000 C CNN
 F 2 "Package_QFP:LQFP-48_7x7mm_P0.5mm" H 5600 2800 50  0001 R CNN
 F 3 "http://www.st.com/st-web-ui/static/active/en/resource/technical/document/datasheet/CD00161566.pdf" H 6200 4200 50  0001 C CNN
+F 4 "microprocessor LQFP-48" H 6200 4200 50  0001 C CNN "description"
+F 5 "STM32F103C8T6" H 6200 4200 50  0001 C CNN "MPN"
+F 6 "STMicrodevices" H 6200 4200 50  0001 C CNN "manufacturer"
 	1    6200 4200
 	1    0    0    -1  
 $EndComp
@@ -1206,6 +1307,9 @@ F 0 "U1" H 9050 1850 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 9100 2076 50  0001 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 9100 1850 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 9100 1850 50  0001 C CNN
+F 4 "LVC open drain driver" H 9100 1850 50  0001 C CNN "description"
+F 5 "SN74LVC07ADB" H 9100 1850 50  0001 C CNN "MPN"
+F 6 "TI" H 9100 1850 50  0001 C CNN "manufacturer"
 	4    9100 1850
 	1    0    0    -1  
 $EndComp
@@ -1217,6 +1321,9 @@ F 0 "U1" H 1050 6150 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 1100 6376 50  0001 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 1100 6150 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 1100 6150 50  0001 C CNN
+F 4 "LVC open drain driver" H 1100 6150 50  0001 C CNN "description"
+F 5 "SN74LVC07ADB" H 1100 6150 50  0001 C CNN "MPN"
+F 6 "TI" H 1100 6150 50  0001 C CNN "manufacturer"
 	5    1100 6150
 	1    0    0    -1  
 $EndComp
@@ -1228,6 +1335,9 @@ F 0 "U1" H 1050 6500 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 1100 6726 50  0001 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 1100 6500 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 1100 6500 50  0001 C CNN
+F 4 "LVC open drain driver" H 1100 6500 50  0001 C CNN "description"
+F 5 "SN74LVC07ADB" H 1100 6500 50  0001 C CNN "MPN"
+F 6 "TI" H 1100 6500 50  0001 C CNN "manufacturer"
 	6    1100 6500
 	1    0    0    -1  
 $EndComp
@@ -1288,6 +1398,8 @@ F 0 "F2" V 8295 2900 50  0000 C CNN
 F 1 "PTC 2.5A 16V" V 8400 2800 50  0000 C CNN
 F 2 "Fuse:Fuse_1812_4532Metric_Pad1.30x3.40mm_HandSolder" H 8550 2700 50  0001 L CNN
 F 3 "~" H 8500 2900 50  0001 C CNN
+F 4 "polyfuse 1812" H 8500 2900 50  0001 C CNN "description"
+F 5 "any" H 8500 2900 50  0001 C CNN "manufacturer"
 	1    8500 2900
 	0    1    1    0   
 $EndComp
@@ -1299,6 +1411,8 @@ F 0 "F1" V 995 7200 50  0000 C CNN
 F 1 "PTC 1A 6V" V 1086 7200 50  0000 C CNN
 F 2 "Fuse:Fuse_1206_3216Metric_Pad1.42x1.75mm_HandSolder" H 1250 7000 50  0001 L CNN
 F 3 "~" H 1200 7200 50  0001 C CNN
+F 4 "polyfuse 1206" H 1200 7200 50  0001 C CNN "description"
+F 5 "any" H 1200 7200 50  0001 C CNN "manufacturer"
 	1    1200 7200
 	0    1    1    0   
 $EndComp
@@ -1394,8 +1508,10 @@ U 1 1 603F6CE3
 P 1800 2300
 F 0 "R1" V 1900 2250 50  0000 L CNN
 F 1 "10K" V 1800 2200 50  0000 L CNN
-F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" V 1730 2300 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 1730 2300 50  0001 C CNN
 F 3 "~" H 1800 2300 50  0001 C CNN
+F 4 "1/8 W 1 pct 0805" H 1800 2300 50  0001 C CNN "description"
+F 5 "any" H 1800 2300 50  0001 C CNN "manufacturer"
 	1    1800 2300
 	0    1    1    0   
 $EndComp
@@ -1444,8 +1560,10 @@ U 1 1 5FCC0F33
 P 3600 3400
 F 0 "C12" V 3450 3350 50  0000 L CNN
 F 1 "22pF" V 3750 3350 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 3638 3250 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 3638 3250 50  0001 C CNN
 F 3 "~" H 3600 3400 50  0001 C CNN
+F 4 "ceramic 0805" H 3600 3400 50  0001 C CNN "description"
+F 5 "any" H 3600 3400 50  0001 C CNN "manufacturer"
 	1    3600 3400
 	0    1    1    0   
 $EndComp
@@ -1455,8 +1573,10 @@ U 1 1 5FCC1537
 P 3600 3000
 F 0 "C11" V 3450 2950 50  0000 L CNN
 F 1 "22pF" V 3750 2950 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 3638 2850 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 3638 2850 50  0001 C CNN
 F 3 "~" H 3600 3000 50  0001 C CNN
+F 4 "ceramic 0805" H 3600 3000 50  0001 C CNN "description"
+F 5 "any" H 3600 3000 50  0001 C CNN "manufacturer"
 	1    3600 3000
 	0    1    1    0   
 $EndComp
@@ -1468,6 +1588,8 @@ F 0 "Y1" V 3804 3288 50  0000 L CNN
 F 1 "8Mhz" V 3895 3288 50  0000 L CNN
 F 2 "Crystal:Crystal_HC49-4H_Vertical" H 3850 3200 50  0001 C CNN
 F 3 "~" H 3850 3200 50  0001 C CNN
+F 4 "8 MHz quartz +/- 15ppm, HC49-4H TH" H 3850 3200 50  0001 C CNN "description"
+F 5 "any" H 3850 3200 50  0001 C CNN "manufacturer"
 	1    3850 3200
 	0    1    1    0   
 $EndComp
@@ -1522,6 +1644,8 @@ F 0 "J1" H 1300 2525 50  0000 C CNN
 F 1 "Conn_02x05_Odd_Even" H 1300 2526 50  0001 C CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_2x05_P2.54mm_Vertical" H 1250 2200 50  0001 C CNN
 F 3 "~" H 1250 2200 50  0001 C CNN
+F 4 "2.54mm 2x5 10 pin male straight breakaway header, TH" H 1250 2200 50  0001 C CNN "description"
+F 5 "any" H 1250 2200 50  0001 C CNN "manufacturer"
 	1    1250 2200
 	1    0    0    -1  
 $EndComp
@@ -1562,6 +1686,8 @@ F 0 "J2" H 1300 4075 50  0000 C CNN
 F 1 "Conn_02x10_Odd_Even" H 1300 4076 50  0001 C CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_2x10_P2.54mm_Vertical" H 1250 3550 50  0001 C CNN
 F 3 "~" H 1250 3550 50  0001 C CNN
+F 4 "2.54mm 2x10 20 pin male straight breakaway header, TH" H 1250 3550 50  0001 C CNN "description"
+F 5 "any" H 1250 3550 50  0001 C CNN "manufacturer"
 	1    1250 3550
 	1    0    0    -1  
 $EndComp
@@ -1601,8 +1727,10 @@ U 1 1 5FCA6D0E
 P 4750 3100
 F 0 "R6" V 4850 3100 50  0000 C CNN
 F 1 "10K" V 4750 3100 50  0000 C CNN
-F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" V 4680 3100 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 4680 3100 50  0001 C CNN
 F 3 "~" H 4750 3100 50  0001 C CNN
+F 4 "1/8 W 1 pct 0805" H 4750 3100 50  0001 C CNN "description"
+F 5 "any" H 4750 3100 50  0001 C CNN "manufacturer"
 	1    4750 3100
 	0    1    -1   0   
 $EndComp
@@ -1721,6 +1849,9 @@ F 0 "U1" H 1800 6200 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 1850 6900 50  0000 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 1800 6200 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 1800 6200 50  0001 C CNN
+F 4 "LVC open drain driver" H 1800 6200 50  0001 C CNN "description"
+F 5 "SN74LVC07ADB" H 1800 6200 50  0001 C CNN "MPN"
+F 6 "TI" H 1800 6200 50  0001 C CNN "manufacturer"
 	7    1800 6200
 	1    0    0    -1  
 $EndComp
@@ -1754,6 +1885,9 @@ F 0 "U8" H 2500 6200 50  0000 C CNN
 F 1 "SN74LVC07ADB" H 2550 6900 50  0000 C CNN
 F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 2500 6200 50  0001 C CNN
 F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 2500 6200 50  0001 C CNN
+F 4 "LVC open drain driver" H 2500 6200 50  0001 C CNN "description"
+F 5 "SN74LVC07ADB" H 2500 6200 50  0001 C CNN "MPN"
+F 6 "TI" H 2500 6200 50  0001 C CNN "manufacturer"
 	7    2500 6200
 	1    0    0    -1  
 $EndComp
@@ -1785,8 +1919,10 @@ U 1 1 608A3B9F
 P 4450 7750
 F 0 "C13" H 4500 7850 50  0000 L CNN
 F 1 "100nF 16V" H 3600 8000 50  0001 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 4488 7600 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 4488 7600 50  0001 C CNN
 F 3 "~" H 4450 7750 50  0001 C CNN
+F 4 "ceramic 0805" H 4450 7750 50  0001 C CNN "description"
+F 5 "any" H 4450 7750 50  0001 C CNN "manufacturer"
 	1    4450 7750
 	1    0    0    -1  
 $EndComp
@@ -1796,8 +1932,10 @@ U 1 1 608A4061
 P 4700 7750
 F 0 "C14" H 4750 7850 50  0000 L CNN
 F 1 "100nF 16V" H 3850 8000 50  0001 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 4738 7600 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 4738 7600 50  0001 C CNN
 F 3 "~" H 4700 7750 50  0001 C CNN
+F 4 "ceramic 0805" H 4700 7750 50  0001 C CNN "description"
+F 5 "any" H 4700 7750 50  0001 C CNN "manufacturer"
 	1    4700 7750
 	1    0    0    -1  
 $EndComp
@@ -1807,8 +1945,10 @@ U 1 1 608A44AF
 P 4950 7750
 F 0 "C15" H 5000 7850 50  0000 L CNN
 F 1 "100nF 16V" H 4100 8000 50  0001 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 4988 7600 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 4988 7600 50  0001 C CNN
 F 3 "~" H 4950 7750 50  0001 C CNN
+F 4 "ceramic 0805" H 4950 7750 50  0001 C CNN "description"
+F 5 "any" H 4950 7750 50  0001 C CNN "manufacturer"
 	1    4950 7750
 	1    0    0    -1  
 $EndComp
@@ -1888,6 +2028,9 @@ F 0 "D2" H 4050 2833 50  0000 C CNN
 F 1 "LED_Dual_AACC" H 4050 2834 50  0001 C CNN
 F 2 "00_supervisor:LED_Dual_RG_discrete" H 4080 2500 50  0001 C CNN
 F 3 "~" H 4080 2500 50  0001 C CNN
+F 4 "stacked red leds, horizontal, TH" H 4050 2500 50  0001 C CNN "description"
+F 5 "SSF-LXH240IID" H 4050 2500 50  0001 C CNN "MPN"
+F 6 "Lumex" H 4050 2500 50  0001 C CNN "manufacturer"
 	1    4050 2500
 	1    0    0    -1  
 $EndComp
@@ -1913,8 +2056,10 @@ U 1 1 605A07D2
 P 4550 2600
 F 0 "R7" V 4650 2650 50  0000 R CNN
 F 1 "510" V 4550 2650 50  0000 R CNN
-F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" V 4480 2600 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 4480 2600 50  0001 C CNN
 F 3 "~" H 4550 2600 50  0001 C CNN
+F 4 "1/8W 1 pct 0805" H 4550 2600 50  0001 C CNN "description"
+F 5 "any" H 4550 2600 50  0001 C CNN "manufacturer"
 	1    4550 2600
 	0    1    -1   0   
 $EndComp
@@ -1924,8 +2069,10 @@ U 1 1 605A0D64
 P 4550 2400
 F 0 "R2" V 4650 2450 50  0000 R CNN
 F 1 "510" V 4550 2450 50  0000 R CNN
-F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" V 4480 2400 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 4480 2400 50  0001 C CNN
 F 3 "~" H 4550 2400 50  0001 C CNN
+F 4 "1/8W 1 pct 0805" H 4550 2400 50  0001 C CNN "description"
+F 5 "any" H 4550 2400 50  0001 C CNN "manufacturer"
 	1    4550 2400
 	0    1    -1   0   
 $EndComp
@@ -1967,6 +2114,9 @@ F 0 "J4" H 3820 6004 50  0000 R CNN
 F 1 "RJ12" H 3820 6095 50  0000 R CNN
 F 2 "00_supervisor:RJ12_Amphenol_54601" V 4150 6025 50  0001 C CNN
 F 3 "~" V 4150 6025 50  0001 C CNN
+F 4 "RJ12 6P 4C, horizontal, TH" H 4150 6000 50  0001 C CNN "description"
+F 5 "54601-906002WPLF" H 4150 6000 50  0001 C CNN "MPN"
+F 6 "amphenol" H 4150 6000 50  0001 C CNN "manufacturer"
 	1    4150 6000
 	-1   0    0    1   
 $EndComp
@@ -1980,8 +2130,10 @@ U 1 1 5FD7FE63
 P 5200 7750
 F 0 "C16" H 5250 7850 50  0000 L CNN
 F 1 "100nF 16V" H 4350 8000 50  0001 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 5238 7600 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 5238 7600 50  0001 C CNN
 F 3 "~" H 5200 7750 50  0001 C CNN
+F 4 "ceramic 0805" H 5200 7750 50  0001 C CNN "description"
+F 5 "any" H 5200 7750 50  0001 C CNN "manufacturer"
 	1    5200 7750
 	1    0    0    -1  
 $EndComp
@@ -2019,8 +2171,10 @@ U 1 1 5FDF4D7E
 P 5650 7750
 F 0 "C17" H 5700 7850 50  0000 L CNN
 F 1 "1uF 16V" H 5750 7750 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 5688 7600 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 5688 7600 50  0001 C CNN
 F 3 "~" H 5650 7750 50  0001 C CNN
+F 4 "ceramic 0805" H 5650 7750 50  0001 C CNN "description"
+F 5 "any" H 5650 7750 50  0001 C CNN "manufacturer"
 	1    5650 7750
 	1    0    0    -1  
 $EndComp
@@ -2032,8 +2186,10 @@ U 1 1 5FE11B35
 P 5350 2750
 F 0 "C18" H 5400 2850 50  0000 L CNN
 F 1 "100nF 16V" H 5450 2750 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder" H 5388 2600 50  0001 C CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 5388 2600 50  0001 C CNN
 F 3 "~" H 5350 2750 50  0001 C CNN
+F 4 "ceramic 0805" H 5350 2750 50  0001 C CNN "description"
+F 5 "any" H 5350 2750 50  0001 C CNN "manufacturer"
 	1    5350 2750
 	1    0    0    -1  
 $EndComp
@@ -2061,8 +2217,10 @@ U 1 1 5FED1F01
 P 4750 3400
 F 0 "R9" V 4850 3450 50  0000 R CNN
 F 1 "390" V 4750 3450 50  0000 R CNN
-F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" V 4680 3400 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 4680 3400 50  0001 C CNN
 F 3 "~" H 4750 3400 50  0001 C CNN
+F 4 "1/8W 1 pct 0805" H 4750 3400 50  0001 C CNN "description"
+F 5 "any" H 4750 3400 50  0001 C CNN "manufacturer"
 	1    4750 3400
 	0    1    -1   0   
 $EndComp
