@@ -277,7 +277,6 @@ Text Label 4100 7200 2    50   ~ 0
 VCC
 Wire Wire Line
 	6300 5700 6300 5750
-NoConn ~ 6000 2700
 $Comp
 L Interface_CAN_LIN:TCAN332 U2
 U 1 1 5FC8C28F
@@ -1981,4 +1980,6 @@ F 3 "~" V 4150 6025 50  0001 C CNN
 $EndComp
 NoConn ~ 3750 6300
 NoConn ~ 3750 5800
+Wire Wire Line
+	6000 2700 6100 2700
 $EndSCHEMATC
