@@ -33,9 +33,10 @@ groups of four nodes.  Remaining torus and tree network links require
 ### System configurations
 
 **compute nodes** | **backplanes** | **supervisors** | **tree cables** | **torus cables** | **notes**
-4  | 1 | 1 | 3  | 0  | 1D torus
-16 | 2 | 1 | 15 | 16 | 2D torus (4x4)
-64 | 8 | 4 | 63 | 128 | 3D torus (4x4x4)
+:-- | :-- | :-- | :-- | :-- | :--
+4   | 1   | 1   | 3   | 0   | 1D torus
+16  | 2   | 1   | 15  | 16  | 2D torus (4x4)
+64  | 8   | 4   | 63  | 128 | 3D torus (4x4x4)
 
 ### Compute node
 
