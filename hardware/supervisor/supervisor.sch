@@ -945,7 +945,7 @@ Connection ~ 8050 1500
 Wire Wire Line
 	8750 1500 8750 1850
 Wire Wire Line
-	8750 1850 10200 1850
+	8750 1850 8800 1850
 Connection ~ 8750 1500
 Wire Wire Line
 	8750 1500 8800 1500
@@ -1201,12 +1201,12 @@ Wire Wire Line
 $Comp
 L 00_supervisor:SN74LVC07A U1
 U 4 1 60C1559E
-P 1100 5800
-F 0 "U1" H 1050 5800 50  0000 C CNN
-F 1 "SN74LVC07ADB" H 1100 6026 50  0000 C CNN
-F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 1100 5800 50  0001 C CNN
-F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 1100 5800 50  0001 C CNN
-	4    1100 5800
+P 9100 1850
+F 0 "U1" H 9050 1850 50  0000 C CNN
+F 1 "SN74LVC07ADB" H 9100 2076 50  0001 C CNN
+F 2 "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" H 9100 1850 50  0001 C CNN
+F 3 "www.st.com/resource/en/datasheet/74lcx07.pdf" H 9100 1850 50  0001 C CNN
+	4    9100 1850
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -1245,12 +1245,7 @@ $EndComp
 Wire Wire Line
 	750  6600 750  6500
 Wire Wire Line
-	750  5800 800  5800
-Wire Wire Line
 	800  6150 750  6150
-Connection ~ 750  6150
-Wire Wire Line
-	750  6150 750  5800
 Wire Wire Line
 	800  6500 750  6500
 Connection ~ 750  6500
@@ -1283,7 +1278,6 @@ Text Label 2000 950  2    50   ~ 0
 5V_SB
 NoConn ~ 1400 6500
 NoConn ~ 1400 6150
-NoConn ~ 1400 5800
 Wire Wire Line
 	1550 7200 1300 7200
 $Comp
@@ -2080,4 +2074,6 @@ Wire Wire Line
 	5000 3200 5000 3300
 Wire Wire Line
 	5000 3300 5500 3300
+Wire Wire Line
+	9400 1850 10200 1850
 $EndSCHEMATC
