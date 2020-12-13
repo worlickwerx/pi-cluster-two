@@ -687,7 +687,8 @@ F 1 "Fan_4pin" H 9908 3405 50  0000 L CNN
 F 2 "Connector:FanPinHeader_1x04_P2.54mm_Vertical" H 9750 3410 50  0001 C CNN
 F 3 "http://www.formfactors.org/developer%5Cspecs%5Crev1_2_public.pdf" H 9750 3410 50  0001 C CNN
 F 4 "std 4-pin PC fan header" H 9750 3400 50  0001 C CNN "description"
-F 5 "any" H 9750 3400 50  0001 C CNN "manufacturer"
+F 5 "Molex" H 9750 3400 50  0001 C CNN "manufacturer"
+F 6 "47053-1000" H 9750 3400 50  0001 C CNN "MPN"
 	1    9750 3400
 	1    0    0    -1  
 $EndComp
@@ -740,7 +741,8 @@ F 1 "Fan_4pin" H 9908 4405 50  0000 L CNN
 F 2 "Connector:FanPinHeader_1x04_P2.54mm_Vertical" H 9750 4410 50  0001 C CNN
 F 3 "http://www.formfactors.org/developer%5Cspecs%5Crev1_2_public.pdf" H 9750 4410 50  0001 C CNN
 F 4 "std 4-pin PC fan header" H 9750 4400 50  0001 C CNN "description"
-F 5 "any" H 9750 4400 50  0001 C CNN "manufacturer"
+F 5 "Molex" H 9750 4400 50  0001 C CNN "manufacturer"
+F 6 "47053-1000" H 9750 4400 50  0001 C CNN "MPN"
 	1    9750 4400
 	1    0    0    -1  
 $EndComp
@@ -779,7 +781,8 @@ F 1 "Fan_4pin" H 9908 5405 50  0000 L CNN
 F 2 "Connector:FanPinHeader_1x04_P2.54mm_Vertical" H 9750 5410 50  0001 C CNN
 F 3 "http://www.formfactors.org/developer%5Cspecs%5Crev1_2_public.pdf" H 9750 5410 50  0001 C CNN
 F 4 "std 4-pin PC fan header" H 9750 5400 50  0001 C CNN "description"
-F 5 "any" H 9750 5400 50  0001 C CNN "manufacturer"
+F 5 "Molex" H 9750 5400 50  0001 C CNN "manufacturer"
+F 6 "47053-1000" H 9750 5400 50  0001 C CNN "MPN"
 	1    9750 5400
 	1    0    0    -1  
 $EndComp
