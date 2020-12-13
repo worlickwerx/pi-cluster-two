@@ -2703,7 +2703,6 @@ F 3 "" H 3150 5900 50  0001 C CNN
 	1    3150 5900
 	0    1    1    0   
 $EndComp
-NoConn ~ 4300 4750
 NoConn ~ 5600 5150
 NoConn ~ 5600 5850
 $Comp
@@ -3352,4 +3351,9 @@ F 6 "Panasonic" H 950 7500 50  0001 C CNN "Manufacturer"
 	1    950  7500
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	4300 4750 3700 4750
+Text Label 3700 4750 0    50   ~ 0
+PERSONALITY
+NoConn ~ 3700 4750
 $EndSCHEMATC
