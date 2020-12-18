@@ -14,6 +14,7 @@
 #include "power.h"
 #include "trace.h"
 #include "canbus.h"
+#include "serial.h"
 
 extern void vApplicationStackOverflowHook (xTaskHandle *pxTask,
                                            signed portCHAR *pcTaskName);
@@ -58,6 +59,7 @@ int main (void)
     address_init ();
     power_init ();
     canbus_init ();
+    serial_init ();
 
     xTaskCreate (init_task,
                  "init",

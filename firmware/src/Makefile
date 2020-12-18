@@ -11,6 +11,7 @@ SRCFILES	= main.c \
 		  trace.c \
 		  canbus.c \
 		  canmsg_v1.c \
+		  serial.c \
 		  rtos/heap_4.c \
 		  rtos/list.c \
 		  rtos/port.c \
