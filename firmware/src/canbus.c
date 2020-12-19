@@ -186,22 +186,20 @@ static void canbus_rx_task (void *arg __attribute((unused)))
 static void canbus_rx_isr (uint8_t fifo, unsigned msgcount)
 {
     struct canmsg_raw msg;
-    bool xmsgidf, rtrf;
+    uint8_t fmi;
 
     while (msgcount-- > 0) {
         can_receive(CAN1,
                     fifo,
                     true,                   // Release
                     &msg.msgid,
-                    &xmsgidf,               // true if msgid is extended
-                    &rtrf,                  // true if requested transmission
-                    (uint8_t *)&msg.fmi,    // Matched filter index
+                    &msg.xmsgidf,           // true if msgid is extended
+                    &msg.rtrf,              // true if requested transmission
+                    &fmi,                   // Matched filter index
                     &msg.length,            // Returned length
                     msg.data,
                     NULL);                  // Unused timestamp
-        msg.xmsgidf = xmsgidf;
-        msg.rtrf = rtrf;
-        msg.fifo = fifo;
+
         // If the queue is full, the message is lost
         xQueueSendToBackFromISR (canrxq, &msg, NULL);
     }

@@ -1,5 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 
+#include <stdbool.h>
+
 #include "FreeRTOS.h"
 #include "string.h"
 
@@ -107,10 +109,8 @@ int canmsg_v1_encode (const struct canmsg_v1 *msg, struct canmsg_raw *raw)
         raw->length = msg->dlen;
         memcpy (raw->data, msg->data, msg->dlen);
     }
-    raw->fmi = 0;
-    raw->xmsgidf = 1;
-    raw->rtrf = 0;
-    raw->fifo = 0;
+    raw->xmsgidf = true;
+    raw->rtrf = false;
     return 0;
 }
 
