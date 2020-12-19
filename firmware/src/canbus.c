@@ -278,7 +278,7 @@ void canbus_init (void)
 
     can_init (CAN1,
               false,            // ttcm=off
-              false,            // disable auto bus off
+              true,             // enable auto bus off management
               true,             // auto wakeup mode
               false,            // enable auto retransmission
               true,             // receive FIFO locked mode
