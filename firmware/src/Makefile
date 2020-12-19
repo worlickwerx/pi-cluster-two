@@ -11,12 +11,14 @@ SRCFILES	= main.c \
 		  trace.c \
 		  canbus.c \
 		  canmsg_v1.c \
+		  serial.c \
 		  rtos/heap_4.c \
 		  rtos/list.c \
 		  rtos/port.c \
 		  rtos/queue.c \
 		  rtos/tasks.c \
 		  rtos/opencm3.c \
+		  rtos/stream_buffer.c \
 		  libwwg/miniprintf.c
 LDSCRIPT	= stm32f103c8t6.ld
 CFLAGS		+= -Ilibwwg

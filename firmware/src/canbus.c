@@ -17,10 +17,24 @@
 #include "canmsg.h"
 #include "canmsg_v1.h"
 #include "power.h"
+#include "serial.h"
 
 static const uint32_t baudrate = 125000;
 
 static QueueHandle_t canrxq;
+
+/* State for console connection
+ */
+struct console {
+    uint8_t module;
+    uint8_t node;
+    uint8_t object;
+    bool connected;
+    TaskHandle_t task;
+};
+
+static struct console console;
+
 
 /* Assume native little endian (ARM can be either, but usually this).
  * Network byte order is big endian.
@@ -137,6 +151,111 @@ error:
     canbus_v1_nak (request);
 }
 
+static void canbus_v1_consoleconn (const struct canmsg_v1 *request)
+{
+    struct canmsg_v1 msg = *request;
+
+    if (request->type != CANMSG_V1_TYPE_WO)
+        goto error;
+    if (request->dlen != 3)
+        goto error;
+    if (console.connected) // FIXME: send current user NAK and take over
+        goto error;
+
+    console.module = request->data[0];
+    console.node = request->data[1];
+    console.object = request->data[2];
+    console.connected = true;
+    vTaskResume (console.task);
+
+    msg.type = CANMSG_V1_TYPE_ACK;
+    msg.dst = msg.src;
+    msg.src = msg.node = address_get ();
+    msg.dlen = 0;
+    if (canbus_xmit_v1 (&msg) < 0)
+        trace_printf ("canbus-rx: error sending console connect response\n");
+    return;
+error:
+    canbus_v1_nak (request);
+}
+
+static void canbus_v1_consoledisc (const struct canmsg_v1 *request)
+{
+    struct canmsg_v1 msg = *request;
+
+    if (request->type != CANMSG_V1_TYPE_WO)
+        goto error;
+    if (request->dlen != 3)
+        goto error;
+    if (!console.connected || console.module != request->data[0]
+                           || console.node != request->data[1]
+                           || console.object != request->data[2])
+        goto error;
+
+    console.connected = false;
+    vTaskSuspend (console.task);
+
+    msg.type = CANMSG_V1_TYPE_ACK;
+    msg.dst = msg.src;
+    msg.src = msg.node = address_get ();
+    msg.dlen = 0;
+
+    if (canbus_xmit_v1 (&msg) < 0)
+        trace_printf ("canbus-rx: error sending console disconnect response\n");
+    return;
+error:
+    canbus_v1_nak (request);
+}
+
+/* can -> serial */
+static void canbus_v1_consolerecv (const struct canmsg_v1 *request)
+{
+    struct canmsg_v1 msg = *request;
+
+    if (request->type != CANMSG_V1_TYPE_DAT)
+        goto error;
+    if (!console.connected)
+        goto error;
+    serial_send (request->data, request->dlen);
+
+    msg.type = CANMSG_V1_TYPE_ACK;
+    msg.dst = msg.src;
+    msg.src = msg.node = address_get ();
+    msg.dlen = 0;
+
+    if (canbus_xmit_v1 (&msg) < 0)
+        trace_printf ("canbus-rx: error sending console data response\n");
+    return;
+error:
+    canbus_v1_nak (request);
+}
+
+/* serial -> can */
+static void canbus_console_task (void *arg __attribute((unused)))
+{
+    struct canmsg_v1 msg;
+
+    memset (&msg, 0, sizeof (msg));
+
+    msg.type = CANMSG_V1_TYPE_DAT;
+    msg.src = msg.node = address_get ();
+    msg.pri = 1;
+    msg.xpri = 1;
+
+    for (;;) {
+        msg.dst = console.node;
+        msg.module = console.module;
+        msg.object = console.object;
+
+        msg.dlen = serial_recv (msg.data, sizeof (msg.data), 5);
+
+        if (canbus_xmit_v1 (&msg) < 0)
+            trace_printf ("canbus-console: error sending console data\n");
+        else
+            vTaskSuspend (console.task); // suspend task, pending ACK
+    }
+}
+
 static void canbus_rx_task (void *arg __attribute((unused)))
 {
     struct canmsg_raw raw;
@@ -158,6 +277,7 @@ static void canbus_rx_task (void *arg __attribute((unused)))
                 case CANMSG_V1_TYPE_WO:
                 case CANMSG_V1_TYPE_RO:
                 case CANMSG_V1_TYPE_WNA:
+                case CANMSG_V1_TYPE_DAT:
                     switch (msg.object) {
                         case CANMSG_V1_OBJ_ECHO:
                             canbus_v1_echo (&msg);
@@ -168,13 +288,24 @@ static void canbus_rx_task (void *arg __attribute((unused)))
                         case CANMSG_V1_OBJ_POWER_MEASURE:
                             canbus_v1_power_measure (&msg);
                             break;
+                        case CANMSG_V1_OBJ_CONSOLECONN:
+                            canbus_v1_consoleconn (&msg);
+                            break;
+                        case CANMSG_V1_OBJ_CONSOLEDISC:
+                            canbus_v1_consoledisc (&msg);
+                            break;
+                        case CANMSG_V1_OBJ_CONSOLERECV:
+                            canbus_v1_consolerecv (&msg);
+                            break;
                         default: // unknown object id
                             canbus_v1_nak (&msg);
                             break;
                     }
                     break;
-                case CANMSG_V1_TYPE_DAT:
                 case CANMSG_V1_TYPE_ACK:
+                    if (console.connected && msg.object == console.object)
+                        vTaskResume (console.task);
+                    break;
                 case CANMSG_V1_TYPE_NAK:
                 case CANMSG_V1_TYPE_SIG:
                     break;
@@ -186,22 +317,20 @@ static void canbus_rx_task (void *arg __attribute((unused)))
 static void canbus_rx_isr (uint8_t fifo, unsigned msgcount)
 {
     struct canmsg_raw msg;
-    bool xmsgidf, rtrf;
+    uint8_t fmi;
 
     while (msgcount-- > 0) {
         can_receive(CAN1,
                     fifo,
                     true,                   // Release
                     &msg.msgid,
-                    &xmsgidf,               // true if msgid is extended
-                    &rtrf,                  // true if requested transmission
-                    (uint8_t *)&msg.fmi,    // Matched filter index
+                    &msg.xmsgidf,           // true if msgid is extended
+                    &msg.rtrf,              // true if requested transmission
+                    &fmi,                   // Matched filter index
                     &msg.length,            // Returned length
                     msg.data,
                     NULL);                  // Unused timestamp
-        msg.xmsgidf = xmsgidf;
-        msg.rtrf = rtrf;
-        msg.fifo = fifo;
+
         // If the queue is full, the message is lost
         xQueueSendToBackFromISR (canrxq, &msg, NULL);
     }
@@ -278,7 +407,7 @@ void canbus_init (void)
 
     can_init (CAN1,
               false,            // ttcm=off
-              false,            // disable auto bus off
+              true,             // enable auto bus off management
               true,             // auto wakeup mode
               false,            // enable auto retransmission
               true,             // receive FIFO locked mode
@@ -313,6 +442,14 @@ void canbus_init (void)
                  NULL,
                  configMAX_PRIORITIES - 1,
                  NULL);
+
+    xTaskCreate (canbus_console_task,
+                 "cancon",
+                 400,
+                 NULL,
+                 configMAX_PRIORITIES - 1,
+                 &console.task);
+    vTaskSuspend (console.task);
 }
 
 /*
