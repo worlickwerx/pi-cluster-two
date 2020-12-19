@@ -17,6 +17,7 @@ SRCFILES	= main.c \
 		  rtos/queue.c \
 		  rtos/tasks.c \
 		  rtos/opencm3.c \
+		  rtos/stream_buffer.c \
 		  libwwg/miniprintf.c
 LDSCRIPT	= stm32f103c8t6.ld
 CFLAGS		+= -Ilibwwg
