@@ -235,8 +235,8 @@ void matrix_init (void)
                      SPI_CR1_CPHA_CLK_TRANSITION_2,
                      SPI_CR1_DFF_16BIT,
                      SPI_CR1_MSBFIRST);
-    spi_disable_software_slave_management(SPI1);
-    spi_enable_ss_output(SPI1);
+    spi_disable_software_slave_management (SPI2);
+    spi_enable_ss_output (SPI2);
 
     xTaskCreate (matrix_task,
                  "matrix",
