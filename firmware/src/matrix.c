@@ -222,6 +222,7 @@ void matrix_pulse_green (void)
 
 void matrix_init (void)
 {
+    rcc_periph_clock_enable (RCC_AFIO);
     rcc_periph_clock_enable (RCC_GPIOB);
     rcc_periph_clock_enable (RCC_SPI2);
 
