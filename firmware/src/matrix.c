@@ -4,6 +4,8 @@
  *
  * Notes:
  * - 10K pullup on NSS (PB12)
+ * - Use software NSS management to avoid conflict with I2C2 SMBA
+ *   (see Errata ES096 Rev 14 sec 2.9.6)
  * - SN74AHCT125N converts 3V3 STM32 to 5V max7219
  * - Assumes anode column, cathode row matrix device.
  * - Discrete green and red front panel LEDs are wired on row 7.
@@ -57,7 +59,7 @@ static TaskHandle_t green_task_handle = NULL;
  */
 static void max7219_send (uint16_t data)
 {
-    spi_enable (SPI2); // assert NSS
+    gpio_clear (GPIOB, GPIO12);
 
     spi_write (SPI2, data);
 
@@ -66,7 +68,7 @@ static void max7219_send (uint16_t data)
     while (SPI_SR (SPI2) & SPI_SR_BSY) // wait until not busy
         taskYIELD ();
 
-    spi_disable (SPI2); // de-assert NSS
+    gpio_set (GPIOB, GPIO12);
 }
 
 /* Set display 'row' (0-7) to 'val'.
@@ -220,14 +222,21 @@ void matrix_pulse_green (void)
 
 void matrix_init (void)
 {
+    rcc_periph_clock_enable (RCC_AFIO);
     rcc_periph_clock_enable (RCC_GPIOB);
     rcc_periph_clock_enable (RCC_SPI2);
 
-    gpio_set (GPIOB, GPIO12); // set NSS inactive
+    gpio_set (GPIOB, GPIO12);
+    gpio_set_mode (GPIOB,
+                   GPIO_MODE_OUTPUT_2_MHZ,
+                   GPIO_CNF_OUTPUT_OPENDRAIN, // ~NSS has an ext. 10K pullup
+                   GPIO12);
+
     gpio_set_mode (GPIOB,
                    GPIO_MODE_OUTPUT_50_MHZ,
                    GPIO_CNF_OUTPUT_ALTFN_PUSHPULL,
-                   GPIO12 | GPIO13 | GPIO15);   // NSS, SCK, MOSI
+                   GPIO13 | GPIO15);   // SCK, MOSI
+
     spi_reset (SPI2);
     spi_init_master (SPI2,
                      SPI_CR1_BAUDRATE_FPCLK_DIV_8,
@@ -235,8 +244,9 @@ void matrix_init (void)
                      SPI_CR1_CPHA_CLK_TRANSITION_2,
                      SPI_CR1_DFF_16BIT,
                      SPI_CR1_MSBFIRST);
-    spi_disable_software_slave_management(SPI1);
-    spi_enable_ss_output(SPI1);
+    spi_enable_software_slave_management (SPI2);
+    spi_set_nss_high (SPI2);
+    spi_enable (SPI2);
 
     xTaskCreate (matrix_task,
                  "matrix",
