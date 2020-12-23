@@ -138,22 +138,42 @@ static void matrix_sync (void)
     xTaskNotifyGive (matrix_task_handle);
 }
 
+static void matrix_sync_from_isr (void)
+{
+    vTaskNotifyGiveFromISR (matrix_task_handle, NULL);
+}
+
+static void matrix_xfrm (const uint8_t cols[], volatile uint8_t rows[])
+{
+    uint8_t row, col;
+
+    for (row = 0; row < 7; row++) {
+        rows[row] = 0;
+        for (col = 0; col < 5; col++)
+            rows[row] |= (cols[col] & 1<<row) ? 1<<col : 0;
+    }
+}
+
 /* Set complete 5x7 matrix, using column major array.
  * Column bytes pack better than row bytes, so do the bit level gymnastics
  * to convert from that more compact representation to frame buffer rows.
  */
 void matrix_set (const uint8_t cols[])
 {
-    uint8_t row, col;
-
     taskENTER_CRITICAL ();
-    for (row = 0; row < 7; row++) {
-        pending[row] = 0;
-        for (col = 0; col < 5; col++)
-            pending[row] |= (cols[col] & 1<<row) ? 1<<col : 0;
-    }
+    matrix_xfrm (cols, pending);
     taskEXIT_CRITICAL ();
     matrix_sync ();
+}
+
+void matrix_set_from_isr (const uint8_t cols[])
+{
+    UBaseType_t status;
+
+    status = taskENTER_CRITICAL_FROM_ISR ();
+    matrix_xfrm (cols, pending);
+    taskEXIT_CRITICAL_FROM_ISR (status);
+    matrix_sync_from_isr ();
 }
 
 /* Put character to 5x7 matrix.
@@ -162,6 +182,11 @@ void matrix_set_char (char c)
 {
     if (c >= 0x20 && c <= 0x7f)
         matrix_set (&Font5x7[(c - 0x20) * 5]);
+}
+void matrix_set_char_from_isr (char c)
+{
+    if (c >= 0x20 && c <= 0x7f)
+        matrix_set_from_isr (&Font5x7[(c - 0x20) * 5]);
 }
 
 void matrix_set_red (uint8_t val)
