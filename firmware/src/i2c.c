@@ -73,9 +73,9 @@ void i2c2_ev_isr (void)
     }
     else if ((sr1 & I2C_SR1_STOPF)) { // stop
         if (write_buf[0] == ADDR_MATRIX_RAW)
-            matrix_set (&write_buf[1]);
+            matrix_set_from_isr (&write_buf[1]); // 5 bytes
         else if (write_buf[0] == ADDR_MATRIX_CHAR)
-            matrix_set_char (write_buf[1]);
+            matrix_set_char_from_isr (write_buf[1]);
         i2c_peripheral_enable(I2C2);
     }
     else if ((sr1 & I2C_SR1_AF)) { // ack failure
