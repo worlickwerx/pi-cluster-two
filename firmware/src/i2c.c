@@ -26,6 +26,7 @@
 #include "trace.h"
 #include "i2c.h"
 #include "address.h"
+#include "matrix.h"
 
 #define FOLLOWER_ADDRESS 0x30
 
@@ -34,24 +35,30 @@
 /* Registers that can be read by leader.
  */
 enum {
-    ADDR_SLOT = 10, // slot address
-    ADDR_VERSION = 11, // protocol version
+    ADDR_SLOT = 10, // slot address (read only, 1 byte)
+    ADDR_VERSION = 11, // protocol version (read only, 1 byte)
+    ADDR_MATRIX_RAW = 12, // LED matrix (write only, 5 column bytes)
+    ADDR_MATRIX_CHAR = 13, // LED matrix (write only, 1 bytes)
 };
 
 void i2c2_ev_isr (void)
 {
     uint32_t sr1 = I2C_SR1 (I2C2);
-    static uint8_t addr = 0;
+    static uint8_t write_index = 0;
+    static uint8_t write_buf[6];
     static uint8_t val;
 
     if ((sr1 & I2C_SR1_ADDR)) { // leader addresses follower
         (void)I2C_SR2 (I2C2);
+        write_index = 0;
     }
     else if ((sr1 & I2C_SR1_RxNE)) { // leader sends byte to follower
-        addr = i2c_get_data (I2C2);
+        val = i2c_get_data (I2C2);
+        if (write_index < sizeof (write_buf))
+            write_buf[write_index++] = val;
     }
     else if ((sr1 & I2C_SR1_TxE) && !(sr1 & I2C_SR1_BTF)) { // xmit buf empty
-        switch (addr) {
+        switch (write_buf[0]) {
             case ADDR_SLOT:
                 val = address_get ();
                 break;
@@ -65,6 +72,10 @@ void i2c2_ev_isr (void)
         i2c_send_data (I2C2, val);
     }
     else if ((sr1 & I2C_SR1_STOPF)) { // stop
+        if (write_buf[0] == ADDR_MATRIX_RAW)
+            matrix_set (&write_buf[1]);
+        else if (write_buf[0] == ADDR_MATRIX_CHAR)
+            matrix_set_char (write_buf[1]);
         i2c_peripheral_enable(I2C2);
     }
     else if ((sr1 & I2C_SR1_AF)) { // ack failure
