@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr USLetter 11000 8500
 encoding utf-8
-Sheet 3 3
+Sheet 2 4
 Title "Raspberry Pi CM4 molliebus carrier"
 Date "2020-11-21"
 Rev "1"
@@ -151,43 +151,9 @@ Wire Wire Line
 Connection ~ 1450 5900
 Wire Wire Line
 	1450 5900 1450 6300
-$Comp
-L Device:LED D1
-U 1 1 5FC40399
-P 4550 1350
-F 0 "D1" V 4589 1232 50  0000 R CNN
-F 1 "LED Green" V 4498 1232 50  0000 R CNN
-F 2 "" H 4550 1350 50  0001 C CNN
-F 3 "~" H 4550 1350 50  0001 C CNN
-	1    4550 1350
-	0    -1   -1   0   
-$EndComp
 Wire Wire Line
-	3900 2100 4550 2100
-Wire Wire Line
-	4550 2100 4550 1900
-$Comp
-L Device:R R1
-U 1 1 5FC51414
-P 4550 1750
-F 0 "R1" H 4620 1796 50  0000 L CNN
-F 1 "1K" H 4620 1705 50  0000 L CNN
-F 2 "" V 4480 1750 50  0001 C CNN
-F 3 "~" H 4550 1750 50  0001 C CNN
-	1    4550 1750
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4550 1500 4550 1600
-Wire Wire Line
-	4550 1200 4550 950 
-Wire Wire Line
-	4550 950  4300 950 
-Text Label 4300 950  0    50   ~ 0
-+3V3
-Wire Wire Line
-	3900 4900 4400 4900
-Text HLabel 4400 4900 2    50   Input ~ 0
+	3900 4900 4300 4900
+Text HLabel 4300 4900 2    50   Input ~ 0
 +5V
 Wire Wire Line
 	3900 4900 3900 5000
@@ -205,10 +171,10 @@ Connection ~ 3900 5300
 Wire Wire Line
 	3900 5300 3900 5400
 Wire Wire Line
-	1500 5200 1000 5200
-Text HLabel 1000 5200 0    50   Output ~ 0
+	1500 5200 1100 5200
+Text HLabel 1100 5200 0    50   Output ~ 0
 +3V3
-Text Label 1100 5200 0    50   ~ 0
+Text Label 1150 5200 0    50   ~ 0
 +3V3
 Wire Wire Line
 	1500 5300 1500 5200
@@ -218,15 +184,32 @@ Wire Wire Line
 Text HLabel 1000 6000 0    50   Output ~ 0
 ~EXTRST~
 Wire Wire Line
-	3900 6000 4400 6000
-Text HLabel 4400 6000 2    50   Input ~ 0
+	3900 6000 4300 6000
+Text HLabel 4300 6000 2    50   Input ~ 0
 GLOBAL_EN
 Wire Wire Line
-	1500 5100 1000 5100
+	1500 5100 1100 5100
 Wire Wire Line
-	1500 5000 1000 5000
-Text HLabel 1000 5000 0    50   Output ~ 0
+	1500 5000 1100 5000
+Text HLabel 1100 5000 0    50   Output ~ 0
 SCL0
-Text HLabel 1000 5100 0    50   Output ~ 0
+Text HLabel 1100 5100 0    50   Output ~ 0
 SDA0
+NoConn ~ 3900 5500
+NoConn ~ 3900 5600
+NoConn ~ 3900 5900
+Wire Wire Line
+	1500 4900 1100 4900
+Text HLabel 1100 4900 0    50   Input ~ 0
+GPIO_VREF
+NoConn ~ 3900 4100
+NoConn ~ 3900 4200
+NoConn ~ 3900 3900
+NoConn ~ 3900 4400
+NoConn ~ 3900 4500
+NoConn ~ 1500 4100
+NoConn ~ 1500 4200
+NoConn ~ 1500 4400
+NoConn ~ 1500 4500
+NoConn ~ 1500 4600
 $EndSCHEMATC

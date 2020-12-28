@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr USLetter 11000 8500
 encoding utf-8
-Sheet 1 3
+Sheet 1 4
 Title "Raspberry Pi CM4 molliebus carrier"
 Date "2020-11-21"
 Rev "1"
@@ -13,12 +13,6 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-$Sheet
-S 5050 2250 1600 900 
-U 5FBFD3A1
-F0 "cm4_highspeed" 50
-F1 "cm4_highspeed.sch" 50
-$EndSheet
 $Sheet
 S 5050 3900 1600 1300
 U 5FBFD3DF
@@ -30,5 +24,49 @@ F4 "~EXTRST~" O L 5050 4850 50
 F5 "GLOBAL_EN" I L 5050 4600 50 
 F6 "SCL0" O L 5050 4100 50 
 F7 "SDA0" O L 5050 4200 50 
+$EndSheet
+$Sheet
+S 7500 2250 800  900 
+U 5FECB2B2
+F0 "M.2 expansion" 50
+F1 "ngff.sch" 50
+F2 "PCIE_CLK+" I L 7500 2750 50 
+F3 "PCIE_CLK-" I L 7500 2850 50 
+F4 "~PCIE_RST~" I L 7500 3000 50 
+F5 "~PCIE_CLK_REQ~" O L 7500 3100 50 
+F6 "PCIE_RX+" B L 7500 2300 50 
+F7 "PCIE_RX-" B L 7500 2400 50 
+F8 "PCIE_TX-" B L 7500 2600 50 
+F9 "PCIE_TX+" B L 7500 2500 50 
+$EndSheet
+Wire Wire Line
+	6650 2300 7500 2300
+Wire Wire Line
+	6650 2400 7500 2400
+Wire Wire Line
+	6650 2500 7500 2500
+Wire Wire Line
+	6650 2600 7500 2600
+Wire Wire Line
+	6650 2750 7500 2750
+Wire Wire Line
+	6650 2850 7500 2850
+Wire Wire Line
+	6650 3000 7500 3000
+Wire Wire Line
+	6650 3100 7500 3100
+$Sheet
+S 5050 2250 1600 900 
+U 5FBFD3A1
+F0 "cm4_highspeed" 50
+F1 "cm4_highspeed.sch" 50
+F2 "PCIE_CLK-" O R 6650 2850 50 
+F3 "PCIE_CLK+" O R 6650 2750 50 
+F4 "~PCIE_CLK_REQ~" I R 6650 3100 50 
+F5 "~PCIE_RST~" O R 6650 3000 50 
+F6 "PCIE_RX+" B R 6650 2300 50 
+F7 "PCIE_RX-" B R 6650 2400 50 
+F8 "PCIE_TX+" B R 6650 2500 50 
+F9 "PCIE_TX-" B R 6650 2600 50 
 $EndSheet
 $EndSCHEMATC
