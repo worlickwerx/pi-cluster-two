@@ -17,17 +17,6 @@
 #include "serial.h"
 #include "i2c.h"
 
-extern void vApplicationStackOverflowHook (xTaskHandle *pxTask,
-                                           signed portCHAR *pcTaskName);
-
-
-void vApplicationStackOverflowHook (xTaskHandle *task __attribute((unused)),
-                                    signed portCHAR *name __attribute((unused)))
-{
-    for (;;)
-       ;
-}
-
 /* Perform initialization:
  * - show the card address on the matrix display
  */
