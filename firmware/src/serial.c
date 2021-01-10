@@ -65,6 +65,16 @@ void serial_send (const unsigned char *buf, int len)
     }
 }
 
+void serial_rx_enable (void)
+{
+    usart_enable_rx_interrupt (USART1);
+}
+
+void serial_rx_disable (void)
+{
+    usart_disable_rx_interrupt (USART1);
+}
+
 void serial_init (void)
 {
     rcc_periph_clock_enable (RCC_GPIOA);
@@ -96,7 +106,6 @@ void serial_init (void)
 
     nvic_enable_irq (NVIC_USART1_IRQ);
     usart_enable (USART1);
-    usart_enable_rx_interrupt (USART1);
 }
 
 /*

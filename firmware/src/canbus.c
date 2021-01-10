@@ -162,6 +162,8 @@ static void canbus_v1_consoleconn (const struct canmsg_v1 *request)
     if (console.connected) // FIXME: send current user NAK and take over
         goto error;
 
+    serial_rx_enable ();
+
     console.module = request->data[0];
     console.node = request->data[1];
     console.object = request->data[2];
@@ -191,6 +193,8 @@ static void canbus_v1_consoledisc (const struct canmsg_v1 *request)
                            || console.node != request->data[1]
                            || console.object != request->data[2])
         goto error;
+
+    serial_rx_disable ();
 
     console.connected = false;
     vTaskSuspend (console.task);
