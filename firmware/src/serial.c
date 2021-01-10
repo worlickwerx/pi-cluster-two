@@ -23,7 +23,9 @@
 #include "trace.h"
 #include "serial.h"
 
-#define SERIAL_RX_QUEUE_DEPTH 2048
+/* STM32F103C8T6 total RAM = 20K */
+
+#define SERIAL_RX_QUEUE_DEPTH 8192
 #define SERIAL_RX_QUEUE_TRIGGER 8
 
 static StreamBufferHandle_t serialrxq;
