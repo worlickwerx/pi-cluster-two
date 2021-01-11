@@ -19,7 +19,7 @@
 #include "power.h"
 #include "serial.h"
 
-static const uint32_t baudrate = 125000;
+static const uint32_t baudrate = 1000000;
 
 static QueueHandle_t canrxq;
 
