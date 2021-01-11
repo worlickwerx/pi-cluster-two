@@ -159,8 +159,6 @@ static void canbus_v1_consoleconn (const struct canmsg_v1 *request)
         goto error;
     if (request->dlen != 3)
         goto error;
-    if (console.connected) // FIXME: send current user NAK and take over
-        goto error;
 
     serial_rx_enable ();
 
