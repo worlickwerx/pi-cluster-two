@@ -38,3 +38,9 @@ include ../Makefile.rtos
 #	4. "make flash" will perform:
 #	   st-flash write main.bin 0x8000000
 ######################################################################
+
+gdbserver:
+	$(STUTIL)
+
+debug:
+	$(GDB) -ex "file main.elf" -ex "target extended-remote :4242"
