@@ -26,43 +26,54 @@
 /* STM32F103C8T6 total RAM = 20K */
 
 #define SERIAL_RX_QUEUE_DEPTH 8192
-#define SERIAL_RX_QUEUE_TRIGGER 8
+#define SERIAL_TX_QUEUE_DEPTH 128
 
 static StreamBufferHandle_t serialrxq;
+static StreamBufferHandle_t serialtxq;
 
-/* Interrupt handler puts characters into queue.
+/* Interrupt handler transfers characters to/from queues.
  */
 void usart1_isr (void)
 {
     unsigned char c;
     BaseType_t woke = pdFALSE;
 
-    while (USART_SR (USART1) & USART_SR_RXNE) {
-        c = USART_DR (USART1);
+    if (((USART_CR1(USART1) & USART_CR1_RXNEIE) != 0) &&
+        ((USART_SR(USART1) & USART_SR_RXNE) != 0)) { // rx buf not empty
+        c = usart_recv (USART1);
         xStreamBufferSendFromISR (serialrxq, &c, 1, &woke);
     }
+    if (((USART_CR1(USART1) & USART_CR1_TXEIE) != 0) &&
+        ((USART_SR(USART1) & USART_SR_TXE) != 0)) { // tx buf empty
+
+        if (xStreamBufferReceiveFromISR (serialtxq, &c, 1, &woke) == 1)
+            usart_send (USART1, c);
+        else
+            usart_disable_tx_interrupt (USART1);
+    }
+    portYIELD_FROM_ISR (woke);
 }
 
 int serial_recv (unsigned char *buf, int bufsize, int timeout)
 {
+    int ticks = pdMS_TO_TICKS (timeout);
     int n;
 
-    while ((n = xStreamBufferReceive (serialrxq, buf, bufsize, timeout)) == 0)
-        taskYIELD ();
+    xStreamBufferSetTriggerLevel (serialrxq, bufsize);
+    n = xStreamBufferReceive (serialrxq, buf, bufsize, ticks);
+
     return n;
 }
 
-/* This function blocks while the transmit queue is busy.
- */
-void serial_send (const unsigned char *buf, int len)
+int serial_send (const unsigned char *buf, int len, int timeout)
 {
-    int count;
+    int ticks = pdMS_TO_TICKS (timeout);
+    int n;
 
-    for (count = 0; count < len; count++) {
-        while ((USART_SR (USART1) & USART_SR_TXE) == 0)
-            taskYIELD ();
-        usart_send_blocking (USART1, buf[count]);
-    }
+    n = xStreamBufferSend (serialtxq, buf, len, ticks);
+    usart_enable_tx_interrupt (USART1);
+
+    return n;
 }
 
 void serial_rx_enable (void)
@@ -101,8 +112,8 @@ void serial_init (void)
     usart_set_mode(USART1, USART_MODE_TX_RX);
     usart_set_flow_control (USART1, USART_FLOWCONTROL_NONE);
 
-    serialrxq = xStreamBufferCreate (SERIAL_RX_QUEUE_DEPTH,
-                                     SERIAL_RX_QUEUE_TRIGGER);
+    serialrxq = xStreamBufferCreate (SERIAL_RX_QUEUE_DEPTH, 1);
+    serialtxq = xStreamBufferCreate (SERIAL_TX_QUEUE_DEPTH, 1);
 
     nvic_enable_irq (NVIC_USART1_IRQ);
     usart_enable (USART1);

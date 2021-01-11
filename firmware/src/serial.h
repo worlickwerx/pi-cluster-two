@@ -2,9 +2,13 @@
 
 void serial_init (void);
 
+/* N.B. serial_send() and serial_recv() may only be used from
+ * one task (each) because FreeRTOS stream buffers are used internally.
+ * Timeouts are in milliseconds (0=return immediately).
+ * Task yields while waiting.
+ */
 int serial_recv (unsigned char *buf, int len, int timeout);
-
-void serial_send (const unsigned char *buf, int len);
+int serial_send (const unsigned char *buf, int len, int timeout);
 
 void serial_rx_enable (void);
 void serial_rx_disable (void);

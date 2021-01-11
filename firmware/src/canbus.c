@@ -218,7 +218,9 @@ static void canbus_v1_consolerecv (const struct canmsg_v1 *request)
         goto error;
     if (!console.connected)
         goto error;
-    serial_send (request->data, request->dlen);
+
+    if (serial_send (request->data, request->dlen, 0) < request->dlen)
+        goto error;
 
     msg.type = CANMSG_V1_TYPE_ACK;
     msg.dst = msg.src;
@@ -245,16 +247,18 @@ static void canbus_console_task (void *arg __attribute((unused)))
     msg.xpri = 1;
 
     for (;;) {
-        msg.dst = console.node;
-        msg.module = console.module;
-        msg.object = console.object;
+        msg.dlen = serial_recv (msg.data, sizeof (msg.data), 1);
 
-        msg.dlen = serial_recv (msg.data, sizeof (msg.data), 5);
+        if (msg.dlen > 0) {
+            msg.dst = console.node;
+            msg.module = console.module;
+            msg.object = console.object;
 
-        if (canbus_xmit_v1 (&msg) < 0)
-            trace_printf ("canbus-console: error sending console data\n");
-        else
-            vTaskSuspend (console.task); // suspend task, pending ACK
+            if (canbus_xmit_v1 (&msg) < 0)
+                trace_printf ("canbus-console: error sending console data\n");
+            else
+                vTaskSuspend (console.task); // suspend task, pending ACK
+        }
     }
 }
 
