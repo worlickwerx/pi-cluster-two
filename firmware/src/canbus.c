@@ -320,38 +320,38 @@ static void canbus_rx_task (void *arg __attribute((unused)))
     }
 }
 
-static void canbus_rx_isr (uint8_t fifo, unsigned msgcount)
+static void canbus_rx_isr (uint8_t fifo)
 {
     struct canmsg_raw msg;
     uint8_t fmi;
 
-    while (msgcount-- > 0) {
-        can_receive(CAN1,
-                    fifo,
-                    true,                   // Release
-                    &msg.msgid,
-                    &msg.xmsgidf,           // true if msgid is extended
-                    &msg.rtrf,              // true if requested transmission
-                    &fmi,                   // Matched filter index
-                    &msg.length,            // Returned length
-                    msg.data,
-                    NULL);                  // Unused timestamp
+    can_receive (CAN1,
+                 fifo,
+                 true,                   // Release
+                 &msg.msgid,
+                 &msg.xmsgidf,           // true if msgid is extended
+                 &msg.rtrf,              // true if requested transmission
+                 &fmi,                   // Matched filter index
+                 &msg.length,            // Returned length
+                 msg.data,
+                 NULL);                  // Unused timestamp
 
-        // If the queue is full, the message is lost
-        xQueueSendToBackFromISR (canrxq, &msg, NULL);
-    }
+    // If the queue is full, the message is lost
+    xQueueSendToBackFromISR (canrxq, &msg, NULL);
 }
 
 // ISR for CAN FIFO 0 - redirect to common handler
 void usb_lp_can_rx0_isr (void)
 {
-    canbus_rx_isr (0, CAN_RF0R (CAN1) & 3);
+    if ((CAN_RF0R (CAN1) & CAN_RF0R_FMP0_MASK))
+        canbus_rx_isr (0);
 }
 
 // ISR for CAN FIFO 1 - redirect to common handler
 void can_rx1_isr (void)
 {
-    canbus_rx_isr (1, CAN_RF1R (CAN1) & 3);
+    if ((CAN_RF1R (CAN1) & CAN_RF1R_FMP1_MASK))
+        canbus_rx_isr (1);
 }
 
 struct canbaud {
