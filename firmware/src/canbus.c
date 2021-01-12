@@ -21,6 +21,7 @@
 
 static const uint32_t baudrate = 1000000;
 
+#define CAN_RX_QUEUE_DEPTH  16
 static QueueHandle_t canrxq;
 
 /* State for console connection
@@ -315,38 +316,25 @@ static void canbus_rx_task (void *arg __attribute((unused)))
     }
 }
 
-static void canbus_rx_isr (uint8_t fifo)
-{
-    struct canmsg_raw msg;
-    uint8_t fmi;
-
-    can_receive (CAN1,
-                 fifo,
-                 true,                   // Release
-                 &msg.msgid,
-                 &msg.xmsgidf,           // true if msgid is extended
-                 &msg.rtrf,              // true if requested transmission
-                 &fmi,                   // Matched filter index
-                 &msg.length,            // Returned length
-                 msg.data,
-                 NULL);                  // Unused timestamp
-
-    // If the queue is full, the message is lost
-    xQueueSendToBackFromISR (canrxq, &msg, NULL);
-}
-
-// ISR for CAN FIFO 0 - redirect to common handler
 void usb_lp_can_rx0_isr (void)
 {
-    if ((CAN_RF0R (CAN1) & CAN_RF0R_FMP0_MASK))
-        canbus_rx_isr (0);
-}
+    if ((CAN_RF0R (CAN1) & CAN_RF0R_FMP0_MASK)) {
+        struct canmsg_raw msg;
+        uint8_t fmi;
 
-// ISR for CAN FIFO 1 - redirect to common handler
-void can_rx1_isr (void)
-{
-    if ((CAN_RF1R (CAN1) & CAN_RF1R_FMP1_MASK))
-        canbus_rx_isr (1);
+        can_receive (CAN1,
+                     0,
+                     true,
+                     &msg.msgid,
+                     &msg.xmsgidf,
+                     &msg.rtrf,
+                     &fmi,
+                     &msg.length,
+                     msg.data,
+                     NULL);
+
+        xQueueSendToBackFromISR (canrxq, &msg, NULL);
+    }
 }
 
 struct canbaud {
@@ -427,15 +415,10 @@ void canbus_init (void)
                                    0,                 // FIFO 0
                                    true);             // enable
 
-    /* (disabled) promiscuous - route to FIFO 1 */
-    can_filter_id_mask_32bit_init (1, 0, 0, 1, false);
-
-    canrxq = xQueueCreate (33, sizeof (struct canmsg_raw));
+    canrxq = xQueueCreate (CAN_RX_QUEUE_DEPTH, sizeof (struct canmsg_raw));
 
     nvic_enable_irq (NVIC_USB_LP_CAN_RX0_IRQ);
-    nvic_enable_irq (NVIC_CAN_RX1_IRQ);
-
-    can_enable_irq (CAN1, CAN_IER_FMPIE0 | CAN_IER_FMPIE1);
+    can_enable_irq (CAN1, CAN_IER_FMPIE0);
 
     xTaskCreate (canbus_rx_task,
                  "canrx",
