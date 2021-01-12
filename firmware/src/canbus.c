@@ -44,18 +44,6 @@ static uint16_t htons (uint16_t val)
     return (val << 8) | (val >> 8);
 }
 
-static void canbus_xmit (uint32_t id,
-                         bool ext,
-                         bool rtr,
-                         uint8_t length,
-                         void *data)
-{
-    matrix_pulse_green (); // blink the activity LED
-
-    while (can_transmit (CAN1, id, ext, rtr, length, (uint8_t*)data) == -1)
-        taskYIELD();
-}
-
 static int canbus_xmit_v1 (const struct canmsg_v1 *msg)
 {
     struct canmsg_raw raw;
@@ -63,7 +51,14 @@ static int canbus_xmit_v1 (const struct canmsg_v1 *msg)
     if (canmsg_v1_encode (msg, &raw) < 0)
         return -1;
     canmsg_v1_trace (msg);
-    canbus_xmit (raw.msgid, raw.xmsgidf, 0, raw.length, raw.data);
+    matrix_pulse_green (); // blink the activity LED
+    if (can_transmit (CAN1,
+                      raw.msgid,
+                      raw.xmsgidf,
+                      0,
+                      raw.length,
+                      (uint8_t *)raw.data) < 0)
+        return -1;
     return 0;
 }
 
@@ -80,7 +75,7 @@ static void canbus_v1_nak (const struct canmsg_v1 *request)
     msg.dlen = 0;
 
     if (canbus_xmit_v1 (&msg) < 0)
-        trace_printf ("canbus-rx: error encoding NAK response\n");
+        trace_printf ("canbus-rx: error sending NAK response\n");
 }
 
 static void canbus_v1_echo (const struct canmsg_v1 *request)
@@ -97,7 +92,7 @@ static void canbus_v1_echo (const struct canmsg_v1 *request)
     msg.src = msg.node = address_get ();
 
     if (canbus_xmit_v1 (&msg) < 0)
-        trace_printf ("canbus-rx: error encoding echo response\n");
+        trace_printf ("canbus-rx: error sending echo response\n");
 }
 
 static void canbus_v1_power (const struct canmsg_v1 *request)
@@ -120,7 +115,7 @@ static void canbus_v1_power (const struct canmsg_v1 *request)
     msg.src = msg.node = address_get ();
 
     if (canbus_xmit_v1 (&msg) < 0)
-        trace_printf ("canbus-rx: error encoding power response\n");
+        trace_printf ("canbus-rx: error sending power response\n");
     return;
 error:
     canbus_v1_nak (request);
@@ -145,7 +140,7 @@ static void canbus_v1_power_measure (const struct canmsg_v1 *request)
     *(uint16_t *)msg.data = htons (ma);
 
     if (canbus_xmit_v1 (&msg) < 0)
-        trace_printf ("canbus-rx: error encoding power measure response\n");
+        trace_printf ("canbus-rx: error sending power measure response\n");
     return;
 error:
     canbus_v1_nak (request);
