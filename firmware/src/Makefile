@@ -24,6 +24,9 @@ SRCFILES	= main.c \
 LDSCRIPT	= stm32f103c8t6.ld
 CFLAGS		+= -Ilibwwg
 
+# Enable stack protection and FreeRTOS assertions
+#CFLAGS	+= -DDEBUG_FIRMWARE
+
 # DEPS		= 	# Any additional dependencies for your build
 # CLOBBER	+= 	# Any additional files to be removed with "make clobber"
 
