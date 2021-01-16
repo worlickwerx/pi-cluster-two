@@ -43,6 +43,8 @@
  * See http://www.freertos.org/a00110.html
  *----------------------------------------------------------*/
 
+#define configASSERT(x) \
+	if((x) == 0) { taskDISABLE_INTERRUPTS(); for( ;; ); }
 #define configCHECK_FOR_STACK_OVERFLOW	2
 #define configUSE_PREEMPTION		1
 #define configUSE_IDLE_HOOK			0
