@@ -1,5 +1,8 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 
+#ifndef _FIRMWARE_CANBUS_H
+#define _FIRMWARE_CANBUS_H
+
 #include <stdbool.h>
 #include "canmsg.h"
 
@@ -22,3 +25,9 @@ int canbus_send (struct canmsg_raw *raw);
  * Return 0 on success or -1 on failure (no message available after timeout).
  */
 int canbus_recv (struct canmsg_raw *raw, int timeout);
+
+#endif /* !_FIRMWARE_CANBUS_H */
+
+/*
+ * vi:ts=4 sw=4 expandtab
+ */

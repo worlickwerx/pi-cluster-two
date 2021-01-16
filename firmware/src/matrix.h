@@ -1,5 +1,8 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 
+#ifndef _FIRMWARE_MATRIX_H
+#define _FIRMWARE_MATRIX_H
+
 void matrix_init (void);
 
 /* Write ascii character to 5x7 matrix.
@@ -21,6 +24,8 @@ void matrix_pulse_green (void);
 /* Change the red LED state.
  */
 void matrix_set_red (uint8_t val);
+
+#endif /* _FIRMWARE_MATRIX_H */
 
 /*
  * vi:ts=4 sw=4 expandtab

@@ -12,3 +12,7 @@ struct canmsg_raw {
 };
 
 #endif /* !_FIRMWARE_CANMSG_H */
+
+/*
+ * vi:ts=4 sw=4 expandtab
+ */
