@@ -65,7 +65,7 @@ void usart1_isr (void)
 
 int serial_recv (unsigned char *buf, int bufsize, int timeout)
 {
-    int ticks = pdMS_TO_TICKS (timeout);
+    int ticks = timeout >= 0 ? pdMS_TO_TICKS (timeout) : portMAX_DELAY;
     int n;
 
     xStreamBufferSetTriggerLevel (serialrxq, bufsize);
@@ -81,7 +81,7 @@ int serial_recv (unsigned char *buf, int bufsize, int timeout)
 
 int serial_send (const unsigned char *buf, int len, int timeout)
 {
-    int ticks = pdMS_TO_TICKS (timeout);
+    int ticks = timeout >= 0 ? pdMS_TO_TICKS (timeout) : portMAX_DELAY;
     int n;
 
     n = xStreamBufferSend (serialtxq, buf, len, ticks);
