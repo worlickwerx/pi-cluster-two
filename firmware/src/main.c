@@ -14,6 +14,7 @@
 #include "power.h"
 #include "trace.h"
 #include "canbus.h"
+#include "canservices.h"
 #include "serial.h"
 #include "i2c.h"
 
@@ -48,8 +49,9 @@ int main (void)
     matrix_init ();
     address_init ();
     power_init ();
-    canbus_init ();
     serial_init ();
+    canbus_init ();
+    canservices_init ();
     i2c_init ();
 
     xTaskCreate (init_task,

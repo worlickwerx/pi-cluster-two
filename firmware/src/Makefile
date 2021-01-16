@@ -10,6 +10,7 @@ SRCFILES	= main.c \
 		  matrix.c \
 		  trace.c \
 		  canbus.c \
+		  canservices.c \
 		  canmsg_v1.c \
 		  serial.c \
 		  i2c.c \
