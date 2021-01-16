@@ -14,19 +14,9 @@
 #include "power.h"
 #include "trace.h"
 #include "canbus.h"
+#include "canservices.h"
 #include "serial.h"
 #include "i2c.h"
-
-extern void vApplicationStackOverflowHook (xTaskHandle *pxTask,
-                                           signed portCHAR *pcTaskName);
-
-
-void vApplicationStackOverflowHook (xTaskHandle *task __attribute((unused)),
-                                    signed portCHAR *name __attribute((unused)))
-{
-    for (;;)
-       ;
-}
 
 /* Perform initialization:
  * - show the card address on the matrix display
@@ -59,8 +49,9 @@ int main (void)
     matrix_init ();
     address_init ();
     power_init ();
-    canbus_init ();
     serial_init ();
+    canbus_init ();
+    canservices_init ();
     i2c_init ();
 
     xTaskCreate (init_task,

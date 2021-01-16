@@ -1,5 +1,8 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 
+#ifndef _FIRMWARE_CANMSG_H
+#define _FIRMWARE_CANMSG_H
+
 struct canmsg_raw {
     uint32_t        msgid;          // Message ID
     uint8_t         length;         // Data length
@@ -8,3 +11,8 @@ struct canmsg_raw {
     bool            rtrf;           // RTR flag
 };
 
+#endif /* !_FIRMWARE_CANMSG_H */
+
+/*
+ * vi:ts=4 sw=4 expandtab
+ */

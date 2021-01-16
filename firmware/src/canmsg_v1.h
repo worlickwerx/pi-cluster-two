@@ -1,5 +1,8 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 
+#ifndef _FIRMWARE_CANMSG_V1_H
+#define _FIRMWARE_CANMSG_V1_H
+
 // Inspired by Meiko CS/2 "Overview of the Control Area Network (CAN)"
 
 // CAN addressing within a module:
@@ -72,6 +75,8 @@ int canmsg_v1_decode (const struct canmsg_raw *raw,
 int canmsg_v1_encode (const struct canmsg_v1 *msg,
                       struct canmsg_raw *raw);
 void canmsg_v1_trace (const struct canmsg_v1 *msg);
+
+#endif /* !_FIRMWARE_CANMSG_V1_H */
 
 /*
  * vi:ts=4 sw=4 expandtab

@@ -89,6 +89,7 @@ void i2c_init (void)
     rcc_periph_clock_enable (RCC_GPIOB);
     rcc_periph_clock_enable (RCC_I2C2);
 
+    nvic_set_priority (NVIC_I2C2_EV_IRQ, 12<<4);
     nvic_enable_irq (NVIC_I2C2_EV_IRQ);
 
     gpio_set_mode (GPIOB,

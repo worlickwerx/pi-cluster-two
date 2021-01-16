@@ -24,6 +24,7 @@ SIZE		:= $(PREFIX)-size
 OBJDUMP		:= $(PREFIX)-objdump
 GDB		:= $(PREFIX)-gdb
 STFLASH		= $(TOP_DIR)/stlink/build/Release/st-flash
+STUTIL		= $(TOP_DIR)/stlink/build/Release/src/gdbserver/st-util
 STYLECHECK	:= /checkpatch.pl
 STYLECHECKFLAGS	:= --no-tree -f --terse --mailback
 STYLECHECKFILES	:= $(shell find . -name '*.[ch]')

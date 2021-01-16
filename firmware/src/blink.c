@@ -21,6 +21,19 @@ static void blink_task (void *args __attribute((unused)))
     }
 }
 
+#if (configCHECK_FOR_STACK_OVERFLOW > 0)
+void vApplicationStackOverflowHook (xTaskHandle *task __attribute((unused)),
+                                    signed portCHAR *name __attribute((unused)))
+{
+    static int count;
+    for (;;) {
+        gpio_toggle (GPIOC, GPIO13);
+        for (count = 0; count < 1000000; count++)
+            ;
+    }
+}
+#endif
+
 void blink_init (void)
 {
     rcc_periph_clock_enable (RCC_GPIOC);

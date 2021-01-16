@@ -10,6 +10,7 @@ SRCFILES	= main.c \
 		  matrix.c \
 		  trace.c \
 		  canbus.c \
+		  canservices.c \
 		  canmsg_v1.c \
 		  serial.c \
 		  i2c.c \
@@ -23,6 +24,9 @@ SRCFILES	= main.c \
 		  libwwg/miniprintf.c
 LDSCRIPT	= stm32f103c8t6.ld
 CFLAGS		+= -Ilibwwg
+
+# Enable stack protection and FreeRTOS assertions
+#CFLAGS	+= -DDEBUG_FIRMWARE
 
 # DEPS		= 	# Any additional dependencies for your build
 # CLOBBER	+= 	# Any additional files to be removed with "make clobber"
@@ -38,3 +42,9 @@ include ../Makefile.rtos
 #	4. "make flash" will perform:
 #	   st-flash write main.bin 0x8000000
 ######################################################################
+
+gdbserver:
+	$(STUTIL)
+
+debug:
+	$(GDB) -ex "file main.elf" -ex "target extended-remote :4242"
