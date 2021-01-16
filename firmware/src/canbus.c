@@ -417,6 +417,7 @@ void canbus_init (void)
 
     canrxq = xQueueCreate (CAN_RX_QUEUE_DEPTH, sizeof (struct canmsg_raw));
 
+    nvic_set_priority (NVIC_USB_LP_CAN_RX0_IRQ, 12<<4);
     nvic_enable_irq (NVIC_USB_LP_CAN_RX0_IRQ);
     can_enable_irq (CAN1, CAN_IER_FMPIE0);
 

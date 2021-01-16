@@ -115,6 +115,7 @@ void serial_init (void)
     serialrxq = xStreamBufferCreate (SERIAL_RX_QUEUE_DEPTH, 1);
     serialtxq = xStreamBufferCreate (SERIAL_TX_QUEUE_DEPTH, 1);
 
+    nvic_set_priority (NVIC_USART1_IRQ, 12<<4);
     nvic_enable_irq (NVIC_USART1_IRQ);
     usart_enable (USART1);
 }
