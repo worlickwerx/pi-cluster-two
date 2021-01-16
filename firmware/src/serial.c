@@ -28,6 +28,10 @@
 #define SERIAL_RX_QUEUE_DEPTH 8192
 #define SERIAL_TX_QUEUE_DEPTH 128
 
+#define RX_OVERRUN_RESUME   256
+
+static int serialrxq_overrun;
+
 static StreamBufferHandle_t serialrxq;
 static StreamBufferHandle_t serialtxq;
 
@@ -41,7 +45,12 @@ void usart1_isr (void)
     if (((USART_CR1(USART1) & USART_CR1_RXNEIE) != 0) &&
         ((USART_SR(USART1) & USART_SR_RXNE) != 0)) { // rx buf not empty
         c = usart_recv (USART1);
-        xStreamBufferSendFromISR (serialrxq, &c, 1, &woke);
+        if (serialrxq_overrun > 0)
+            serialrxq_overrun++;
+        else {
+            if (xStreamBufferSendFromISR (serialrxq, &c, 1, &woke) != 1)
+                serialrxq_overrun++;
+        }
     }
     if (((USART_CR1(USART1) & USART_CR1_TXEIE) != 0) &&
         ((USART_SR(USART1) & USART_SR_TXE) != 0)) { // tx buf empty
@@ -62,6 +71,11 @@ int serial_recv (unsigned char *buf, int bufsize, int timeout)
     xStreamBufferSetTriggerLevel (serialrxq, bufsize);
     n = xStreamBufferReceive (serialrxq, buf, bufsize, ticks);
 
+    if (n > 0 && serialrxq_overrun > 0) {
+        if (xStreamBufferSpacesAvailable(serialrxq) >= RX_OVERRUN_RESUME) {
+            serialrxq_overrun = 0;
+        }
+    }
     return n;
 }
 
