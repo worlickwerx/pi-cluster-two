@@ -11,7 +11,7 @@ SRCFILES	= main.c \
 		  trace.c \
 		  canbus.c \
 		  canservices.c \
-		  canmsg_v1.c \
+		  ../../bramble/src/libbramble/canmsg_v1.c \
 		  serial.c \
 		  i2c.c \
 		  rtos/heap_4.c \
@@ -24,6 +24,7 @@ SRCFILES	= main.c \
 		  libwwg/miniprintf.c
 LDSCRIPT	= stm32f103c8t6.ld
 CFLAGS		+= -Ilibwwg
+CFLAGS		+= -I../../bramble/src/libbramble
 
 # Enable stack protection and FreeRTOS assertions
 #CFLAGS	+= -DDEBUG_FIRMWARE
