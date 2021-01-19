@@ -3209,11 +3209,11 @@ L Oscillator:ASE-xxxMHz X1
 U 1 1 5FD24B79
 P 5600 6900
 F 0 "X1" H 5350 7050 50  0000 R CNN
-F 1 "Abracon ASE-8.000MHz-LC" H 5600 7150 50  0000 R CNN
+F 1 "Abracon ASE-16.000MHz-LC" H 5600 7150 50  0000 R CNN
 F 2 "Oscillator:Oscillator_SMD_Abracon_ASE-4Pin_3.2x2.5mm" H 6300 6550 50  0001 C CNN
 F 3 "http://www.abracon.com/Oscillators/ASV.pdf" H 5500 6900 50  0001 C CNN
-F 4 "535-9558-1-ND" H 5600 6900 50  0001 C CNN "digkey.com"
-F 5 "ASE-8.000MHz-LC" H 5600 6900 50  0001 C CNN "MPN"
+F 4 "" H 5600 6900 50  0001 C CNN "digkey.com"
+F 5 "ASE-16.000MHz-LC" H 5600 6900 50  0001 C CNN "MPN"
 F 6 "Abracon" H 5600 6900 50  0001 C CNN "Manufacturer"
 	1    5600 6900
 	-1   0    0    -1  
