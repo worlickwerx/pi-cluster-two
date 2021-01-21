@@ -10,6 +10,7 @@
 
 int cansnoop_main (int argc, char **argv);
 int slot_main (int argc, char **argv);
+int firmware_version_main (int argc, char **argv);
 
 struct subcmd {
     const char *name;
@@ -18,8 +19,9 @@ struct subcmd {
 };
 
 static const struct subcmd builtins[] = {
-    { "cansnoop", "snoop CAN traffic",  cansnoop_main },
-    { "slot",     "print backplane slot number",  slot_main },
+    { "cansnoop",           "snoop CAN traffic",  cansnoop_main },
+    { "slot",               "print backplane slot number",  slot_main },
+    { "firmware-version",   "print firmware version",  firmware_version_main },
 };
 static const int builtins_count = sizeof (builtins) / sizeof (builtins[0]);
 
