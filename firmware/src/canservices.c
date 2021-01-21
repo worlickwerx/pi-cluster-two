@@ -27,6 +27,15 @@ struct console {
 
 static struct console console;
 
+static void v1_trace (const struct canmsg_v1 *msg)
+{
+    trace_printf ("%x->%x %s %s [%d bytes]\n",
+                  msg->src,
+                  msg->dst,
+                  canmsg_v1_typestr (msg),
+                  canmsg_v1_objstr (msg),
+                  msg->dlen);
+}
 
 /* Assume native little endian (ARM can be either, but usually this).
  * Network byte order is big endian.
@@ -42,7 +51,7 @@ static int send_v1 (const struct canmsg_v1 *msg)
 
     if (canmsg_v1_encode (msg, &raw) < 0)
         return -1;
-    canmsg_v1_trace (msg);
+    v1_trace (msg);
     return canbus_send (&raw);
 }
 
@@ -253,7 +262,7 @@ static void canservices_rx_task (void *arg __attribute((unused)))
                 continue;
             }
 
-            canmsg_v1_trace (&msg);
+            v1_trace (&msg);
 
             switch (msg.type) {
                 case CANMSG_V1_TYPE_WO:

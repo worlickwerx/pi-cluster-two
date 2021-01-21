@@ -1,13 +1,13 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 
 #include <stdbool.h>
+#include <stdint.h>
+#include <stddef.h>
+#include <string.h>
 
-#include "FreeRTOS.h"
-#include "string.h"
 
 #include "canmsg.h"
 #include "canmsg_v1.h"
-#include "trace.h"
 
 struct strtab {
     int id;
@@ -52,14 +52,14 @@ static const char *strtab_lookup (int id, const struct strtab *tab, size_t size)
     return "?";
 }
 
-void canmsg_v1_trace (const struct canmsg_v1 *msg)
+const char *canmsg_v1_objstr (const struct canmsg_v1 *msg)
 {
-    trace_printf ("%x->%x %s %s [%d bytes]\n",
-                  msg->src,
-                  msg->dst,
-                  strtab_lookup (msg->type, typestr_v1, sizeof (typestr_v1)),
-                  strtab_lookup (msg->object, objstr_v1, sizeof (objstr_v1)),
-                  msg->dlen);
+    return strtab_lookup (msg->object, objstr_v1, sizeof (objstr_v1));
+}
+
+const char *canmsg_v1_typestr (const struct canmsg_v1 *msg)
+{
+    return strtab_lookup (msg->type, typestr_v1, sizeof (typestr_v1));
 }
 
 int canmsg_v1_decode (const struct canmsg_raw *raw, struct canmsg_v1 *msg)

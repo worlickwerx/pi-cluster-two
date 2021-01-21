@@ -1,7 +1,9 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 
-#ifndef _FIRMWARE_CANMSG_V1_H
-#define _FIRMWARE_CANMSG_V1_H
+#ifndef _BRAMBLE_CANMSG_V1_H
+#define _BRAMBLE_CANMSG_V1_H
+
+#include <stdint.h>
 
 // Inspired by Meiko CS/2 "Overview of the Control Area Network (CAN)"
 
@@ -74,9 +76,12 @@ int canmsg_v1_decode (const struct canmsg_raw *raw,
                       struct canmsg_v1 *msg);
 int canmsg_v1_encode (const struct canmsg_v1 *msg,
                       struct canmsg_raw *raw);
-void canmsg_v1_trace (const struct canmsg_v1 *msg);
 
-#endif /* !_FIRMWARE_CANMSG_V1_H */
+const char *canmsg_v1_objstr (const struct canmsg_v1 *msg);
+const char *canmsg_v1_typestr (const struct canmsg_v1 *msg);
+
+
+#endif /* !_BRAMBLE_CANMSG_V1_H */
 
 /*
  * vi:ts=4 sw=4 expandtab
