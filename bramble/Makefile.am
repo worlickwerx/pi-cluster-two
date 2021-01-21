@@ -16,4 +16,6 @@ src_libbramble_libbramble_la_SOURCES = \
     src/libbramble/bramble.h \
     src/libbramble/canmsg.h \
     src/libbramble/canmsg_v1.h \
-    src/libbramble/canmsg_v1.c
+    src/libbramble/canmsg_v1.c \
+    src/libbramble/canlinux.h \
+    src/libbramble/canlinux.c
