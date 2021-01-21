@@ -1,10 +1,48 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
+#include <stdio.h>
+#include <string.h>
+
 #include "src/libbramble/bramble.h"
 
-int main (int argc, char *argva[])
+int cansnoop_main (int argc, char **argv);
+
+struct subcmd {
+    const char *name;
+    const char *desc;
+    int (*main)(int argc, char **argv);
+};
+
+static const struct subcmd builtins[] = {
+    { "cansnoop", "snoop CAN traffic",  cansnoop_main },
+};
+static const int builtins_count = sizeof (builtins) / sizeof (builtins[0]);
+
+int usage (void)
 {
-    return 0;
+    int i;
+
+    fprintf (stderr, "Usage: bramble CMD [arg ...]\n"
+             "where CMD is:\n");
+    for (i = 0; i < builtins_count; i++)
+        fprintf (stderr, "  %s\t%s\n", builtins[i].name, builtins[i].desc);
+    return 1;
+}
+
+int main (int argc, char *argv[])
+{
+    if (argc > 1) {
+        int i;
+
+        for (i = 0; i < builtins_count; i++) {
+            if (!strcmp (argv[1], builtins[i].name))
+                return builtins[i].main (argc - 1, argv + 1);
+        }
+    }
+    return usage ();
 }
 
 /*
