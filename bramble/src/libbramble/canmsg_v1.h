@@ -3,6 +3,8 @@
 #ifndef _BRAMBLE_CANMSG_V1_H
 #define _BRAMBLE_CANMSG_V1_H
 
+#include <stdint.h>
+
 // Inspired by Meiko CS/2 "Overview of the Control Area Network (CAN)"
 
 // CAN addressing within a module:

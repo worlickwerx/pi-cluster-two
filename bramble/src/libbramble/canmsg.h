@@ -3,6 +3,9 @@
 #ifndef _BRAMBLE_CANMSG_H
 #define _BRAMBLE_CANMSG_H
 
+#include <stdint.h>
+#include <stdbool.h>
+
 struct canmsg_raw {
     uint32_t        msgid;          // Message ID
     uint8_t         length;         // Data length
