@@ -9,6 +9,7 @@
 #include "src/libbramble/bramble.h"
 
 int cansnoop_main (int argc, char **argv);
+int slot_main (int argc, char **argv);
 
 struct subcmd {
     const char *name;
@@ -18,6 +19,7 @@ struct subcmd {
 
 static const struct subcmd builtins[] = {
     { "cansnoop", "snoop CAN traffic",  cansnoop_main },
+    { "slot",     "print backplane slot number",  slot_main },
 };
 static const int builtins_count = sizeof (builtins) / sizeof (builtins[0]);
 
@@ -28,7 +30,7 @@ int usage (void)
     fprintf (stderr, "Usage: bramble CMD [arg ...]\n"
              "where CMD is:\n");
     for (i = 0; i < builtins_count; i++)
-        fprintf (stderr, "  %s\t%s\n", builtins[i].name, builtins[i].desc);
+        fprintf (stderr, "  %-20s%s\n", builtins[i].name, builtins[i].desc);
     return 1;
 }
 
