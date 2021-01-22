@@ -10,6 +10,8 @@
 #include "i2clinux.h"
 #include "i2cproto.h"
 
+#include "utils.h"
+
 #endif /* _BRAMBLE_H */
 
 /*

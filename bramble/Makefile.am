@@ -17,6 +17,8 @@ src_cmd_bramble_LDADD = \
 
 src_libbramble_libbramble_la_SOURCES = \
     src/libbramble/bramble.h \
+    src/libbramble/utils.c \
+    src/libbramble/utils.h \
     src/libbramble/canmsg.h \
     src/libbramble/canmsg_v1.h \
     src/libbramble/canmsg_v1.c \
