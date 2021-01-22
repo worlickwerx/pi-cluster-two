@@ -13,6 +13,7 @@ int canping_main (int argc, char **argv);
 int slot_main (int argc, char **argv);
 int firmware_version_main (int argc, char **argv);
 int power_main (int argc, char **argv);
+int console_main (int argc, char **argv);
 
 struct subcmd {
     const char *name;
@@ -26,6 +27,7 @@ static const struct subcmd builtins[] = {
     { "slot",               "print backplane slot number",  slot_main },
     { "firmware-version",   "print firmware version",  firmware_version_main },
     { "powerman-helper",    "power on/off slots",  power_main},
+    { "conman-helper",      "netcat-like CAN console access",  console_main},
 };
 static const int builtins_count = sizeof (builtins) / sizeof (builtins[0]);
 

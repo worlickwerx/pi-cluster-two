@@ -12,6 +12,7 @@ src_cmd_bramble_SOURCES = \
     src/cmd/canping.c \
     src/cmd/slot.c \
     src/cmd/power.c \
+    src/cmd/console.c \
     src/cmd/firmware-version.c
 
 src_cmd_bramble_LDADD = \
