@@ -24,5 +24,7 @@ src_libbramble_libbramble_la_SOURCES = \
     src/libbramble/canmsg_v1.c \
     src/libbramble/canlinux.h \
     src/libbramble/canlinux.c \
+    src/libbramble/canobj.h \
+    src/libbramble/canobj.c \
     src/libbramble/i2clinux.h \
     src/libbramble/i2clinux.c
