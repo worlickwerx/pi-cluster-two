@@ -9,6 +9,7 @@ bin_PROGRAMS = \
 src_cmd_bramble_SOURCES = \
     src/cmd/bramble.c \
     src/cmd/cansnoop.c \
+    src/cmd/canping.c \
     src/cmd/slot.c \
     src/cmd/power.c \
     src/cmd/firmware-version.c
