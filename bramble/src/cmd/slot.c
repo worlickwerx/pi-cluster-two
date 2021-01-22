@@ -11,33 +11,17 @@
 
 #include "src/libbramble/bramble.h"
 
-static int usage (void)
+int slot_main (int argc, char *argv[])
 {
-    fprintf (stderr, "Usage: bramble slot\n");
-    return 1;
-}
-
-int slot_main (int argc, char *argva[])
-{
-    int fd;
-    uint8_t addr;
+    int slot;
 
     if (argc != 1)
-        return usage ();
-    fd = i2c_open (BRAMBLE_I2C_DEVICE, I2C_ADDRESS);
-    if (fd < 0) {
-        fprintf (stderr, "%s:0x%x: %s",
-                 BRAMBLE_I2C_DEVICE, I2C_ADDRESS, strerror (errno));
-        return 1;
-    }
-    if (i2c_read (fd, I2C_REG_SLOT, &addr, 1) < 0) {
-        fprintf (stderr, "%s:0x%x: could not read register %d: %s",
-                 BRAMBLE_I2C_DEVICE, I2C_ADDRESS, I2C_REG_SLOT,
-                 strerror (errno));
-        return 1;
-    }
-    printf ("%d\n", addr);
-    close (fd);
+        die ("Usage: bramble slot");
+
+    if ((slot = slot_get ()) < 0)
+        die ("could not read slot number from i2c\n");
+    printf ("%d\n", slot);
+
     return 0;
 }
 
