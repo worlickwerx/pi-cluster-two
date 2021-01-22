@@ -18,6 +18,10 @@ AM_PROG_CC_C_O
 LT_INIT
 AC_HEADER_STDC
 
+AC_SEARCH_LIBS([ev_run], [ev], [], [
+  AC_MSG_ERROR([Please install libev development package])
+])
+
 AC_CONFIG_FILES( \
   Makefile \
 )
