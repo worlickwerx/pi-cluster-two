@@ -58,7 +58,7 @@ int can_recv (int fd, struct canmsg_raw *raw)
     }
     else {
         raw->msgid = fr.can_id & CAN_SFF_MASK;
-        raw->xmsgidf = true;
+        raw->xmsgidf = false;
     }
     if ((fr.can_id & CAN_RTR_FLAG))
         raw->rtrf = true;
