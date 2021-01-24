@@ -223,9 +223,9 @@ static void can_cb (EV_P_ ev_io *w, int revents)
                  || msg.type == CANMSG_V1_TYPE_NAK)) {
             handle_connect_ack (&msg);
         }
-        else {
-            fprintf (stderr, "WARN: ignoring message from taget\n");
-        }
+        /* Ignore other object ID's - a power response might pop up here
+         * during conman &R processing, for example.
+         */
     }
 }
 
