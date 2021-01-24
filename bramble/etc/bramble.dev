@@ -1,0 +1,38 @@
+#
+# powerman device specification for CAN management bus in pi-cluster-two
+# Use with 'bramble powerman-helper' coprocess.
+#
+specification "bramble" {
+	timeout 	2
+
+	plug name { "0" "1"  "2"  "3"  "4"  "5"  "6"  "7" }
+
+	script login {
+                expect "power> "
+	}
+	script status {
+                send "status %s\n"
+                expect "([0-9]+): (on|off|Connection timed out)\n"
+                setplugstate $1 $2 off="^off" on="^on"
+                expect "power> "
+	}
+	script on {
+		send "on %s\n"
+		expect "OK\n"
+		expect "power> "
+	}
+	script off {
+		send "off %s\n"
+		expect "OK\n"
+		expect "power> "
+	}
+	script cycle {
+		send "off %s\n"
+		expect "OK\n"
+		expect "power> "
+		delay 4
+		send "on %s\n"
+		expect "OK\n"
+		expect "power> "
+	}
+}

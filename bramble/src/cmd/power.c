@@ -1,5 +1,18 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 
+/* power.c - helper for powerman
+ *
+ * This program is intended be spawned by powerman, e.g. in powerman.conf:
+ *
+ *   include "/usr/local/etc/powerman/bramble.dev"
+ *   device "picl" "bramble" "/usr/local/bin/bramble powerman-helper |&"
+ *   node "picl[0-7]" "picl" "[0-7]"
+ *
+ * Ensure that the user running powermand (e.g. daemon) is in the i2c
+ * group so that this program can read the local slot.  This will manifest
+ * as a "connect error" if not configured.
+ */
+
 #if HAVE_CONFIG_H
 # include "config.h"
 #endif
@@ -32,7 +45,7 @@ static int write_power (int slot, int val)
     if (!(obj = canobj_open_with (canfd, my_slot,
                                   slot, CANMSG_V1_OBJ_POWER))
              || canobj_write (obj, data, sizeof (data)) < 0)
-        printf ("failed: %s\n", strerror (errno));
+        printf ("%d: %s\n", slot, strerror (errno));
     else
         printf ("OK\n");
     canobj_close (obj);
@@ -47,9 +60,9 @@ static int read_power (int slot)
     if (!(obj = canobj_open_with (canfd, my_slot,
                                   slot, CANMSG_V1_OBJ_POWER))
         || (n = canobj_read (obj, data, sizeof (data))) < 0)
-        printf ("failed: %s\n", strerror (errno));
+        printf ("%d: %s\n", slot, strerror (errno));
     else {
-        printf ("%s\n", data[0] ? "on" : "off");
+        printf ("%d: %s\n", slot, data[0] ? "on" : "off");
     }
     canobj_close (obj);
 }
@@ -64,10 +77,10 @@ static int read_power_measure (int slot)
     if (!(obj = canobj_open_with (canfd, my_slot,
                                   slot, CANMSG_V1_OBJ_POWER_MEASURE))
         || (n = canobj_read (obj, data, sizeof (data))) < 0)
-        printf ("failed: %s\n", strerror (errno));
+        printf ("%d: %s\n", slot, strerror (errno));
     else {
         uint16_t ma = be16toh (*(uint16_t *)&data[0]);
-        printf ("%.3fA\n", 1E-3*ma);
+        printf ("%d: %.3fA\n", slot, 1E-3*ma);
     }
     canobj_close (obj);
 }
