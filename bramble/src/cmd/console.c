@@ -253,13 +253,18 @@ static void stdin_cb (EV_P_ ev_io *w, int revents)
 
 int console_main (int argc, char *argv[])
 {
-    if (argc != 2)
-        die ("Usage: bramble canping SLOT\n");
+    if (argc != 2 && argc != 3)
+        die ("Usage: bramble canping SLOT [MY-SLOT]\n");
     if ((target_slot = slot_parse (argv[1])) < 0)
         die ("error parsing target slot number");
-
-    if ((my_slot = slot_get ()) < 0)
-        die ("could not read slot number from i2c\n");
+    if (argc == 3) {
+        if ((my_slot = slot_parse (argv[2])) < 0)
+            die ("could not parse my slot number from command line");
+    }
+    else {
+        if ((my_slot = slot_get ()) < 0)
+            die ("could not read slot number from i2c\n");
+    }
 
     if ((can_fd = can_open (BRAMBLE_CAN_INTERFACE)) < 0)
         die ("%s: %s\n", BRAMBLE_CAN_INTERFACE, strerror (errno));

@@ -162,11 +162,17 @@ int power_main (int argc, char *argv[])
 {
     char buf[128] = { 0 };
 
-    if (argc != 1)
-        die ("Usage: bramble powerman-helper\n");
+    if (argc != 1 && argc != 2)
+        die ("Usage: bramble powerman-helper [MY-SLOT]\n");
 
-    if ((my_slot = slot_get ()) < 0)
-        die ("error reading slot from i2c: %s\n", strerror (errno));
+    if (argc == 2) {
+        if ((my_slot = slot_parse (argv[1])) < 0)
+            die ("error parsing slot from command line");
+    }
+    else {
+        if ((my_slot = slot_get ()) < 0)
+            die ("error reading slot from i2c: %s\n", strerror (errno));
+    }
 
     if ((canfd = can_open (BRAMBLE_CAN_INTERFACE)) < 0)
         die ("error opening CAN interface\n");
