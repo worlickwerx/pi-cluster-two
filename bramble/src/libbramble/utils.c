@@ -53,6 +53,10 @@ int slot_get (void)
 {
     int fd;
     uint8_t slot;
+    const char *s;
+
+    if ((s = getenv ("BRAMBLE_SLOT")))
+        return slot_parse (s);
 
     fd = i2c_open (BRAMBLE_I2C_DEVICE, I2C_ADDRESS);
     if (fd < 0)
