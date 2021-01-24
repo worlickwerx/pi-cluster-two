@@ -32,3 +32,10 @@ src_libbramble_libbramble_la_SOURCES = \
     src/libbramble/canobj.c \
     src/libbramble/i2clinux.h \
     src/libbramble/i2clinux.c
+
+powermanconfdir = $(sysconfdir)/powerman
+
+powermanconf_DATA = \
+    etc/bramble.dev
+
+EXTRA_DIST = $(powermanconf_DATA)
