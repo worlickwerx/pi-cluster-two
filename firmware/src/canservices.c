@@ -92,20 +92,29 @@ static void canservices_v1_power (const struct canmsg_v1 *request)
 {
     struct canmsg_v1 msg = *request;
 
-    if (request->type != CANMSG_V1_TYPE_WO)
-        goto error;
-    if (request->dlen != 1)
-        goto error;
-    if (request->data[0] == 0)
-        power_set_state (false);
-    else if (request->data[0] == 1)
-        power_set_state (true);
+    if (request->type == CANMSG_V1_TYPE_WO) {
+        if (request->dlen != 1)
+            goto error;
+        if (request->data[0] == 0)
+            power_set_state (false);
+        else if (request->data[0] == 1)
+            power_set_state (true);
+        else
+            goto error;
+        msg.type = CANMSG_V1_TYPE_ACK;
+        msg.dst = msg.src;
+        msg.src = msg.node = address_get ();
+        msg.dlen = 0;
+    }
+    else if (request->type == CANMSG_V1_TYPE_RO) {
+        msg.type = CANMSG_V1_TYPE_ACK;
+        msg.dst = msg.src;
+        msg.src = msg.node = address_get ();
+        msg.dlen = 1;
+        msg.data[0] = power_get_state () ? 1 : 0;
+    }
     else
         goto error;
-
-    msg.type = CANMSG_V1_TYPE_ACK;
-    msg.dst = msg.src;
-    msg.src = msg.node = address_get ();
 
     if (send_v1 (&msg) < 0)
         trace_printf ("can-rx: error sending power response\n");
