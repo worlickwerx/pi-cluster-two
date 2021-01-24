@@ -6,9 +6,12 @@
 #include "canmsg.h"
 #include "canmsg_v1.h"
 #include "canlinux.h"
+#include "canobj.h"
 
 #include "i2clinux.h"
 #include "i2cproto.h"
+
+#include "utils.h"
 
 #endif /* _BRAMBLE_H */
 

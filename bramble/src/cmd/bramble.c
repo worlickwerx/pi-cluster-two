@@ -9,8 +9,12 @@
 #include "src/libbramble/bramble.h"
 
 int cansnoop_main (int argc, char **argv);
+int canping_main (int argc, char **argv);
 int slot_main (int argc, char **argv);
 int firmware_version_main (int argc, char **argv);
+int power_main (int argc, char **argv);
+int console_main (int argc, char **argv);
+int led_main (int argc, char **argv);
 
 struct subcmd {
     const char *name;
@@ -20,8 +24,12 @@ struct subcmd {
 
 static const struct subcmd builtins[] = {
     { "cansnoop",           "snoop CAN traffic",  cansnoop_main },
+    { "canping",            "send echo request to CAN hosts",  canping_main },
     { "slot",               "print backplane slot number",  slot_main },
     { "firmware-version",   "print firmware version",  firmware_version_main },
+    { "powerman-helper",    "power on/off slots",  power_main},
+    { "conman-helper",      "netcat-like CAN console access",  console_main},
+    { "led",                "update LED matrix display",  led_main},
 };
 static const int builtins_count = sizeof (builtins) / sizeof (builtins[0]);
 

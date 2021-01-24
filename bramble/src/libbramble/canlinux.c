@@ -6,6 +6,7 @@
 #include <sys/ioctl.h>
 #include <sys/unistd.h>
 #include <sys/socket.h>
+#include <poll.h>
 #include <net/if.h>
 #include <linux/sockios.h>
 #include <string.h>
@@ -58,7 +59,7 @@ int can_recv (int fd, struct canmsg_raw *raw)
     }
     else {
         raw->msgid = fr.can_id & CAN_SFF_MASK;
-        raw->xmsgidf = true;
+        raw->xmsgidf = false;
     }
     if ((fr.can_id & CAN_RTR_FLAG))
         raw->rtrf = true;
@@ -66,6 +67,20 @@ int can_recv (int fd, struct canmsg_raw *raw)
         raw->rtrf = false;
     memcpy (raw->data, fr.data, fr.can_dlc);
     return 0;
+}
+
+int can_recv_timeout (int fd, struct canmsg_raw *raw, double timeout)
+{
+    struct pollfd pfd = { .fd = fd, .events = POLLIN };
+    int rc;
+
+    if ((rc = poll (&pfd, 1, timeout * 1E3)) < 0)
+        return -1;
+    if (rc == 0) {
+        errno = ETIMEDOUT;
+        return -1;
+    }
+    return can_recv (fd, raw);
 }
 
 int can_send (int fd, struct canmsg_raw *raw)
