@@ -37,10 +37,10 @@ int usage (void)
 {
     int i;
 
-    fprintf (stderr, "Usage: bramble CMD [arg ...]\n"
+    warn ("Usage: bramble CMD [arg ...]\n"
              "where CMD is:\n");
     for (i = 0; i < builtins_count; i++)
-        fprintf (stderr, "  %-20s%s\n", builtins[i].name, builtins[i].desc);
+        warn ("  %-20s%s\n", builtins[i].name, builtins[i].desc);
     return 1;
 }
 

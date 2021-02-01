@@ -9,8 +9,7 @@
  *   node "picl[0-7]" "picl" "[0-7]"
  *
  * Ensure that the user running powermand (e.g. daemon) is in the i2c
- * group so that this program can read the local slot.  This will manifest
- * as a "connect error" if not configured.
+ * group so that this program can read the local slot.
  */
 
 #if HAVE_CONFIG_H
@@ -29,8 +28,21 @@
 
 #include "src/libbramble/bramble.h"
 
-static int my_slot;
+static int srcaddr;
 static int canfd;
+
+
+static int parse_slot (const char *s)
+{
+    char *endptr;
+    int slot;
+
+    errno = 0;
+    slot = strtol (s, &endptr, 10);
+    if (errno != 0 || *endptr != '\0' || slot < 0 || slot > 16)
+        return -1;
+    return slot;
+}
 
 static void cmd_help (void)
 {
@@ -39,11 +51,11 @@ static void cmd_help (void)
 
 static int write_power (int slot, int val)
 {
+    int dstaddr = slot | CANMSG_V2_ADDR_CONTROL;
     struct canobj *obj;
     uint8_t data[1] = { val };
 
-    if (!(obj = canobj_open_with (canfd, my_slot,
-                                  slot, CANMSG_V1_OBJ_POWER))
+    if (!(obj = canobj_openfd (canfd, srcaddr, dstaddr, CANMSG_V2_OBJ_POWER))
              || canobj_write (obj, data, sizeof (data)) < 0)
         printf ("%d: %s\n", slot, strerror (errno));
     else
@@ -53,12 +65,12 @@ static int write_power (int slot, int val)
 
 static int read_power (int slot)
 {
+    int dstaddr = slot | CANMSG_V2_ADDR_CONTROL;
     struct canobj *obj;
     uint8_t data[8];
     int n;
 
-    if (!(obj = canobj_open_with (canfd, my_slot,
-                                  slot, CANMSG_V1_OBJ_POWER))
+    if (!(obj = canobj_openfd (canfd, srcaddr, dstaddr, CANMSG_V2_OBJ_POWER))
         || (n = canobj_read (obj, data, sizeof (data))) < 0)
         printf ("%d: %s\n", slot, strerror (errno));
     else {
@@ -70,12 +82,13 @@ static int read_power (int slot)
 
 static int read_power_measure (int slot)
 {
+    int dstaddr = slot | CANMSG_V2_ADDR_CONTROL;
     struct canobj *obj;
     uint8_t data[8];
     int n;
 
-    if (!(obj = canobj_open_with (canfd, my_slot,
-                                  slot, CANMSG_V1_OBJ_POWER_MEASURE))
+    if (!(obj = canobj_openfd (canfd, srcaddr, dstaddr,
+                               CANMSG_V2_OBJ_POWER_MEASURE))
         || (n = canobj_read (obj, data, sizeof (data))) < 0)
         printf ("%d: %s\n", slot, strerror (errno));
     else {
@@ -89,8 +102,8 @@ static void cmd_on (int argc, char **argv)
 {
     int slot;
 
-    if (argc != 2 || (slot = slot_parse (argv[1])) < 0) {
-        fprintf (stderr, "Usage: on SLOT (0-15)\n");
+    if (argc != 2 || (slot = parse_slot (argv[1])) < 0) {
+        warn ("Usage: on SLOT (0-15)\n");
         return;
     }
     write_power (slot, 1);
@@ -100,8 +113,8 @@ static void cmd_off (int argc, char **argv)
 {
     int slot;
 
-    if (argc != 2 || (slot = slot_parse (argv[1])) < 0) {
-        fprintf (stderr, "Usage: on SLOT (0-15)\n");
+    if (argc != 2 || (slot = parse_slot (argv[1])) < 0) {
+        warn ("Usage: on SLOT (0-15)\n");
         return;
     }
     write_power (slot, 0);
@@ -111,8 +124,8 @@ static void cmd_status (int argc, char **argv)
 {
     int slot;
 
-    if (argc != 2 || (slot = slot_parse (argv[1])) < 0) {
-        fprintf (stderr, "Usage: on SLOT (0-15)\n");
+    if (argc != 2 || (slot = parse_slot (argv[1])) < 0) {
+        warn ("Usage: on SLOT (0-15)\n");
         return;
     }
     read_power (slot);
@@ -122,8 +135,8 @@ static void cmd_measure (int argc, char **argv)
 {
     int slot;
 
-    if (argc != 2 || (slot = slot_parse (argv[1])) < 0) {
-        fprintf (stderr, "Usage: measure SLOT (0-15)\n");
+    if (argc != 2 || (slot = parse_slot (argv[1])) < 0) {
+        warn ("Usage: measure SLOT (0-15)\n");
         return;
     }
     read_power_measure (slot);
@@ -163,19 +176,30 @@ int power_main (int argc, char *argv[])
     char buf[128] = { 0 };
 
     if (argc != 1 && argc != 2)
-        die ("Usage: bramble powerman-helper [MY-SLOT]\n");
+        die ("Usage: bramble powerman-helper [SRCADDR]\n");
 
     if (argc == 2) {
-        if ((my_slot = slot_parse (argv[1])) < 0)
-            die ("error parsing slot from command line");
+        char *endptr;
+
+        errno = 0;
+        srcaddr = strtol (argv[1], &endptr, 16);
+        if (errno != 0 || *endptr != '\0' || srcaddr < 0 || srcaddr > 0x3f)
+            die ("error parsing hexadecimal SRCADDR from command line\n");
     }
     else {
-        if ((my_slot = slot_get ()) < 0)
-            die ("error reading slot from i2c: %s\n", strerror (errno));
+        int slot;
+
+        if ((slot = slot_get ()) < 0) {
+            warn ("WARNING: i2c: %s, assuming CAN address 02\n",
+                  strerror (errno));
+            srcaddr = 0x02;
+        }
+        else
+            srcaddr = slot | CANMSG_V2_ADDR_COMPUTE;
     }
 
     if ((canfd = can_open (BRAMBLE_CAN_INTERFACE)) < 0)
-        die ("error opening CAN interface\n");
+        die ("%s: %s\n", BRAMBLE_CAN_INTERFACE, strerror (errno));
 
     do {
         /* Drop trailing white space, including newline, if any

@@ -47,18 +47,6 @@ double monotime_since (double t)
     return monotime () - t;
 }
 
-int slot_parse (const char *s)
-{
-    char *endptr;
-    int slot;
-
-    errno = 0;
-    slot = strtol (s, &endptr, 10);
-    if (errno != 0 || *endptr != '\0' || slot < 0 || slot > 15)
-        return -1;
-    return slot;
-}
-
 int slot_get (void)
 {
     int fd;
