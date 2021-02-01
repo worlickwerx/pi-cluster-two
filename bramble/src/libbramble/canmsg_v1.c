@@ -14,7 +14,7 @@ struct strtab {
     const char *name;
 };
 
-struct strtab typestr_v1[] = {
+static struct strtab typestr_v1[] = {
     { CANMSG_V1_TYPE_RO,    "RO" },
     { CANMSG_V1_TYPE_WO,    "WO" },
     { CANMSG_V1_TYPE_WNA,   "WNA" },
@@ -24,7 +24,7 @@ struct strtab typestr_v1[] = {
     { CANMSG_V1_TYPE_SIG,   "SIG" },
 };
 
-struct strtab objstr_v1[] = {
+static struct strtab objstr_v1[] = {
     { CANMSG_V1_OBJ_HEARTBEAT,      "HB" },
     { CANMSG_V1_OBJ_CONSOLESEND,    "CONSOLE-SEND" },
     { CANMSG_V1_OBJ_CONSOLERECV,    "CONSOLE-RECV" },
