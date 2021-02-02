@@ -6,6 +6,7 @@
 #include <stdarg.h>
 
 void die (const char *fmt, ...);
+void warn (const char *fmt, ...);
 
 double monotime (void);
 double monotime_since (double t);
