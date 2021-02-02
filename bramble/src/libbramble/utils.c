@@ -24,6 +24,16 @@ void die (const char *fmt, ...)
     exit (1);
 }
 
+void warn (const char *fmt, ...)
+{
+    va_list ap;
+
+    va_start (ap, fmt);
+    vfprintf (stderr, fmt, ap);
+    va_end (ap);
+}
+
+
 double monotime (void)
 {
     struct timespec ts;
@@ -35,18 +45,6 @@ double monotime (void)
 double monotime_since (double t)
 {
     return monotime () - t;
-}
-
-int slot_parse (const char *s)
-{
-    char *endptr;
-    int slot;
-
-    errno = 0;
-    slot = strtol (s, &endptr, 10);
-    if (errno != 0 || *endptr != '\0' || slot < 0 || slot > 15)
-        return -1;
-    return slot;
 }
 
 int slot_get (void)

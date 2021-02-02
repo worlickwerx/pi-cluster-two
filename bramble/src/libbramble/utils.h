@@ -6,11 +6,13 @@
 #include <stdarg.h>
 
 void die (const char *fmt, ...);
+void warn (const char *fmt, ...);
 
 double monotime (void);
 double monotime_since (double t);
 
-int slot_parse (const char *s);
+/* Read slot from i2c, if available (-1 on error).
+ */
 int slot_get (void);
 
 #endif /* !_BRAMBLE_UTILS */

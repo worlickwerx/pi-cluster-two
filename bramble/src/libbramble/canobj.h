@@ -3,8 +3,7 @@
 #ifndef _BRAMBLE_CANOBJ_H
 #define _BRAMBLE_CANOBJ_H
 
-struct canobj *canobj_open_with (int canfd, int sslot, int dslot, int object);
-struct canobj *canobj_open (int slot, int object);
+struct canobj *canobj_openfd (int canfd, int srcaddr, int dstaddr, int object);
 void canobj_close (struct canobj *obj);
 
 int canobj_write (struct canobj *obj, void *data, int len);

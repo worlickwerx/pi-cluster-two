@@ -11,7 +11,7 @@ SRCFILES	= main.c \
 		  trace.c \
 		  canbus.c \
 		  canservices.c \
-		  ../../bramble/src/libbramble/canmsg_v1.c \
+		  ../../bramble/src/libbramble/canmsg_v2.c \
 		  serial.c \
 		  i2c.c \
 		  rtos/heap_4.c \

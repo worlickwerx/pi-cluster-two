@@ -4,12 +4,12 @@
 # include "config.h"
 #endif
 #include <unistd.h>
-#include <string.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <errno.h>
 #include <ctype.h>
+#include <string.h>
 
 #include "src/libbramble/bramble.h"
 
@@ -17,7 +17,7 @@ int cansnoop_main (int argc, char *argv[])
 {
     int fd;
     struct canmsg_raw raw;
-    struct canmsg_v1 msg;
+    struct canmsg_v2 msg;
     double t_start = monotime ();
     char hex[32];
     char ascii[35];
@@ -29,8 +29,8 @@ int cansnoop_main (int argc, char *argv[])
         die ("%s: %s\n", BRAMBLE_CAN_INTERFACE, strerror (errno));
 
     while (can_recv (fd, &raw) == 0) {
-        if (canmsg_v1_decode (&raw, &msg) < 0) {
-            fprintf (stderr, "could not decode canmsg_v1 frame\n");
+        if (canmsg_v2_decode (&raw, &msg) < 0) {
+            warn ("could not decode canmsg_v2 frame\n");
             continue;
         }
         hex[0] = '\0';
@@ -43,12 +43,12 @@ int cansnoop_main (int argc, char *argv[])
             ascii[i] = isprint (msg.data[i]) ? msg.data[i] : '.';
         }
 
-        printf ("%07.3f %.3x->%.3x  %-4s %-12s %-23s %s%.*s%s\n",
+        printf ("%07.3f %.2x->%.2x  %-4s %-12s %-23s %s%.*s%s\n",
                 monotime_since (t_start),
                 msg.src,
                 msg.dst,
-                canmsg_v1_typestr (&msg),
-                canmsg_v1_objstr (&msg),
+                canmsg_v2_typestr (&msg),
+                canmsg_v2_objstr (&msg),
                 hex,
                 msg.dlen > 0 ? "`" : "",
                 msg.dlen, ascii,
