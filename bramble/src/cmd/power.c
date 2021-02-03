@@ -25,6 +25,7 @@
 #include <argz.h>
 #include <assert.h>
 #include <stdarg.h>
+#include <stdbool.h>
 
 #include "src/libbramble/bramble.h"
 
@@ -51,11 +52,11 @@ static void cmd_help (void)
 
 static int write_power (int slot, int val)
 {
-    int dstaddr = slot | CANMSG_V2_ADDR_CONTROL;
+    int dstaddr = slot | CANMSG_ADDR_CONTROL;
     struct canobj *obj;
     uint8_t data[1] = { val };
 
-    if (!(obj = canobj_openfd (canfd, srcaddr, dstaddr, CANMSG_V2_OBJ_POWER))
+    if (!(obj = canobj_openfd (canfd, srcaddr, dstaddr, CANMSG_OBJ_POWER))
              || canobj_write (obj, data, sizeof (data)) < 0)
         printf ("%d: %s\n", slot, strerror (errno));
     else
@@ -65,12 +66,12 @@ static int write_power (int slot, int val)
 
 static int read_power (int slot)
 {
-    int dstaddr = slot | CANMSG_V2_ADDR_CONTROL;
+    int dstaddr = slot | CANMSG_ADDR_CONTROL;
     struct canobj *obj;
     uint8_t data[8];
     int n;
 
-    if (!(obj = canobj_openfd (canfd, srcaddr, dstaddr, CANMSG_V2_OBJ_POWER))
+    if (!(obj = canobj_openfd (canfd, srcaddr, dstaddr, CANMSG_OBJ_POWER))
         || (n = canobj_read (obj, data, sizeof (data))) < 0)
         printf ("%d: %s\n", slot, strerror (errno));
     else {
@@ -82,13 +83,13 @@ static int read_power (int slot)
 
 static int read_power_measure (int slot)
 {
-    int dstaddr = slot | CANMSG_V2_ADDR_CONTROL;
+    int dstaddr = slot | CANMSG_ADDR_CONTROL;
     struct canobj *obj;
     uint8_t data[8];
     int n;
 
     if (!(obj = canobj_openfd (canfd, srcaddr, dstaddr,
-                               CANMSG_V2_OBJ_POWER_MEASURE))
+                               CANMSG_OBJ_POWER_MEASURE))
         || (n = canobj_read (obj, data, sizeof (data))) < 0)
         printf ("%d: %s\n", slot, strerror (errno));
     else {
@@ -195,7 +196,7 @@ int power_main (int argc, char *argv[])
             srcaddr = 0x02;
         }
         else
-            srcaddr = slot | CANMSG_V2_ADDR_COMPUTE;
+            srcaddr = slot | CANMSG_ADDR_COMPUTE;
     }
 
     if ((canfd = can_open (BRAMBLE_CAN_INTERFACE)) < 0)

@@ -16,8 +16,7 @@
 int cansnoop_main (int argc, char *argv[])
 {
     int fd;
-    struct canmsg_raw raw;
-    struct canmsg_v2 msg;
+    struct canmsg msg;
     double t_start = monotime ();
     char hex[32];
     char ascii[35];
@@ -28,11 +27,9 @@ int cansnoop_main (int argc, char *argv[])
     if ((fd = can_open (BRAMBLE_CAN_INTERFACE)) < 0)
         die ("%s: %s\n", BRAMBLE_CAN_INTERFACE, strerror (errno));
 
-    while (can_recv (fd, &raw) == 0) {
-        if (canmsg_v2_decode (&raw, &msg) < 0) {
-            warn ("could not decode canmsg_v2 frame\n");
-            continue;
-        }
+    for (;;) {
+        if (can_recv (fd, &msg) < 0)
+            die ("can rx: %s\n", strerror (errno));
         hex[0] = '\0';
         for (i = 0; i < msg.dlen; i++) {
             snprintf (&hex[i*3],
@@ -47,8 +44,8 @@ int cansnoop_main (int argc, char *argv[])
                 monotime_since (t_start),
                 msg.src,
                 msg.dst,
-                canmsg_v2_typestr (&msg),
-                canmsg_v2_objstr (&msg),
+                canmsg_typestr (&msg),
+                canmsg_objstr (&msg),
                 hex,
                 msg.dlen > 0 ? "`" : "",
                 msg.dlen, ascii,
