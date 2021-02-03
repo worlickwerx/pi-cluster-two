@@ -86,6 +86,16 @@ The basics of the [CAN protocol](doc/CAN.md) are documented.
 
 ### origin and license
 
+#### software
+
+SPDX-License-Identifier: GPL-3.0-or-later
+
+#### hardware
+
+SPDX-License-Identifier: CERN-OHL-1.2
+
+#### credits
+
 This project includes parts of:
 * FreeRTOS (MIT license)
 * libopencm3 (LGPLv3+)
@@ -97,11 +107,3 @@ supercomputer of the 1990's.
 
 The communcations design is patterned after
 [Blue Gene/L](https://en.wikipedia.org/wiki/IBM_Blue_Gene), circa 2005.
-
-#### software
-
-SPDX-License-Identifier: GPL-3.0-or-later
-
-#### hardware
-
-SPDX-License-Identifier: CERN-OHL-1.2
