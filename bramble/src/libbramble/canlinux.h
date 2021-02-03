@@ -8,9 +8,9 @@
 #define BRAMBLE_CAN_INTERFACE   "can0"
 
 int can_open (const char *name);
-int can_recv (int fd, struct canmsg_raw *raw);
-int can_send (int fd, struct canmsg_raw *raw);
-int can_recv_timeout (int fd, struct canmsg_raw *raw, double timeout);
+int can_recv (int fd, struct canmsg *msg);
+int can_send (int fd, struct canmsg *msg);
+int can_recv_timeout (int fd, struct canmsg *msg, double timeout);
 
 #endif /* !_BRAMBLE_CANLINUX_H */
 

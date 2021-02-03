@@ -69,13 +69,32 @@ finalized.
 Not yet designed, but availability of a PCIe lane on the CM4 makes this
 somewhat more interesting than before.
 
-### Firmware status Dec 2020
+### Software status Feb 2021
 
-STM32 firmware on the compute board version 1 is nominally functional.
-Still TODO: remote serial console, I2C slave, modify the CAN protocol
-for the new architecture.
+STM32 firmware on the compute board version 1 and 2 is fully functional.
+The firmware "personality" for the supervisor board is not yet complete
+(it will use the same firmware image).
+
+Tools on linux for snooping the CAN bus with message decoding, pinging
+over CAN, reading slot address over I2C, etc. are functional.
+
+Integration with [powerman](http://github.com/chaos/powerman) and
+[conman](http://github.com/dun/conman) for remote power and console
+management of a single crate is functional.
+
+The basics of the [CAN protocol](doc/CAN.md) are documented.
 
 ### origin and license
+
+#### software
+
+SPDX-License-Identifier: GPL-3.0-or-later
+
+#### hardware
+
+SPDX-License-Identifier: CERN-OHL-1.2
+
+#### credits
 
 This project includes parts of:
 * FreeRTOS (MIT license)
@@ -88,11 +107,3 @@ supercomputer of the 1990's.
 
 The communcations design is patterned after
 [Blue Gene/L](https://en.wikipedia.org/wiki/IBM_Blue_Gene), circa 2005.
-
-#### software
-
-SPDX-License-Identifier: GPL-3.0-or-later
-
-#### hardware
-
-SPDX-License-Identifier: CERN-OHL-1.2

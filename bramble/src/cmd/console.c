@@ -45,7 +45,7 @@ static int              dstaddr;
 
 static int              can_fd;
 
-static int              console_objid = CANMSG_V2_OBJ_CONSOLESEND;
+static int              console_objid = CANMSG_OBJ_CONSOLESEND;
 
 static ev_io            can_watcher;
 static ev_io            stdin_watcher;
@@ -84,19 +84,16 @@ static void timeout_cb (EV_P_ ev_timer *w, int revents)
 static void console_connect (void)
 {
     uint8_t data[] = { console_objid };
-    struct canmsg_v2 msg = { 0 };
-    struct canmsg_raw raw;
+    struct canmsg msg = { 0 };
 
     msg.pri = 1;
     msg.src = srcaddr;
     msg.dst = dstaddr;
-    msg.type = CANMSG_V2_TYPE_WO;
-    msg.object = CANMSG_V2_OBJ_CONSOLECONN;
+    msg.type = CANMSG_TYPE_WO;
+    msg.object = CANMSG_OBJ_CONSOLECONN;
     msg.dlen = sizeof (data);
     memcpy (msg.data, data, msg.dlen);
-    if (canmsg_v2_encode (&msg, &raw) < 0)
-        die ("error encoding message\n");
-    if (can_send (can_fd, &raw) < 0)
+    if (can_send (can_fd, &msg) < 0)
         die ("can send error: %s\n", strerror (errno));
 
     timeout_message = "CAN timeout waiting for connect ACK";
@@ -112,7 +109,7 @@ static void console_disconnect (void)
     uint8_t data[] = { console_objid };
 
     if (!(obj = canobj_openfd (can_fd, srcaddr, dstaddr,
-                               CANMSG_V2_OBJ_CONSOLEDISC))
+                               CANMSG_OBJ_CONSOLEDISC))
             || canobj_write (obj, data, sizeof (data)) < 0)
         die ("write CONSOLEDISC: %s", strerror (errno));
     canobj_close (obj);
@@ -120,19 +117,16 @@ static void console_disconnect (void)
 
 static void console_send_dat (void *data, int len)
 {
-    struct canmsg_v2 msg = { 0 };
-    struct canmsg_raw raw;
+    struct canmsg msg = { 0 };
 
     msg.pri = 1;
     msg.src = srcaddr;
     msg.dst = dstaddr;
-    msg.type = CANMSG_V2_TYPE_DAT;
-    msg.object = CANMSG_V2_OBJ_CONSOLERECV;
+    msg.type = CANMSG_TYPE_DAT;
+    msg.object = CANMSG_OBJ_CONSOLERECV;
     memcpy (msg.data, data, len);
     msg.dlen = len;
-    if (canmsg_v2_encode (&msg, &raw) < 0)
-        die ("error encoding message\n");
-    if (can_send (can_fd, &raw) < 0)
+    if (can_send (can_fd, &msg) < 0)
         die ("can send error: %s\n", strerror (errno));
 
     timeout_message = "CAN timeout waiting for data ACK";
@@ -142,21 +136,18 @@ static void console_send_dat (void *data, int len)
 
 static void console_send_ack (void)
 {
-    struct canmsg_v2 msg = { 0 };
-    struct canmsg_raw raw;
+    struct canmsg msg = { 0 };
 
     msg.pri = 1;
     msg.src = srcaddr;
     msg.dst = dstaddr;
-    msg.type = CANMSG_V2_TYPE_ACK;
+    msg.type = CANMSG_TYPE_ACK;
     msg.object = console_objid;
-    if (canmsg_v2_encode (&msg, &raw) < 0)
-        die ("error encoding message\n");
-    if (can_send (can_fd, &raw) < 0)
+    if (can_send (can_fd, &msg) < 0)
         die ("can send error: %s\n", strerror (errno));
 }
 
-static void handle_recv_dat (struct canmsg_v2 *msg)
+static void handle_recv_dat (struct canmsg *msg)
 {
     int n;
 
@@ -169,18 +160,18 @@ static void handle_recv_dat (struct canmsg_v2 *msg)
  * Assume problems iwth the connection if a NAK is received, and that
  * conman will respawn a helper which will reconnect.
  */
-static void handle_send_ack (struct canmsg_v2 *msg)
+static void handle_send_ack (struct canmsg *msg)
 {
-    if (msg->type == CANMSG_V2_TYPE_NAK)
+    if (msg->type == CANMSG_TYPE_NAK)
         die ("received NAK to sent console data\n");
 
     ev_timer_stop (loop, &timeout_watcher);
     ev_io_start (loop, &stdin_watcher);
 }
 
-static void handle_connect_ack (struct canmsg_v2 *msg)
+static void handle_connect_ack (struct canmsg *msg)
 {
-    if (msg->type == CANMSG_V2_TYPE_NAK)
+    if (msg->type == CANMSG_TYPE_NAK)
         die ("received NAK - connection is probably broken\n");
 
     ev_timer_stop (loop, &timeout_watcher);
@@ -189,31 +180,26 @@ static void handle_connect_ack (struct canmsg_v2 *msg)
 
 static void can_cb (EV_P_ ev_io *w, int revents)
 {
-    struct canmsg_v2 msg;
-    struct canmsg_raw raw;
+    struct canmsg msg;
     uint32_t netseq;
     uint32_t seq;
     double t;
 
-    if (can_recv (can_fd, &raw) < 0)
+    if (can_recv (can_fd, &msg) < 0)
         die ("CAN receive error: %s\n", strerror (errno));
-    if (canmsg_v2_decode (&raw, &msg) < 0) {
-        warn ("error decoding CAN message\n");
-        return; // non-fatal
-    }
     if (msg.dst == srcaddr && msg.src == dstaddr) {
         if (msg.object == console_objid
-                && msg.type == CANMSG_V2_TYPE_DAT) {
+                && msg.type == CANMSG_TYPE_DAT) {
             handle_recv_dat (&msg);
         }
-        else if (msg.object == CANMSG_V2_OBJ_CONSOLERECV
-                && (msg.type == CANMSG_V2_TYPE_ACK
-                 || msg.type == CANMSG_V2_TYPE_NAK)) {
+        else if (msg.object == CANMSG_OBJ_CONSOLERECV
+                && (msg.type == CANMSG_TYPE_ACK
+                 || msg.type == CANMSG_TYPE_NAK)) {
             handle_send_ack (&msg);
         }
-        else if (msg.object == CANMSG_V2_OBJ_CONSOLECONN
-                && (msg.type == CANMSG_V2_TYPE_ACK
-                 || msg.type == CANMSG_V2_TYPE_NAK)) {
+        else if (msg.object == CANMSG_OBJ_CONSOLECONN
+                && (msg.type == CANMSG_TYPE_ACK
+                 || msg.type == CANMSG_TYPE_NAK)) {
             handle_connect_ack (&msg);
         }
         /* Ignore other object ID's - a power response might pop up here
@@ -256,7 +242,7 @@ int console_main (int argc, char *argv[])
     slot = strtol (argv[1], &endptr, 10);
     if (errno != 0 || *endptr != '\0' || slot < 0 || slot > 16)
         die ("error parsing target slot number");
-    dstaddr = slot | CANMSG_V2_ADDR_CONTROL;
+    dstaddr = slot | CANMSG_ADDR_CONTROL;
 
     if (argc == 3) {
         errno = 0;
@@ -271,7 +257,7 @@ int console_main (int argc, char *argv[])
             srcaddr = 0x02;
         }
         else
-            srcaddr = slot | CANMSG_V2_ADDR_COMPUTE;
+            srcaddr = slot | CANMSG_ADDR_COMPUTE;
     }
 
     if ((can_fd = can_open (BRAMBLE_CAN_INTERFACE)) < 0)

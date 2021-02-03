@@ -32,23 +32,20 @@ static double timestamp[TIMESTAMP_SLOTS];
  */
 static void can_cb (EV_P_ ev_io *w, int revents)
 {
-    struct canmsg_v2 msg;
-    struct canmsg_raw raw;
+    struct canmsg msg;
     uint32_t netseq;
     uint32_t seq;
     double t;
 
-    if (can_recv (can_fd, &raw) < 0)
+    if (can_recv (can_fd, &msg) < 0)
         die ("can_recv: %s\n", strerror (errno));
-    if (canmsg_v2_decode (&raw, &msg) < 0)
-        die ("error decoding CAN message\n");
     if (msg.dst != srcaddr || msg.src != dstaddr)
         return;
-    if (msg.object != CANMSG_V2_OBJ_ECHO)
+    if (msg.object != CANMSG_OBJ_ECHO)
         return;
-    if (msg.type != CANMSG_V2_TYPE_NAK && msg.type != CANMSG_V2_TYPE_ACK)
+    if (msg.type != CANMSG_TYPE_NAK && msg.type != CANMSG_TYPE_ACK)
         return;
-    if (msg.type == CANMSG_V2_TYPE_NAK) {
+    if (msg.type == CANMSG_TYPE_NAK) {
         printf ("%d bytes from %.2x: NAK\n", msg.dlen, msg.src);
         return;
     }
@@ -75,24 +72,21 @@ static void can_cb (EV_P_ ev_io *w, int revents)
  */
 static void timer_cb (EV_P_ ev_timer *w, int revents)
 {
-    struct canmsg_v2 msg = { 0 };
-    struct canmsg_raw raw;
+    struct canmsg msg = { 0 };
     uint32_t netseq = htobe32 (sequence);
 
     msg.pri = 1;
     msg.src = srcaddr;
     msg.dst = dstaddr;
-    msg.type = CANMSG_V2_TYPE_WO;
-    msg.object = CANMSG_V2_OBJ_ECHO;
+    msg.type = CANMSG_TYPE_WO;
+    msg.object = CANMSG_OBJ_ECHO;
     msg.dlen = 7;
     memcpy (&msg.data[0], &netseq, 4);
     memset (&msg.data[4], 0xff, 3);
 
     timestamp[sequence++ % TIMESTAMP_SLOTS] = monotime ();
 
-    if (canmsg_v2_encode (&msg, &raw) < 0)
-        die ("error encoding CAN message\n");
-    if (can_send (can_fd, &raw) < 0)
+    if (can_send (can_fd, &msg) < 0)
         die ("error sending CAN message\n");
 }
 
@@ -122,7 +116,7 @@ int canping_main (int argc, char *argv[])
             srcaddr = 0x02;
         }
         else
-            srcaddr = slot | CANMSG_V2_ADDR_COMPUTE;
+            srcaddr = slot | CANMSG_ADDR_COMPUTE;
     }
 
     if ((can_fd = can_open (BRAMBLE_CAN_INTERFACE)) < 0)

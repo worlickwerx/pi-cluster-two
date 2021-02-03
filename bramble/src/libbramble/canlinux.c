@@ -40,36 +40,36 @@ int can_open (const char *name)
     return fd;
 }
 
-int can_recv (int fd, struct canmsg_raw *raw)
+int can_recv (int fd, struct canmsg *msg)
 {
     struct can_frame fr;
     int n;
+    uint32_t id;
 
-    n = read (fd, &fr, sizeof (fr));
-    if (n < 0)
+    if ((n = read (fd, &fr, sizeof (fr))) < 0)
         return -1;
-    if (n != sizeof (fr) || fr.can_dlc > 8) {
-        errno = EPROTO;
-        return -1;
-    }
-    raw->length = fr.can_dlc;
-    if ((fr.can_id & CAN_EFF_FLAG)) {
-        raw->msgid = fr.can_id & CAN_EFF_MASK;
-        raw->xmsgidf = true;
-    }
-    else {
-        raw->msgid = fr.can_id & CAN_SFF_MASK;
-        raw->xmsgidf = false;
-    }
-    if ((fr.can_id & CAN_RTR_FLAG))
-        raw->rtrf = true;
-    else
-        raw->rtrf = false;
-    memcpy (raw->data, fr.data, fr.can_dlc);
+    if (n != sizeof (fr) || fr.can_dlc > 8)
+        goto eproto;
+    if (!(fr.can_id & CAN_EFF_FLAG))
+        goto eproto;
+
+    id = fr.can_id & CAN_EFF_MASK;
+    msg->seq = (id>>0) & 0x1f;
+    msg->object = (id>>5) & 0xff;
+    msg->type = (id>>13) & 7;
+    msg->src = (id>>16) & 0x3f;
+    msg->dst = (id>>22) & 0x3f;
+    msg->pri = (id>>28) & 1;
+
+    memcpy (msg->data, fr.data, fr.can_dlc);
+    msg->dlen = fr.can_dlc;
     return 0;
+eproto:
+    errno = EPROTO;
+    return -1;
 }
 
-int can_recv_timeout (int fd, struct canmsg_raw *raw, double timeout)
+int can_recv_timeout (int fd, struct canmsg *msg, double timeout)
 {
     struct pollfd pfd = { .fd = fd, .events = POLLIN };
     int rc;
@@ -80,25 +80,33 @@ int can_recv_timeout (int fd, struct canmsg_raw *raw, double timeout)
         errno = ETIMEDOUT;
         return -1;
     }
-    return can_recv (fd, raw);
+    return can_recv (fd, msg);
 }
 
-int can_send (int fd, struct canmsg_raw *raw)
+int can_send (int fd, struct canmsg *msg)
 {
     struct can_frame fr;
     int n;
 
-    fr.can_dlc = raw->length;
-    fr.can_id = raw->msgid;
-    if (raw->xmsgidf)
-        fr.can_id |= CAN_EFF_FLAG;
-    if (raw->rtrf)
-        fr.can_id |= CAN_RTR_FLAG;
-    memcpy (fr.data, raw->data, raw->length);
-    n = write (fd, &fr, sizeof (fr));
-    if (n < 0)
+    fr.can_id = msg->seq;
+    fr.can_id |= msg->object<<5;
+    fr.can_id |= msg->type<<13;
+    fr.can_id |= msg->src<<16;
+    fr.can_id |= msg->dst<<22;
+    fr.can_id |= msg->pri<<28;
+    fr.can_id |= CAN_EFF_FLAG;
+
+    fr.can_dlc = msg->dlen;
+    memcpy (fr.data, msg->data, msg->dlen);
+
+    if ((n = write (fd, &fr, sizeof (fr))) < 0)
         return -1;
+    if (n != sizeof (fr))
+        goto eproto; // should not happen
     return 0;
+eproto:
+    errno = EPROTO;
+    return -1;
 }
 
 /*

@@ -13,11 +13,55 @@
 
 #include "src/libbramble/bramble.h"
 
+struct strtab {
+    int id;
+    const char *name;
+};
+
+static struct strtab typestr[] = {
+    { CANMSG_TYPE_RO,    "RO" },
+    { CANMSG_TYPE_WO,    "WO" },
+    { CANMSG_TYPE_WNA,   "WNA" },
+    { CANMSG_TYPE_DAT,   "D" },
+    { CANMSG_TYPE_ACK,   "ACK" },
+    { CANMSG_TYPE_NAK,   "NAK" },
+    { CANMSG_TYPE_SIG,   "SIG" },
+};
+
+static struct strtab objstr[] = {
+    { CANMSG_OBJ_ECHO,           "ECHO" },
+    { CANMSG_OBJ_POWER,          "POWER" },
+    { CANMSG_OBJ_POWER_MEASURE,  "POWER-MEASURE" },
+    { CANMSG_OBJ_CONSOLECONN,    "CONSOLE-CONN" },
+    { CANMSG_OBJ_CONSOLESEND,    "CONSOLE-SEND" },
+    { CANMSG_OBJ_CONSOLERECV,    "CONSOLE-RECV" },
+    { CANMSG_OBJ_CONSOLEDISC,    "CONSOLE-DISC" },
+};
+
+static const char *strtab_lookup (int id, const struct strtab *tab, size_t size)
+{
+    uint8_t i;
+    for (i = 0; i < size / sizeof (struct strtab); i++) {
+        if (tab[i].id == id)
+            return tab[i].name;
+    }
+    return "?";
+}
+
+static const char *canmsg_objstr (const struct canmsg *msg)
+{
+    return strtab_lookup (msg->object, objstr, sizeof (objstr));
+}
+
+static const char *canmsg_typestr (const struct canmsg *msg)
+{
+    return strtab_lookup (msg->type, typestr, sizeof (typestr));
+}
+
 int cansnoop_main (int argc, char *argv[])
 {
     int fd;
-    struct canmsg_raw raw;
-    struct canmsg_v2 msg;
+    struct canmsg msg;
     double t_start = monotime ();
     char hex[32];
     char ascii[35];
@@ -28,11 +72,9 @@ int cansnoop_main (int argc, char *argv[])
     if ((fd = can_open (BRAMBLE_CAN_INTERFACE)) < 0)
         die ("%s: %s\n", BRAMBLE_CAN_INTERFACE, strerror (errno));
 
-    while (can_recv (fd, &raw) == 0) {
-        if (canmsg_v2_decode (&raw, &msg) < 0) {
-            warn ("could not decode canmsg_v2 frame\n");
-            continue;
-        }
+    for (;;) {
+        if (can_recv (fd, &msg) < 0)
+            die ("can rx: %s\n", strerror (errno));
         hex[0] = '\0';
         for (i = 0; i < msg.dlen; i++) {
             snprintf (&hex[i*3],
@@ -47,8 +89,8 @@ int cansnoop_main (int argc, char *argv[])
                 monotime_since (t_start),
                 msg.src,
                 msg.dst,
-                canmsg_v2_typestr (&msg),
-                canmsg_v2_objstr (&msg),
+                canmsg_typestr (&msg),
+                canmsg_objstr (&msg),
                 hex,
                 msg.dlen > 0 ? "`" : "",
                 msg.dlen, ascii,
