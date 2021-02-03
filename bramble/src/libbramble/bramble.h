@@ -4,7 +4,6 @@
 #define _BRAMBLE_H
 
 #include "canmsg.h"
-#include "canmsg_v2.h"
 #include "canlinux.h"
 #include "canobj.h"
 
