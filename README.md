@@ -82,6 +82,8 @@ Integration with [powerman](http://github.com/chaos/powerman) and
 [conman](http://github.com/dun/conman) for remote power and console
 management of a single crate is functional.
 
+The basics of the [CAN protocol](doc/CAN.md) are documented.
+
 ### origin and license
 
 This project includes parts of:
