@@ -15,16 +15,16 @@ void canbus_init (void);
  */
 void canbus_filter_set (uint32_t nr, uint32_t id, uint32_t mask);
 
-/* Send a raw CAN message.
+/* Send a CAN message.
  * Return 0 on success or -1 on failure (no xmit mailboxes available).
  */
-int canbus_send (struct canmsg_raw *raw);
+int canbus_send (const struct canmsg *msg);
 
-/* Receive a raw can message, waiting up to 'timeout' milliseconds for
+/* Receive a CAN message, waiting up to 'timeout' milliseconds for
  * one to arrive.  timeout=0 returns immediately, timeout=-1 waits forever.
  * Return 0 on success or -1 on failure (no message available after timeout).
  */
-int canbus_recv (struct canmsg_raw *raw, int timeout);
+int canbus_recv (struct canmsg *msg, int timeout);
 
 #endif /* !_FIRMWARE_CANBUS_H */
 

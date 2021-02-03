@@ -9,7 +9,6 @@
 #include "matrix.h"
 #include "trace.h"
 #include "address.h"
-#include "canmsg_v2.h"
 #include "power.h"
 #include "serial.h"
 
@@ -28,13 +27,13 @@ static struct console console;
 uint8_t srcaddr;
 
 
-static void v2_trace (const struct canmsg_v2 *msg)
+static void trace_msg (const struct canmsg *msg)
 {
-    trace_printf ("%x->%x %s %s [%d bytes]\n",
+    trace_printf ("%x->%x %x %x [%d bytes]\n",
                   msg->src,
                   msg->dst,
-                  canmsg_v2_typestr (msg),
-                  canmsg_v2_objstr (msg),
+                  msg->type,
+                  msg->object,
                   msg->dlen);
 }
 
@@ -46,54 +45,50 @@ static uint16_t htons (uint16_t val)
     return (val << 8) | (val >> 8);
 }
 
-static int send_v2 (const struct canmsg_v2 *msg)
+static int send_msg (const struct canmsg *msg)
 {
-    struct canmsg_raw raw;
-
-    if (canmsg_v2_encode (msg, &raw) < 0)
-        return -1;
-    v2_trace (msg);
-    return canbus_send (&raw);
+    trace_msg (msg);
+    return canbus_send (msg);
 }
 
-static void send_v2_nak (const struct canmsg_v2 *request)
+static void send_nak (const struct canmsg *request)
 {
-    struct canmsg_v2 msg = *request;
+    struct canmsg msg = *request;
 
-    if (request->type == CANMSG_V2_TYPE_WNA)
+    if (request->type == CANMSG_TYPE_WNA)
         return;
 
-    msg.type = CANMSG_V2_TYPE_NAK;
+    msg.type = CANMSG_TYPE_NAK;
     msg.dst = msg.src;
     msg.src = srcaddr;
     msg.dlen = 0;
 
-    if (send_v2 (&msg) < 0)
+    if (send_msg (&msg) < 0)
         trace_printf ("can-rx: error sending NAK response\n");
 }
 
-static void canservices_v2_echo (const struct canmsg_v2 *request)
+static void canservices_echo (const struct canmsg *request)
 {
-    struct canmsg_v2 msg = *request;
+    struct canmsg msg = *request;
 
-    if (request->type != CANMSG_V2_TYPE_WO) {
-        send_v2_nak (request);
+    if (request->type != CANMSG_TYPE_WO) {
+        send_nak (request);
         return;
     }
 
-    msg.type = CANMSG_V2_TYPE_ACK;
+    msg.type = CANMSG_TYPE_ACK;
     msg.dst = msg.src;
     msg.src = srcaddr;
 
-    if (send_v2 (&msg) < 0)
+    if (send_msg (&msg) < 0)
         trace_printf ("can-rx: error sending echo response\n");
 }
 
-static void canservices_v2_power (const struct canmsg_v2 *request)
+static void canservices_power (const struct canmsg *request)
 {
-    struct canmsg_v2 msg = *request;
+    struct canmsg msg = *request;
 
-    if (request->type == CANMSG_V2_TYPE_WO) {
+    if (request->type == CANMSG_TYPE_WO) {
         if (request->dlen != 1)
             goto error;
         if (request->data[0] == 0)
@@ -102,13 +97,13 @@ static void canservices_v2_power (const struct canmsg_v2 *request)
             power_set_state (true);
         else
             goto error;
-        msg.type = CANMSG_V2_TYPE_ACK;
+        msg.type = CANMSG_TYPE_ACK;
         msg.dst = msg.src;
         msg.src = srcaddr;
         msg.dlen = 0;
     }
-    else if (request->type == CANMSG_V2_TYPE_RO) {
-        msg.type = CANMSG_V2_TYPE_ACK;
+    else if (request->type == CANMSG_TYPE_RO) {
+        msg.type = CANMSG_TYPE_ACK;
         msg.dst = msg.src;
         msg.src = srcaddr;
         msg.dlen = 1;
@@ -117,24 +112,24 @@ static void canservices_v2_power (const struct canmsg_v2 *request)
     else
         goto error;
 
-    if (send_v2 (&msg) < 0)
+    if (send_msg (&msg) < 0)
         trace_printf ("can-rx: error sending power response\n");
     return;
 error:
-    send_v2_nak (request);
+    send_nak (request);
 }
 
-static void canservices_v2_power_measure (const struct canmsg_v2 *request)
+static void canservices_power_measure (const struct canmsg *request)
 {
-    struct canmsg_v2 msg = *request;
+    struct canmsg msg = *request;
     uint16_t ma;
 
-    if (request->type != CANMSG_V2_TYPE_RO)
+    if (request->type != CANMSG_TYPE_RO)
         goto error;
     if (request->dlen != 0)
         goto error;
 
-    msg.type = CANMSG_V2_TYPE_ACK;
+    msg.type = CANMSG_TYPE_ACK;
     msg.dst = msg.src;
     msg.src = srcaddr;
 
@@ -142,18 +137,18 @@ static void canservices_v2_power_measure (const struct canmsg_v2 *request)
     msg.dlen = 2;
     *(uint16_t *)msg.data = htons (ma);
 
-    if (send_v2 (&msg) < 0)
+    if (send_msg (&msg) < 0)
         trace_printf ("can-rx: error sending power measure response\n");
     return;
 error:
-    send_v2_nak (request);
+    send_nak (request);
 }
 
-static void canservices_v2_consoleconn (const struct canmsg_v2 *request)
+static void canservices_consoleconn (const struct canmsg *request)
 {
-    struct canmsg_v2 msg = *request;
+    struct canmsg msg = *request;
 
-    if (request->type != CANMSG_V2_TYPE_WO)
+    if (request->type != CANMSG_TYPE_WO)
         goto error;
     if (request->dlen != 1)
         goto error;
@@ -165,22 +160,22 @@ static void canservices_v2_consoleconn (const struct canmsg_v2 *request)
     console.connected = true;
     vTaskResume (console.task);
 
-    msg.type = CANMSG_V2_TYPE_ACK;
+    msg.type = CANMSG_TYPE_ACK;
     msg.dst = msg.src;
     msg.src = srcaddr;
     msg.dlen = 0;
-    if (send_v2 (&msg) < 0)
+    if (send_msg (&msg) < 0)
         trace_printf ("can-rx: error sending console connect response\n");
     return;
 error:
-    send_v2_nak (request);
+    send_nak (request);
 }
 
-static void canservices_v2_consoledisc (const struct canmsg_v2 *request)
+static void canservices_consoledisc (const struct canmsg *request)
 {
-    struct canmsg_v2 msg = *request;
+    struct canmsg msg = *request;
 
-    if (request->type != CANMSG_V2_TYPE_WO)
+    if (request->type != CANMSG_TYPE_WO)
         goto error;
     if (request->dlen != 1)
         goto error;
@@ -193,24 +188,24 @@ static void canservices_v2_consoledisc (const struct canmsg_v2 *request)
     console.connected = false;
     vTaskSuspend (console.task);
 
-    msg.type = CANMSG_V2_TYPE_ACK;
+    msg.type = CANMSG_TYPE_ACK;
     msg.dst = msg.src;
     msg.src = srcaddr;
     msg.dlen = 0;
 
-    if (send_v2 (&msg) < 0)
+    if (send_msg (&msg) < 0)
         trace_printf ("can-rx: error sending console disconnect response\n");
     return;
 error:
-    send_v2_nak (request);
+    send_nak (request);
 }
 
 /* can -> serial */
-static void canservices_v2_consolerecv (const struct canmsg_v2 *request)
+static void canservices_consolerecv (const struct canmsg *request)
 {
-    struct canmsg_v2 msg = *request;
+    struct canmsg msg = *request;
 
-    if (request->type != CANMSG_V2_TYPE_DAT)
+    if (request->type != CANMSG_TYPE_DAT)
         goto error;
     if (!console.connected)
         goto error;
@@ -218,26 +213,26 @@ static void canservices_v2_consolerecv (const struct canmsg_v2 *request)
     if (serial_send (request->data, request->dlen, 0) < request->dlen)
         goto error;
 
-    msg.type = CANMSG_V2_TYPE_ACK;
+    msg.type = CANMSG_TYPE_ACK;
     msg.dst = msg.src;
     msg.src = srcaddr;
     msg.dlen = 0;
 
-    if (send_v2 (&msg) < 0)
+    if (send_msg (&msg) < 0)
         trace_printf ("can-rx: error sending console data response\n");
     return;
 error:
-    send_v2_nak (request);
+    send_nak (request);
 }
 
 /* serial -> can */
 static void canservices_console_task (void *arg __attribute((unused)))
 {
-    struct canmsg_v2 msg;
+    struct canmsg msg;
 
     memset (&msg, 0, sizeof (msg));
 
-    msg.type = CANMSG_V2_TYPE_DAT;
+    msg.type = CANMSG_TYPE_DAT;
     msg.src = srcaddr;
     msg.pri = 1;
 
@@ -248,7 +243,7 @@ static void canservices_console_task (void *arg __attribute((unused)))
             msg.dst = console.dstaddr;
             msg.object = console.object;
 
-            if (send_v2 (&msg) < 0)
+            if (send_msg (&msg) < 0)
                 trace_printf ("can-console: error sending console data\n");
             else
                 vTaskSuspend (console.task); // suspend task, pending ACK
@@ -258,53 +253,47 @@ static void canservices_console_task (void *arg __attribute((unused)))
 
 static void canservices_rx_task (void *arg __attribute((unused)))
 {
-    struct canmsg_raw raw;
-    struct canmsg_v2 msg;
+    struct canmsg msg;
 
     for (;;) {
-        if (canbus_recv (&raw, -1) == 0) {
-            if (canmsg_v2_decode (&raw, &msg) < 0) {
-                trace_printf ("can-rx: error decoding received message\n");
-                continue;
-            }
-
-            v2_trace (&msg);
+        if (canbus_recv (&msg, -1) == 0) {
+            trace_msg (&msg);
 
             switch (msg.type) {
-                case CANMSG_V2_TYPE_WO:
-                case CANMSG_V2_TYPE_RO:
-                case CANMSG_V2_TYPE_WNA:
-                case CANMSG_V2_TYPE_DAT:
+                case CANMSG_TYPE_WO:
+                case CANMSG_TYPE_RO:
+                case CANMSG_TYPE_WNA:
+                case CANMSG_TYPE_DAT:
                     switch (msg.object) {
-                        case CANMSG_V2_OBJ_ECHO:
-                            canservices_v2_echo (&msg);
+                        case CANMSG_OBJ_ECHO:
+                            canservices_echo (&msg);
                             break;
-                        case CANMSG_V2_OBJ_POWER:
-                            canservices_v2_power (&msg);
+                        case CANMSG_OBJ_POWER:
+                            canservices_power (&msg);
                             break;
-                        case CANMSG_V2_OBJ_POWER_MEASURE:
-                            canservices_v2_power_measure (&msg);
+                        case CANMSG_OBJ_POWER_MEASURE:
+                            canservices_power_measure (&msg);
                             break;
-                        case CANMSG_V2_OBJ_CONSOLECONN:
-                            canservices_v2_consoleconn (&msg);
+                        case CANMSG_OBJ_CONSOLECONN:
+                            canservices_consoleconn (&msg);
                             break;
-                        case CANMSG_V2_OBJ_CONSOLEDISC:
-                            canservices_v2_consoledisc (&msg);
+                        case CANMSG_OBJ_CONSOLEDISC:
+                            canservices_consoledisc (&msg);
                             break;
-                        case CANMSG_V2_OBJ_CONSOLERECV:
-                            canservices_v2_consolerecv (&msg);
+                        case CANMSG_OBJ_CONSOLERECV:
+                            canservices_consolerecv (&msg);
                             break;
                         default: // unknown object id
-                            send_v2_nak (&msg);
+                            send_nak (&msg);
                             break;
                     }
                     break;
-                case CANMSG_V2_TYPE_ACK:
+                case CANMSG_TYPE_ACK:
                     if (console.connected && msg.object == console.object)
                         vTaskResume (console.task);
                     break;
-                case CANMSG_V2_TYPE_NAK:
-                case CANMSG_V2_TYPE_SIG:
+                case CANMSG_TYPE_NAK:
+                case CANMSG_TYPE_SIG:
                     break;
             }
         }
@@ -313,9 +302,9 @@ static void canservices_rx_task (void *arg __attribute((unused)))
 
 void canservices_init (void)
 {
-    srcaddr = address_get () | CANMSG_V2_ADDR_CONTROL;
+    srcaddr = address_get () | CANMSG_ADDR_CONTROL;
 
-    canbus_filter_set (0, (srcaddr << CANMSG_V2_DST_SHIFT), CANMSG_V2_DST_MASK);
+    canbus_filter_set (0, (srcaddr << CANMSG_DST_SHIFT), CANMSG_DST_MASK);
 
     xTaskCreate (canservices_rx_task,
                  "canrx",

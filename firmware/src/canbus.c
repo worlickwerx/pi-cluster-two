@@ -28,24 +28,31 @@ static const uint32_t baudrate = 1000000;
 #define CAN_RX_QUEUE_DEPTH  16
 static QueueHandle_t canrxq;
 
-int canbus_send (struct canmsg_raw *raw)
+int canbus_send (const struct canmsg *msg)
 {
-    if (can_transmit (CAN1,
-                      raw->msgid,
-                      raw->xmsgidf,
-                      raw->rtrf,
-                      raw->length,
-                      (uint8_t *)raw->data) < 0)
+    uint32_t id;
+    bool rtrf = false;
+    bool xmsgidf = true;
+
+    id = msg->seq;
+    id |= msg->object<<5;
+    id |= msg->type<<13;
+    id |= msg->src<<16;
+    id |= msg->dst<<22;
+    id |= msg->pri<<28;
+
+    if (can_transmit (CAN1, id, xmsgidf, rtrf, msg->dlen,
+                      (uint8_t *)msg->data) < 0)
         return -1;
     matrix_pulse_green (); // blink the activity LED
     return 0;
 }
 
-int canbus_recv (struct canmsg_raw *raw, int timeout)
+int canbus_recv (struct canmsg *msg, int timeout)
 {
     int ticks = timeout >= 0 ? pdMS_TO_TICKS (timeout) : portMAX_DELAY;
 
-    if (xQueueReceive (canrxq, raw, ticks) == pdPASS) {
+    if (xQueueReceive (canrxq, msg, ticks) == pdPASS) {
         matrix_pulse_green (); // blink the activity LED
         return 0;
     }
@@ -62,21 +69,33 @@ void canbus_filter_set (uint32_t nr, uint32_t id, uint32_t mask)
 void usb_lp_can_rx0_isr (void)
 {
     if ((CAN_RF0R (CAN1) & CAN_RF0R_FMP0_MASK)) {
-        struct canmsg_raw msg;
+        struct canmsg msg;
+        uint32_t id;
         uint8_t fmi;
+        bool rtrf;
+        bool xmsgidf;
 
         can_receive (CAN1,
                      0,
                      true,
-                     &msg.msgid,
-                     &msg.xmsgidf,
-                     &msg.rtrf,
+                     &id,
+                     &xmsgidf,
+                     &rtrf,
                      &fmi,
-                     &msg.length,
+                     &msg.dlen,
                      msg.data,
                      NULL);
 
-        xQueueSendToBackFromISR (canrxq, &msg, NULL);
+        if (xmsgidf) {
+            msg.seq = (id>>0) & 0x1f;
+            msg.object = (id>>5) & 0xff;
+            msg.type = (id>>13) & 7;
+            msg.src = (id>>16) & 0x3f;
+            msg.dst = (id>>22) & 0x3f;
+            msg.pri = (id>>28) & 1;
+
+            xQueueSendToBackFromISR (canrxq, &msg, NULL);
+        }
     }
 }
 
@@ -150,7 +169,7 @@ void canbus_init (void)
               false,            // disable loopback mode
               false);           // disable silent mode
 
-    canrxq = xQueueCreate (CAN_RX_QUEUE_DEPTH, sizeof (struct canmsg_raw));
+    canrxq = xQueueCreate (CAN_RX_QUEUE_DEPTH, sizeof (struct canmsg));
 
     nvic_set_priority (NVIC_USB_LP_CAN_RX0_IRQ, 12<<4);
     nvic_enable_irq (NVIC_USB_LP_CAN_RX0_IRQ);
