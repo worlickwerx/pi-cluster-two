@@ -35,6 +35,7 @@ int canbus_send (const struct canmsg *msg)
     bool xmsgidf = true;
 
     id = msg->seq;
+    id |= msg->eot<<4;
     id |= msg->object<<5;
     id |= msg->type<<13;
     id |= msg->src<<16;
@@ -87,7 +88,8 @@ void usb_lp_can_rx0_isr (void)
                      NULL);
 
         if (xmsgidf) {
-            msg.seq = id & 0x1f;
+            msg.seq = id & 0xf;
+            msg.eot = (id>>4) & 1;
             msg.object = (id>>5) & 0xff;
             msg.type = (id>>13) & 7;
             msg.src = (id>>16) & 0x3f;

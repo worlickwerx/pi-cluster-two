@@ -91,7 +91,8 @@ int can_recv (int fd, struct canmsg *msg)
         goto eproto;
 
     id = fr.can_id & CAN_EFF_MASK;
-    msg->seq = id & 0x1f;
+    msg->seq = id & 0xf;
+    msg->eot = (id>>4) & 1;
     msg->object = (id>>5) & 0xff;
     msg->type = (id>>13) & 7;
     msg->src = (id>>16) & 0x3f;
@@ -126,6 +127,7 @@ int can_send (int fd, struct canmsg *msg)
     int n;
 
     fr.can_id = msg->seq;
+    fr.can_id |= msg->eot<<4;
     fr.can_id |= msg->object<<5;
     fr.can_id |= msg->type<<13;
     fr.can_id |= msg->src<<16;
