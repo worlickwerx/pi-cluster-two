@@ -66,6 +66,7 @@ int cansnoop_main (int argc, char *argv[])
     char hex[32];
     char ascii[35];
     int i;
+    char seq[8];
 
     if (argc != 1)
         die ("Usage: bramble cansnoop\n");
@@ -84,13 +85,22 @@ int cansnoop_main (int argc, char *argv[])
                       i == msg.dlen - 1 ? "" : " ");
             ascii[i] = isprint (msg.data[i]) ? msg.data[i] : '.';
         }
+        seq[0] = '\0';
+        if (msg.type == CANMSG_TYPE_DAT) {
+            int n;
+            snprintf (seq, sizeof (seq) - 1, "[%d]", msg.seq);
+            n = strlen (seq);
+            if (msg.eot)
+                snprintf (seq + n, sizeof (seq) - n, "*");
+        }
 
-        printf ("%07.3f %.2x->%.2x  %s%-4s %-12s %-23s %s%.*s%s\n",
+        printf ("%07.3f %.2x->%.2x  %s%-4s %-5s %-12s %-23s %s%.*s%s\n",
                 monotime_since (t_start),
                 msg.src,
                 msg.dst,
                 msg.pri == 0 ? "+" : " ",
                 canmsg_typestr (&msg),
+                seq,
                 canmsg_objstr (&msg),
                 hex,
                 msg.dlen > 0 ? "`" : "",
