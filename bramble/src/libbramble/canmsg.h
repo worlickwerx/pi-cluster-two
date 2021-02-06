@@ -37,7 +37,7 @@ enum {
     CANMSG_ADDR_BROADCAST    = 0x0f,
     CANMSG_ADDR_CONTROL      = 0x10,
     CANMSG_ADDR_COMPUTE      = 0x20,
-    CANMSG_ADDR_COMMS        = 0x20,
+    CANMSG_ADDR_COMMS        = 0x30,
 };
 
 enum {
