@@ -87,7 +87,7 @@ void usb_lp_can_rx0_isr (void)
                      NULL);
 
         if (xmsgidf) {
-            msg.seq = (id>>0) & 0x1f;
+            msg.seq = id & 0x1f;
             msg.object = (id>>5) & 0xff;
             msg.type = (id>>13) & 7;
             msg.src = (id>>16) & 0x3f;
