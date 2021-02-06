@@ -199,7 +199,7 @@ int power_main (int argc, char *argv[])
             srcaddr = slot | CANMSG_ADDR_COMPUTE;
     }
 
-    if ((canfd = can_open (BRAMBLE_CAN_INTERFACE)) < 0)
+    if ((canfd = can_open (BRAMBLE_CAN_INTERFACE, srcaddr)) < 0)
         die ("%s: %s\n", BRAMBLE_CAN_INTERFACE, strerror (errno));
 
     do {

@@ -69,7 +69,7 @@ int cansnoop_main (int argc, char *argv[])
 
     if (argc != 1)
         die ("Usage: bramble cansnoop\n");
-    if ((fd = can_open (BRAMBLE_CAN_INTERFACE)) < 0)
+    if ((fd = can_open_with (BRAMBLE_CAN_INTERFACE, NULL, 0)) < 0)
         die ("%s: %s\n", BRAMBLE_CAN_INTERFACE, strerror (errno));
 
     for (;;) {

@@ -11,6 +11,7 @@
 #include <linux/sockios.h>
 #include <string.h>
 #include <linux/can.h>
+#include <linux/can/raw.h>
 #include <stdio.h>
 #include <errno.h>
 #include <stdint.h>
@@ -18,26 +19,62 @@
 
 #include "canlinux.h"
 
-int can_open (const char *name)
+int can_open_with (const char *name, const struct can_filter *rfilter, int len)
 {
     struct sockaddr_can addr;
     struct ifreq ifr;
     int fd;
+    int saved_errno;
 
     if ((fd = socket (PF_CAN, SOCK_RAW, CAN_RAW)) < 0)
         return -1;
     strcpy (ifr.ifr_name, name);
-    if (ioctl (fd, SIOCGIFINDEX, &ifr) < 0) {
-        close (fd);
-        return -1;
-    }
+    if (ioctl (fd, SIOCGIFINDEX, &ifr) < 0)
+        goto error;
     addr.can_family = AF_CAN;
     addr.can_ifindex = ifr.ifr_ifindex;
-    if (bind (fd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
-        close (fd);
-        return -1;
+    if (bind (fd, (struct sockaddr *)&addr, sizeof(addr)) < 0)
+        goto error;
+    if (rfilter && len > 0) {
+        if (setsockopt (fd,
+                        SOL_CAN_RAW,
+                        CAN_RAW_FILTER,
+                        rfilter,
+                        sizeof (*rfilter) * len) < 0)
+            goto error;
     }
     return fd;
+error:
+    saved_errno = errno;
+    close (fd);
+    errno = saved_errno;
+    return -1;
+}
+
+static bool valid_linux_address (int addr)
+{
+    if (addr == CANMSG_ADDR_MANAGEMENT)
+        return true;
+    if (addr >= CANMSG_ADDR_COMPUTE && addr <= (CANMSG_ADDR_COMPUTE | 0x0f))
+        return true;
+    errno = EINVAL;
+    return false;
+}
+
+int can_open (const char *name, int myaddr)
+{
+    if (!valid_linux_address (myaddr))
+        return -1;
+
+    struct can_filter rfilter[] = {
+        {   .can_id = myaddr << CANMSG_DST_SHIFT,
+            .can_mask = CANMSG_DST_MASK,
+        },
+        {   .can_id = CANMSG_ADDR_BROADCAST << CANMSG_DST_SHIFT,
+            .can_mask = CANMSG_DST_MASK,
+        },
+    };
+    return can_open_with (name, rfilter, 2);
 }
 
 int can_recv (int fd, struct canmsg *msg)
