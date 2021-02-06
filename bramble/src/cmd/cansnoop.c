@@ -85,10 +85,11 @@ int cansnoop_main (int argc, char *argv[])
             ascii[i] = isprint (msg.data[i]) ? msg.data[i] : '.';
         }
 
-        printf ("%07.3f %.2x->%.2x  %-4s %-12s %-23s %s%.*s%s\n",
+        printf ("%07.3f %.2x->%.2x  %s%-4s %-12s %-23s %s%.*s%s\n",
                 monotime_since (t_start),
                 msg.src,
                 msg.dst,
+                msg.pri == 0 ? "+" : " ",
                 canmsg_typestr (&msg),
                 canmsg_objstr (&msg),
                 hex,
