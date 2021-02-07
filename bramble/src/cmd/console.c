@@ -16,9 +16,9 @@
  * It should be safe to configure conman for a full crate even if some
  * slots are unpopulated.
  *
- * Note: this program registers a hardwired object ID for received data.
- * This is safe despite there being multiple helpers running on the same
- * node because we filter (in software) messages not sent by the target slot.
+ * N.B. although currently all slots stream data to the same object,
+ * multiple instances of conman-helper can co-exist on the same node without
+ * confusing streams because we filter messages on the sending address.
  */
 
 #if HAVE_CONFIG_H
@@ -260,7 +260,20 @@ int console_main (int argc, char *argv[])
             srcaddr = slot | CANMSG_ADDR_COMPUTE;
     }
 
-    if ((can_fd = can_open (BRAMBLE_CAN_INTERFACE, srcaddr)) < 0)
+    /* Receive only broadcast messages, and messages directed to this node
+     * from the target slot's control processor.
+     */
+    struct can_filter rfilter[] = {
+        {   .can_id = (dstaddr << CANMSG_SRC_SHIFT)
+                    | (srcaddr << CANMSG_DST_SHIFT),
+            .can_mask = CANMSG_SRC_MASK | CANMSG_DST_MASK,
+        },
+        {   .can_id = CANMSG_ADDR_BROADCAST << CANMSG_DST_SHIFT,
+            .can_mask = CANMSG_DST_MASK,
+        },
+    };
+
+    if ((can_fd = can_open_with (BRAMBLE_CAN_INTERFACE, rfilter, 2)) < 0)
         die ("%s: %s\n", BRAMBLE_CAN_INTERFACE, strerror (errno));
 
     /* Set stdin to non-blocking.
