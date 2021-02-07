@@ -250,8 +250,8 @@ static void canservices_console_task (void *arg __attribute((unused)))
                 trace_printf ("can-console: error sending console data\n");
                 continue;
             }
-            if (msg.eot) {
-                vTaskSuspend (console.task); // suspend task, pending ACK
+            if (msg.eot) { // suspend task pending ACK
+                ulTaskNotifyTake (pdTRUE, pdMS_TO_TICKS (500));
                 seq = 0;
             }
         }
@@ -297,7 +297,7 @@ static void canservices_rx_task (void *arg __attribute((unused)))
                     break;
                 case CANMSG_TYPE_ACK:
                     if (console.connected && msg.object == console.object)
-                        vTaskResume (console.task);
+                        xTaskNotifyGive (console.task);
                     break;
                 case CANMSG_TYPE_NAK:
                 case CANMSG_TYPE_SIG:
