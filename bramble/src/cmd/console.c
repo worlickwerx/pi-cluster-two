@@ -124,6 +124,7 @@ static void console_send_dat (void *data, int len)
     msg.dst = dstaddr;
     msg.type = CANMSG_TYPE_DAT;
     msg.object = CANMSG_OBJ_CONSOLERECV;
+    msg.eot = 1; // all messages going this direction are ACKed
     memcpy (msg.data, data, len);
     msg.dlen = len;
     if (can_send (can_fd, &msg) < 0)
@@ -153,11 +154,12 @@ static void handle_recv_dat (struct canmsg *msg)
 
     if ((n = write (STDOUT_FILENO, msg->data, msg->dlen)) < 0)
         die ("error writing to stdout: %s\n", strerror (errno));
-    console_send_ack ();
+    if (msg->eot)
+        console_send_ack ();
 }
 
 /* Restart stdin watcher when previous DAT message has been ACKed.
- * Assume problems iwth the connection if a NAK is received, and that
+ * Assume problems with the connection if a NAK is received, and that
  * conman will respawn a helper which will reconnect.
  */
 static void handle_send_ack (struct canmsg *msg)
