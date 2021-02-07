@@ -229,24 +229,28 @@ error:
 static void canservices_console_task (void *arg __attribute((unused)))
 {
     struct canmsg msg;
-
-    memset (&msg, 0, sizeof (msg));
-
-    msg.type = CANMSG_TYPE_DAT;
-    msg.src = srcaddr;
-    msg.pri = 1;
+    int seq = 0;
 
     for (;;) {
         msg.dlen = serial_recv (msg.data, sizeof (msg.data), 1);
 
         if (msg.dlen > 0) {
+            msg.pri = 1;
             msg.dst = console.dstaddr;
+            msg.src = srcaddr;
+            msg.type = CANMSG_TYPE_DAT;
             msg.object = console.object;
+            msg.eot = serial_recv_available () == 0 || seq == 15;
+            msg.seq = seq++;
 
-            if (send_msg (&msg) < 0)
+            if (send_msg (&msg) < 0) {
                 trace_printf ("can-console: error sending console data\n");
-            else
+                continue;
+            }
+            if (msg.eot) {
                 vTaskSuspend (console.task); // suspend task, pending ACK
+                seq = 0;
+            }
         }
     }
 }
