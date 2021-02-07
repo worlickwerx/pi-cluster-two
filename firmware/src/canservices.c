@@ -213,13 +213,16 @@ static void canservices_consolerecv (const struct canmsg *request)
     if (serial_send (request->data, request->dlen, 0) < request->dlen)
         goto error;
 
-    msg.type = CANMSG_TYPE_ACK;
-    msg.dst = msg.src;
-    msg.src = srcaddr;
-    msg.dlen = 0;
-
-    if (send_msg (&msg) < 0)
-        trace_printf ("can-rx: error sending console data response\n");
+    if (request->eot) {
+        msg.type = CANMSG_TYPE_ACK;
+        msg.dst = msg.src;
+        msg.src = srcaddr;
+        msg.dlen = 0;
+        msg.eot = 0;
+        msg.seq = 0;
+        if (send_msg (&msg) < 0)
+            trace_printf ("can-rx: error sending console data response\n");
+    }
     return;
 error:
     send_nak (request);
