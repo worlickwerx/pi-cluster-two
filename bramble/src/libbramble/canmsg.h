@@ -30,6 +30,9 @@ struct canmsg {
 #define CANMSG_DST_SHIFT     22
 #define CANMSG_DST_MASK      (0x3f << (CANMSG_DST_SHIFT))
 
+#define CANMSG_SRC_SHIFT     16
+#define CANMSG_SRC_MASK      (0x3f << (CANMSG_SRC_SHIFT))
+
 enum {
     CANMSG_ADDR_INVALID      = 0x00,
     CANMSG_ADDR_SUPERVISOR   = 0x01,
