@@ -119,7 +119,7 @@ int canping_main (int argc, char *argv[])
             srcaddr = slot | CANMSG_ADDR_COMPUTE;
     }
 
-    if ((can_fd = can_open (BRAMBLE_CAN_INTERFACE)) < 0)
+    if ((can_fd = can_open (BRAMBLE_CAN_INTERFACE, srcaddr)) < 0)
         die ("%s: %s\n", BRAMBLE_CAN_INTERFACE, strerror (errno));
 
     loop = EV_DEFAULT;

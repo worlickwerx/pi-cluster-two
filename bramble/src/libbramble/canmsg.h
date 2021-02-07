@@ -6,9 +6,9 @@
 #include <stdint.h>
 
 /* 29-bit CAN ID:
- * +---------------------------------------------------+
- * | pri:1 | dst:6 | src:6 | type:3 | object:8 | seq:5 |
- * +---------------------------------------------------+
+ * +-----------------------------------------------------------+
+ * | pri:1 | dst:6 | src:6 | type:3 | object:8 | eot:1 | seq:5 |
+ * +-----------------------------------------------------------+
  *
  * 6-bit addresses:
  * +-------------------+
@@ -22,13 +22,17 @@ struct canmsg {
     uint32_t src:6;
     uint32_t type:3;
     uint32_t object:8;
-    uint32_t seq:5;
+    uint32_t eot:1;
+    uint32_t seq:4;
     uint8_t dlen;
     uint8_t data[8];
 };
 
 #define CANMSG_DST_SHIFT     22
 #define CANMSG_DST_MASK      (0x3f << (CANMSG_DST_SHIFT))
+
+#define CANMSG_SRC_SHIFT     16
+#define CANMSG_SRC_MASK      (0x3f << (CANMSG_SRC_SHIFT))
 
 enum {
     CANMSG_ADDR_INVALID      = 0x00,
@@ -37,7 +41,7 @@ enum {
     CANMSG_ADDR_BROADCAST    = 0x0f,
     CANMSG_ADDR_CONTROL      = 0x10,
     CANMSG_ADDR_COMPUTE      = 0x20,
-    CANMSG_ADDR_COMMS        = 0x20,
+    CANMSG_ADDR_COMMS        = 0x30,
 };
 
 enum {

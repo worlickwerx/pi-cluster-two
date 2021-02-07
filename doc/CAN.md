@@ -32,7 +32,7 @@ on the one used in the Meiko CS/2 supercomputer.
 
 The protocol supports:
 
-1) unique (device, slot) addresses
+1) unique addresses within a crate
 2) _objects_ that may be read or written with request/response messages
 3) _signals_, a broadcast message that indicates an object at a particular
 address requires attention
@@ -47,9 +47,9 @@ or the broadcast address.
 The 29-bit CAN ID is split as follows:
 
 ```
-+---------------------------------------------------+
-| pri:1 | dst:6 | src:6 | type:3 | object:8 | seq:5 |
-+---------------------------------------------------+
++-----------------------------------------------------------+
+| pri:1 | dst:6 | src:6 | type:3 | object:8 | eot:1 | seq:4 |
++-----------------------------------------------------------+
 ```
 **pri** (0-1) is the message priority.  Since CAN bus arbitration on
 collision is "lowest ID wins", the most significant bit in the ID is
@@ -61,7 +61,7 @@ the receiving and sending CAN device (see below).
 **type** (0-7) is the message type:
 * `RO` (0) read object
 * `WO` (1) write object, with acknowledgement
-* `WNA` (2) write object, witout acknowledgement
+* `WNA` (2) write object, without acknowledgement
 * `DAT` (3) streaming data
 * `ACK` (4) acknowledgement
 * `NAK` (6) negative acknowledgement
@@ -69,7 +69,10 @@ the receiving and sending CAN device (see below).
 
 **object** (0-ff) is the target object ID.
 
-**seq** (0-1f) is an optional message sequence number for streaming data.
+**eot** (0-1) is a flag for streaming DAT messages indicating "end of
+transmission".  It should be set to 0 for other message types.
+
+**seq** (0-f) is a message sequence number for streaming data.
 
 #### Addresses
 

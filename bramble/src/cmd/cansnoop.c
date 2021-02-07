@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include <errno.h>
 #include <ctype.h>
@@ -66,10 +67,37 @@ int cansnoop_main (int argc, char *argv[])
     char hex[32];
     char ascii[35];
     int i;
+    char seq[8];
 
-    if (argc != 1)
-        die ("Usage: bramble cansnoop\n");
-    if ((fd = can_open (BRAMBLE_CAN_INTERFACE)) < 0)
+    if (argc != 1 && argc != 2)
+        die ("Usage: bramble cansnoop [ADDR]\n");
+
+    if (argc == 2) {
+        char *endptr;
+        int addr;
+
+        errno = 0;
+        addr = strtol (argv[1], &endptr, 16);
+        if (errno != 0 || *endptr != '\0' || addr < 0 || addr > 0x3f)
+            die ("error parsing hexadecimal ADDR from command line\n");
+
+        struct can_filter rfilter[] = {
+            {   .can_id = addr << CANMSG_DST_SHIFT,
+                .can_mask = CANMSG_DST_MASK,
+            },
+            {   .can_id = addr << CANMSG_SRC_SHIFT,
+                .can_mask = CANMSG_SRC_MASK,
+            },
+            {   .can_id = CANMSG_ADDR_BROADCAST << CANMSG_DST_SHIFT,
+                .can_mask = CANMSG_DST_MASK,
+            },
+        };
+        fd = can_open_with (BRAMBLE_CAN_INTERFACE, rfilter, 3);
+    }
+    else
+        fd = can_open_with (BRAMBLE_CAN_INTERFACE, NULL, 0);
+
+    if (fd < 0)
         die ("%s: %s\n", BRAMBLE_CAN_INTERFACE, strerror (errno));
 
     for (;;) {
@@ -84,12 +112,22 @@ int cansnoop_main (int argc, char *argv[])
                       i == msg.dlen - 1 ? "" : " ");
             ascii[i] = isprint (msg.data[i]) ? msg.data[i] : '.';
         }
+        seq[0] = '\0';
+        if (msg.type == CANMSG_TYPE_DAT) {
+            int n;
+            snprintf (seq, sizeof (seq) - 1, "[%d]", msg.seq);
+            n = strlen (seq);
+            if (msg.eot)
+                snprintf (seq + n, sizeof (seq) - n, "*");
+        }
 
-        printf ("%07.3f %.2x->%.2x  %-4s %-12s %-23s %s%.*s%s\n",
+        printf ("%07.3f %.2x->%.2x  %s%-4s %-5s %-12s %-23s %s%.*s%s\n",
                 monotime_since (t_start),
                 msg.src,
                 msg.dst,
+                msg.pri == 0 ? "+" : " ",
                 canmsg_typestr (&msg),
+                seq,
                 canmsg_objstr (&msg),
                 hex,
                 msg.dlen > 0 ? "`" : "",
