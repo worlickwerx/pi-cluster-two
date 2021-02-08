@@ -63,6 +63,11 @@ void usart1_isr (void)
     portYIELD_FROM_ISR (woke);
 }
 
+int serial_recv_available (void)
+{
+    return xStreamBufferBytesAvailable (serialrxq);
+}
+
 int serial_recv (unsigned char *buf, int bufsize, int timeout)
 {
     int ticks = timeout >= 0 ? pdMS_TO_TICKS (timeout) : portMAX_DELAY;

@@ -38,7 +38,8 @@
 
 #include "src/libbramble/bramble.h"
 
-#define CAN_TIMEOUT 0.5
+#define CAN_TIMEOUT 0.5         // ack/nack timeout on WO
+#define CAN_RECV_TIMEOUT 5.0    // eot timeout on DAT messages
 
 static int              srcaddr;
 static int              dstaddr;
@@ -50,6 +51,7 @@ static int              console_objid = CANMSG_OBJ_CONSOLESEND;
 static ev_io            can_watcher;
 static ev_io            stdin_watcher;
 static ev_timer         timeout_watcher;
+static ev_timer         recv_timeout_watcher;
 
 const char              *timeout_message;
 
@@ -124,6 +126,7 @@ static void console_send_dat (void *data, int len)
     msg.dst = dstaddr;
     msg.type = CANMSG_TYPE_DAT;
     msg.object = CANMSG_OBJ_CONSOLERECV;
+    msg.eot = 1; // all messages going this direction are ACKed
     memcpy (msg.data, data, len);
     msg.dlen = len;
     if (can_send (can_fd, &msg) < 0)
@@ -147,17 +150,67 @@ static void console_send_ack (void)
         die ("can send error: %s\n", strerror (errno));
 }
 
+static struct canmsg chunk[16];
+static size_t chunklen = sizeof (chunk) / sizeof (chunk[0]);
+
+static bool chunk_is_complete (bool holes_ok)
+{
+    int i;
+
+    for (i = 0; i < chunklen; i++) {
+        if (!holes_ok && chunk[i].dlen == 0)
+            break;
+        if (chunk[i].eot)
+            return true;
+    }
+    return false;
+}
+
+static void write_chunk_to_stdout (void)
+{
+    int i;
+
+    for (i = 0; i < chunklen; i++) {
+        if (chunk[i].dlen > 0) {
+            if (write (STDOUT_FILENO, chunk[i].data, chunk[i].dlen) < 0)
+                die ("error writing to stdout: %s\n", strerror (errno));
+            if (chunk[i].eot)
+                break;
+        }
+    }
+}
+
 static void handle_recv_dat (struct canmsg *msg)
 {
-    int n;
+    if (!ev_is_active (&recv_timeout_watcher)) {
+        ev_timer_set (&recv_timeout_watcher, CAN_RECV_TIMEOUT, 0.);
+        ev_timer_start (loop, &recv_timeout_watcher);
+    }
+    chunk[msg->seq] = *msg;
 
-    if ((n = write (STDOUT_FILENO, msg->data, msg->dlen)) < 0)
-        die ("error writing to stdout: %s\n", strerror (errno));
-    console_send_ack ();
+    if (chunk_is_complete (false)) {
+        write_chunk_to_stdout ();
+        memset (chunk, 0, sizeof (chunk));
+        console_send_ack ();
+        ev_timer_stop (loop, &recv_timeout_watcher);
+    }
+}
+
+static void recv_timeout_cb (EV_P_ ev_timer *w, int revents)
+{
+    if (chunk_is_complete (true)) {
+        write_chunk_to_stdout ();
+        memset (chunk, 0, sizeof (chunk));
+        console_send_ack ();
+    }
+    else { // if eot not received in timeout, let conman restart connection
+        console_disconnect ();
+        die ("receive timeout\n");
+    }
 }
 
 /* Restart stdin watcher when previous DAT message has been ACKed.
- * Assume problems iwth the connection if a NAK is received, and that
+ * Assume problems with the connection if a NAK is received, and that
  * conman will respawn a helper which will reconnect.
  */
 static void handle_send_ack (struct canmsg *msg)
@@ -294,6 +347,7 @@ int console_main (int argc, char *argv[])
     ev_io_init (&stdin_watcher, stdin_cb, 0, EV_READ);
 
     ev_timer_init (&timeout_watcher, timeout_cb, 0., 0.);
+    ev_timer_init (&recv_timeout_watcher, recv_timeout_cb, 0., 0.);
 
     console_connect (); // takes ACK in event loop
 

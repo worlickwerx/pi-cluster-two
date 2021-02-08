@@ -13,6 +13,8 @@ void serial_init (void);
 int serial_recv (unsigned char *buf, int len, int timeout);
 int serial_send (const unsigned char *buf, int len, int timeout);
 
+int serial_recv_available (void);
+
 void serial_rx_enable (void);
 void serial_rx_disable (void);
 

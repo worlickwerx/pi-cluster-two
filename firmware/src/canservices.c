@@ -213,13 +213,16 @@ static void canservices_consolerecv (const struct canmsg *request)
     if (serial_send (request->data, request->dlen, 0) < request->dlen)
         goto error;
 
-    msg.type = CANMSG_TYPE_ACK;
-    msg.dst = msg.src;
-    msg.src = srcaddr;
-    msg.dlen = 0;
-
-    if (send_msg (&msg) < 0)
-        trace_printf ("can-rx: error sending console data response\n");
+    if (request->eot) {
+        msg.type = CANMSG_TYPE_ACK;
+        msg.dst = msg.src;
+        msg.src = srcaddr;
+        msg.dlen = 0;
+        msg.eot = 0;
+        msg.seq = 0;
+        if (send_msg (&msg) < 0)
+            trace_printf ("can-rx: error sending console data response\n");
+    }
     return;
 error:
     send_nak (request);
@@ -229,24 +232,28 @@ error:
 static void canservices_console_task (void *arg __attribute((unused)))
 {
     struct canmsg msg;
-
-    memset (&msg, 0, sizeof (msg));
-
-    msg.type = CANMSG_TYPE_DAT;
-    msg.src = srcaddr;
-    msg.pri = 1;
+    int seq = 0;
 
     for (;;) {
         msg.dlen = serial_recv (msg.data, sizeof (msg.data), 1);
 
         if (msg.dlen > 0) {
+            msg.pri = 1;
             msg.dst = console.dstaddr;
+            msg.src = srcaddr;
+            msg.type = CANMSG_TYPE_DAT;
             msg.object = console.object;
+            msg.eot = serial_recv_available () == 0 || seq == 15;
+            msg.seq = seq++;
 
-            if (send_msg (&msg) < 0)
+            if (send_msg (&msg) < 0) {
                 trace_printf ("can-console: error sending console data\n");
-            else
-                vTaskSuspend (console.task); // suspend task, pending ACK
+                continue;
+            }
+            if (msg.eot) { // suspend task pending ACK
+                ulTaskNotifyTake (pdTRUE, pdMS_TO_TICKS (500));
+                seq = 0;
+            }
         }
     }
 }
@@ -290,7 +297,7 @@ static void canservices_rx_task (void *arg __attribute((unused)))
                     break;
                 case CANMSG_TYPE_ACK:
                     if (console.connected && msg.object == console.object)
-                        vTaskResume (console.task);
+                        xTaskNotifyGive (console.task);
                     break;
                 case CANMSG_TYPE_NAK:
                 case CANMSG_TYPE_SIG:

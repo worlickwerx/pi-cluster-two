@@ -26,26 +26,54 @@
 static const uint32_t baudrate = 1000000;
 
 #define CAN_RX_QUEUE_DEPTH  16
+#define CAN_TX_QUEUE_DEPTH  16
 static QueueHandle_t canrxq;
+static QueueHandle_t cantxq;
 
-int canbus_send (const struct canmsg *msg)
+static void id_encode (const struct canmsg *msg, uint32_t *id)
 {
+    *id = msg->seq;
+    *id |= msg->eot<<4;
+    *id |= msg->object<<5;
+    *id |= msg->type<<13;
+    *id |= msg->src<<16;
+    *id |= msg->dst<<22;
+    *id |= msg->pri<<28;
+}
+
+static void id_decode (struct canmsg *msg, uint32_t id)
+{
+    msg->seq = id & 0xf;
+    msg->eot = (id>>4) & 1;
+    msg->object = (id>>5) & 0xff;
+    msg->type = (id>>13) & 7;
+    msg->src = (id>>16) & 0x3f;
+    msg->dst = (id>>22) & 0x3f;
+    msg->pri = (id>>28) & 1;
+}
+
+static void canbus_flush (void)
+{
+    struct canmsg msg;
     uint32_t id;
     bool rtrf = false;
     bool xmsgidf = true;
 
-    id = msg->seq;
-    id |= msg->eot<<4;
-    id |= msg->object<<5;
-    id |= msg->type<<13;
-    id |= msg->src<<16;
-    id |= msg->dst<<22;
-    id |= msg->pri<<28;
+    while (can_available_mailbox (CAN1)
+            && xQueueReceive (cantxq, &msg, 0) == pdTRUE) {
+        id_encode (&msg, &id);
+        can_transmit (CAN1, id, xmsgidf, rtrf, msg.dlen, msg.data);
+    }
+    if (uxQueueMessagesWaiting (cantxq))
+        can_enable_irq (CAN1, CAN_IER_TMEIE);
+}
 
-    if (can_transmit (CAN1, id, xmsgidf, rtrf, msg->dlen,
-                      (uint8_t *)msg->data) < 0)
+int canbus_send (const struct canmsg *msg)
+{
+    if (xQueueSendToBack (cantxq, msg, 0) != pdTRUE)
         return -1;
     matrix_pulse_green (); // blink the activity LED
+    canbus_flush ();
     return 0;
 }
 
@@ -88,17 +116,26 @@ void usb_lp_can_rx0_isr (void)
                      NULL);
 
         if (xmsgidf) {
-            msg.seq = id & 0xf;
-            msg.eot = (id>>4) & 1;
-            msg.object = (id>>5) & 0xff;
-            msg.type = (id>>13) & 7;
-            msg.src = (id>>16) & 0x3f;
-            msg.dst = (id>>22) & 0x3f;
-            msg.pri = (id>>28) & 1;
-
+            id_decode (&msg, id);
             xQueueSendToBackFromISR (canrxq, &msg, NULL);
         }
     }
+}
+
+void usb_hp_can_tx_isr (void)
+{
+    struct canmsg msg;
+    uint32_t id;
+    bool rtrf = false;
+    bool xmsgidf = true;
+
+    while (can_available_mailbox (CAN1)
+            && xQueueReceiveFromISR (cantxq, &msg, NULL) == pdTRUE) {
+        id_encode (&msg, &id);
+        can_transmit (CAN1, id, xmsgidf, rtrf, msg.dlen, msg.data);
+    }
+    if (xQueueIsQueueEmptyFromISR (cantxq))
+        can_disable_irq (CAN1, CAN_IER_TMEIE);
 }
 
 struct canbaud {
@@ -172,10 +209,15 @@ void canbus_init (void)
               false);           // disable silent mode
 
     canrxq = xQueueCreate (CAN_RX_QUEUE_DEPTH, sizeof (struct canmsg));
+    cantxq = xQueueCreate (CAN_TX_QUEUE_DEPTH, sizeof (struct canmsg));
 
     nvic_set_priority (NVIC_USB_LP_CAN_RX0_IRQ, 12<<4);
     nvic_enable_irq (NVIC_USB_LP_CAN_RX0_IRQ);
     can_enable_irq (CAN1, CAN_IER_FMPIE0);
+
+    nvic_set_priority (NVIC_USB_HP_CAN_TX_IRQ, 12<<4);
+    nvic_enable_irq (NVIC_USB_HP_CAN_TX_IRQ);
+    can_disable_irq (CAN1, CAN_IER_TMEIE);
 }
 
 /*
