@@ -16,8 +16,10 @@
 static void blink_task (void *args __attribute((unused)))
 {
     for (;;) {
-        gpio_toggle (GPIOC, GPIO13);
-        vTaskDelay (pdMS_TO_TICKS (500));
+        gpio_clear (GPIOC, GPIO13); // on
+        vTaskDelay (pdMS_TO_TICKS (1));
+        gpio_set (GPIOC, GPIO13); // off
+        vTaskDelay (pdMS_TO_TICKS (2000));
     }
 }
 
