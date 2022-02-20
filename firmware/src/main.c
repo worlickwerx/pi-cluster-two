@@ -61,8 +61,6 @@ int main (void)
                  configMAX_PRIORITIES - 1,
                  NULL);
 
-    //power_set_state (false);
-
     trace_printf ("Hello world!\n");
 
     vTaskStartScheduler ();
