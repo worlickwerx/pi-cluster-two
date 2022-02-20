@@ -30,7 +30,7 @@
 
 #define FOLLOWER_ADDRESS 0x30
 
-#define PROTO_VERSION 1
+#define PROTO_VERSION 2
 
 /* Registers that can be read by leader.
  */
