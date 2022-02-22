@@ -92,9 +92,9 @@ static void canservices_power (const struct canmsg *request)
         if (request->dlen != 1)
             goto error;
         if (request->data[0] == 0)
-            power_set_state (false);
+            power_set_state (false); // can sleep
         else if (request->data[0] == 1)
-            power_set_state (true);
+            power_set_state (true); // can sleep
         else
             goto error;
         msg.type = CANMSG_TYPE_ACK;
