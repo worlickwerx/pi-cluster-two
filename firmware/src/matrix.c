@@ -124,7 +124,7 @@ static void max7219_selftest (void)
 static void max7219_config (void)
 {
     max7219_send (MAX7219_MODE_SCAN_LIMIT | 7); // mux over 8 digits/cols
-    max7219_send (MAX7219_MODE_INTENSITY | 0xF);// intensity 0=dim F=bright
+    max7219_send (MAX7219_MODE_INTENSITY | 0x2);// intensity 0=dim F=bright
     max7219_send (MAX7219_MODE_DECODE | 0);     // no BCD decode
     max7219_send (MAX7219_MODE_SHUTDOWN | 1);   // power shutdown=0 normal=1
     max7219_send (MAX7219_MODE_TEST | 0);       // test mode off=0 on=1
