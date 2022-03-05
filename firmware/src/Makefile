@@ -43,8 +43,18 @@ include ../Makefile.rtos
 #	   st-flash write main.bin 0x8000000
 ######################################################################
 
-gdbserver:
-	$(STUTIL)
+OPENOCD = openocd
+OPENOCD_CFG = openocd_pi.cfg
+#OPENOCD_CFG = openocd_stlink.cfg
 
+flash:
+	sudo $(OPENOCD) -f $(OPENOCD_CFG) \
+	    -c "program main.elf verify reset exit"
+reset:
+	sudo $(OPENOCD) -f $(OPENOCD_CFG) \
+	    -c "init" -c "targets" -c "reset run" -c "exit"
+gdbserver:
+	sudo $(OPENOCD) -f $(OPENOCD_CFG) \
+	    -c "init" -c "targets" -c "reset halt"
 debug:
-	$(GDB) -ex "file main.elf" -ex "target extended-remote :4242"
+	$(GDB) -ex "file main.elf" -ex "target extended-remote :3333"
