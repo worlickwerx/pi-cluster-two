@@ -15,6 +15,7 @@ int firmware_version_main (int argc, char **argv);
 int power_main (int argc, char **argv);
 int console_main (int argc, char **argv);
 int led_main (int argc, char **argv);
+int usage_bargraph_main (int argc, char **argv);
 
 struct subcmd {
     const char *name;
@@ -30,6 +31,9 @@ static const struct subcmd builtins[] = {
     { "powerman-helper",    "power on/off slots",  power_main},
     { "conman-helper",      "netcat-like CAN console access",  console_main},
     { "led",                "update LED matrix display",  led_main},
+    { "usage-bargraph",
+      "show cpu utilization on LED matrix",
+       usage_bargraph_main},
 };
 static const int builtins_count = sizeof (builtins) / sizeof (builtins[0]);
 

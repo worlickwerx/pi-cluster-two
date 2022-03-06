@@ -14,7 +14,8 @@ src_cmd_bramble_SOURCES = \
     src/cmd/led.c \
     src/cmd/power.c \
     src/cmd/console.c \
-    src/cmd/firmware-version.c
+    src/cmd/firmware-version.c \
+    src/cmd/usage_bargraph.c
 
 src_cmd_bramble_LDADD = \
     src/libbramble/libbramble.la
