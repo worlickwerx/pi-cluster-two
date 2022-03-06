@@ -11,6 +11,7 @@
 #include "i2cproto.h"
 
 #include "utils.h"
+#include "proc.h"
 
 #endif /* _BRAMBLE_H */
 

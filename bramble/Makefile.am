@@ -30,7 +30,9 @@ src_libbramble_libbramble_la_SOURCES = \
     src/libbramble/canobj.c \
     src/libbramble/i2clinux.h \
     src/libbramble/i2clinux.c \
-    src/libbramble/i2cproto.h
+    src/libbramble/i2cproto.h \
+    src/libbramble/proc.c \
+    src/libbramble/proc.h
 
 powermanconfdir = $(sysconfdir)/powerman
 
