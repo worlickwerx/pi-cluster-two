@@ -14,7 +14,8 @@ src_cmd_bramble_SOURCES = \
     src/cmd/led.c \
     src/cmd/power.c \
     src/cmd/console.c \
-    src/cmd/firmware-version.c
+    src/cmd/firmware-version.c \
+    src/cmd/usage_bargraph.c
 
 src_cmd_bramble_LDADD = \
     src/libbramble/libbramble.la
@@ -30,7 +31,9 @@ src_libbramble_libbramble_la_SOURCES = \
     src/libbramble/canobj.c \
     src/libbramble/i2clinux.h \
     src/libbramble/i2clinux.c \
-    src/libbramble/i2cproto.h
+    src/libbramble/i2cproto.h \
+    src/libbramble/proc.c \
+    src/libbramble/proc.h
 
 powermanconfdir = $(sysconfdir)/powerman
 
