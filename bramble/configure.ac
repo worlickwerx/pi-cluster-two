@@ -15,6 +15,9 @@ AC_DEFINE([_GNU_SOURCE], 1,
 AC_PROG_CC_C99
 AM_PROG_CC_C_O
 
+X_AC_EXPAND_INSTALL_DIRS
+RRA_WITH_SYSTEMD_UNITDIR
+
 LT_INIT
 AC_HEADER_STDC
 
@@ -24,6 +27,7 @@ AC_SEARCH_LIBS([ev_run], [ev], [], [
 
 AC_CONFIG_FILES( \
   Makefile \
+  etc/bramble.service
 )
 
 AC_OUTPUT

@@ -1,5 +1,9 @@
 ACLOCAL_AMFLAGS = -I config
 
+#if HAVE_SYSTEMD
+systemdsystemunit_DATA = etc/bramble.service
+#endif
+
 noinst_LTLIBRARIES = \
     src/libbramble/libbramble.la
 

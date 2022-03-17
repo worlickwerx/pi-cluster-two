@@ -1,0 +1,10 @@
+[Unit]
+Description=Bramble load monitor
+
+[Service]
+ExecStart=@X_BINDIR@/bramble usage-bargraph
+SyslogIdentifier=bramble
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
