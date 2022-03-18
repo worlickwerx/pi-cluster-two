@@ -12,6 +12,7 @@
 
 #include "utils.h"
 #include "proc.h"
+#include "temp.h"
 
 #endif /* _BRAMBLE_H */
 
