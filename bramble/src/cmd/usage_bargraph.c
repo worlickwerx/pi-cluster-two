@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+#include <signal.h>
 
 #include "src/libbramble/bramble.h"
 
@@ -17,10 +18,7 @@
  */
 #define NR_CPUS 4
 
-/* The display can show a bargraph of up to 5 cpus with 7 bars each.
- * This could be transposed to show up to 7 cpus with 5 bars each, if needed.
- * After that, maybe we need a different display, or just show one bar for
- * the overall usage.
+/* Display is a 5x7 matrix.
  */
 #define NR_COLS 5
 #define NR_ROWS 7
@@ -46,16 +44,44 @@ static void update_display (uint8_t cols[NR_COLS])
     close (fd);
 }
 
-static void create_bargraphs (double used[NR_CPUS], uint8_t cols[NR_COLS])
+/* The values in val[] should range from 0 to 1.
+ * Each will be represented as a bargraph with a width of one pixel.
+ */
+static void create_bargraphs (double *val,
+                              int count,
+                              uint8_t cols[NR_COLS])
 {
-    for (int i = 0; i < min (NR_CPUS, NR_COLS); i++) {
-        int n = floor (used[i] * NR_ROWS); // n is the number of "on" pixels
+    memset (cols, 0, sizeof (uint8_t) * NR_COLS);
+
+    for (int i = 0; i < min (count, NR_COLS); i++) {
+        int n = floor (val[i] * NR_ROWS); // n is the number of "on" pixels
         for (int j = NR_ROWS - 1; j >= 0; j--) { // top row is 0
             if (n-- == 0)
                 break;
             cols[i] |= 1<<j;
         }
     }
+}
+
+/* Scale x with a range of [min:max] to a value with a range of [0:1].
+ */
+double scale (double min, double max, double x)
+{
+    double val = (x - min) / (max - min);
+    if (val < 0)
+        val = 0;
+    if (val > 1)
+        val = 1;
+    return val;
+}
+
+void sighandler (int sig)
+{
+    int8_t cols[NR_COLS];
+
+    memset (cols, 0, sizeof (cols));
+    update_display (cols);
+    _exit (0);
 }
 
 int usage_bargraph_main (int argc, char *argv[])
@@ -65,6 +91,8 @@ int usage_bargraph_main (int argc, char *argv[])
     int count = 0;
     uint8_t cols[NR_COLS];
     int n;
+
+    signal (SIGTERM, sighandler);
 
     for (;;) {
         memcpy (&last, &cur, sizeof (cur));
@@ -79,17 +107,25 @@ int usage_bargraph_main (int argc, char *argv[])
             warn ("read %d cpus from /proc/stats, expected %d", n, NR_CPUS);
         }
         if (count++ > 0) {
-            double used[NR_CPUS];
+            double val[NR_COLS];
+            int i;
+            double temp_C;
 
-            for (int i = 0; i < NR_CPUS; i++)
-                used[i] = proc_stat_calc_cpu_usage (&last[i], &cur[i]);
+            for (i = 0; i < min(NR_CPUS, NR_COLS - 1); i++)
+                val[i] = proc_stat_calc_cpu_usage (&last[i], &cur[i]);
+            temp_read (&temp_C);
 
-            memset (cols, 0, sizeof (cols));
-            create_bargraphs (used, cols);
+            /* The last col is the temperature.
+             * Scale a range of [30:85] to [0:1].
+             * 30C = reasonable idle temp
+             * 85C = pi clock throttling threshold
+             */
+            val[i++] = scale (30., 85., temp_C);
+
+            create_bargraphs (val, i, cols);
             update_display (cols);
         }
         sleep (update_period);
-        count++;
     }
 
     return 0;

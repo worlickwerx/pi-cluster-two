@@ -1,5 +1,9 @@
 ACLOCAL_AMFLAGS = -I config
 
+#if HAVE_SYSTEMD
+systemdsystemunit_DATA = etc/bramble.service
+#endif
+
 noinst_LTLIBRARIES = \
     src/libbramble/libbramble.la
 
@@ -33,7 +37,9 @@ src_libbramble_libbramble_la_SOURCES = \
     src/libbramble/i2clinux.c \
     src/libbramble/i2cproto.h \
     src/libbramble/proc.c \
-    src/libbramble/proc.h
+    src/libbramble/proc.h \
+    src/libbramble/temp.c \
+    src/libbramble/temp.h
 
 powermanconfdir = $(sysconfdir)/powerman
 
