@@ -10,7 +10,7 @@ $ sudo apt update
 $ sudo apt install openocd gcc-arm-none-eabi gdb-multiarch
 ```
 
-For the record, the verisons that are working now are:
+For the record, the versions that are working now are:
 - openocd 0.11.0~rc2-1
 - gdb-multiarch 10.1-1.7
 - gcc-arm-none-eabi 15:8-2019-q3-1+13
@@ -38,7 +38,7 @@ $ make
 
 ## Flashing the firmware
 
-The default config assumes the pi has a hardwared gpio SWD connection.
+The default config assumes the pi has a hardwired gpio SWD connection.
 Edit `src/Makefile` if you want to use the stlink v2 instead:
 ```diff
 diff --git a/firmware/src/Makefile b/firmware/src/Makefile
