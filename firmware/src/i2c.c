@@ -6,9 +6,6 @@
  * PB11 - SDA (connected to pi GPIO2)
  *
  * Notes:
- * - Pi has on-board 1.8K pulls to 3V3 on its I2C bus lines
- * - pi-carrier v2 needs a mod to pull 4.7K pullups to STM32 3V3 not pi 3V3,
- *   otherwise i2c floats when pi is powered down
  * - See note in matrix.c about SMBA conflict on PB12 (worked around there).
  */
 
