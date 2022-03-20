@@ -19,7 +19,7 @@ int slot_main (int argc, char *argv[])
         die ("Usage: bramble slot");
 
     if ((slot = slot_get ()) < 0)
-        die ("could not read slot number from i2c\n");
+        die ("could not read slot number\n");
     printf ("%d\n", slot);
 
     return 0;

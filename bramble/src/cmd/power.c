@@ -7,9 +7,6 @@
  *   include "/usr/local/etc/powerman/bramble.dev"
  *   device "picl" "bramble" "/usr/local/bin/bramble powerman-helper |&"
  *   node "picl[0-7]" "picl" "[0-7]"
- *
- * Ensure that the user running powermand (e.g. daemon) is in the i2c
- * group so that this program can read the local slot.
  */
 
 #if HAVE_CONFIG_H
@@ -191,7 +188,7 @@ int power_main (int argc, char *argv[])
         int slot;
 
         if ((slot = slot_get ()) < 0) {
-            warn ("WARNING: i2c: %s, assuming CAN address 02\n",
+            warn ("WARNING: failed to read slot: %s, assuming CAN address 02\n",
                   strerror (errno));
             srcaddr = 0x02;
         }

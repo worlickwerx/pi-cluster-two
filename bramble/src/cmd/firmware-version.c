@@ -8,24 +8,28 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <errno.h>
+#include <fcntl.h>
 
 #include "src/libbramble/bramble.h"
 
 int firmware_version_main (int argc, char *argv[])
 {
     int fd;
-    uint8_t version;
+    char version[NVRAM_VERSION_SIZE];
 
     if (argc != 1)
         die ("Usage: bramble firmware-version\n");
 
-    if ((fd = i2c_open (BRAMBLE_I2C_DEVICE, I2C_ADDRESS)) < 0)
-        die ("%s: %s\n", BRAMBLE_I2C_DEVICE, strerror (errno));
+    if ((fd = nvram_open (O_RDONLY)) < 0)
+        die ("could not open nvram: %s\n", strerror (errno));
 
-    if (i2c_read (fd, I2C_REG_VERSION, &version, 1) < 0)
-        die ("i2c read: %s\n", strerror (errno));
-
-    printf ("%d\n", version);
+    if (nvram_read (fd,
+                    NVRAM_VERSION_ADDR,
+                    version,
+                    sizeof (version)) < 0)
+        die ("failed to read version: %s\n", strerror (errno));
+    // N.B. result should be null terminated but take no chances
+    printf ("%.*s\n", (int)sizeof (version), version);
 
     close (fd);
     return 0;

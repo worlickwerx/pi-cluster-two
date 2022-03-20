@@ -3,6 +3,7 @@
 #if HAVE_CONFIG_H
 # include "config.h"
 #endif
+#include <fcntl.h>
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
@@ -35,8 +36,8 @@ int led_main (int argc, char *argv[])
     if (argc != 2 && argc != 6)
         die ("Usage: bramble led [c | col0 col1 col2 col3 col4]\n");
 
-    if ((fd = i2c_open (BRAMBLE_I2C_DEVICE, I2C_ADDRESS)) < 0)
-        die ("%s: %s\n", BRAMBLE_I2C_DEVICE, strerror (errno));
+    if ((fd = nvram_open (O_RDWR)) < 0)
+        die ("could not open nvram: %s\n", strerror (errno));
 
     if (argc == 2) {
         int val;
@@ -48,23 +49,26 @@ int led_main (int argc, char *argv[])
             c = val;
         else
             die ("error parsing character argument\n");
-        if (i2c_write (fd, I2C_REG_MATRIX_CHAR, &c, 1) < 0)
-            die ("i2c write: %s\n", strerror (errno));
+        if (nvram_write (fd, NVRAM_MATRIX_CHAR_ADDR, &c, 1) < 0)
+            die ("nvram write: %s\n", strerror (errno));
     }
     else {
         int val;
-        uint8_t cols[5];
+        uint8_t cols[NVRAM_MATRIX_COLUMNS_SIZE];
         int i;
 
         /* 5x7 matrix: argument is 5 bytes of 7 bits each
          */
-        for (i = 0; i < 5; i++) {
+        for (i = 0; i < NVRAM_MATRIX_COLUMNS_SIZE; i++) {
             if ((val = parse_byte (argv[i + 1])) < 0 || val >= 128)
                 die ("error parsing column byte %d\n", i);
             cols[i] = val;
         }
-        if (i2c_write (fd, I2C_REG_MATRIX_RAW, cols, 5) < 0)
-            die ("i2c write: %s\n", strerror (errno));
+        if (nvram_write (fd,
+                         NVRAM_MATRIX_COLUMNS_ADDR,
+                         cols,
+                         NVRAM_MATRIX_COLUMNS_SIZE) < 0)
+            die ("nvram write: %s\n", strerror (errno));
     }
 
     close (fd);

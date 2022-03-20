@@ -7,13 +7,11 @@
 #include "canlinux.h"
 #include "canobj.h"
 
-#include "i2clinux.h"
-#include "i2cproto.h"
-
 #include "utils.h"
 #include "proc.h"
 #include "temp.h"
 #include "version.h"
+#include "nvram.h"
 
 #endif /* _BRAMBLE_H */
 
