@@ -12,6 +12,15 @@ AM_MAINTAINER_MODE([enable])
 AC_DEFINE([_GNU_SOURCE], 1,
   [Define _GNU_SOURCE so that we get all necessary prototypes])
 
+##
+# Generate project versions from PACKAGE_VERSION (set from git describe above)
+##
+AX_SPLIT_VERSION
+AX_POINT_VERSION=$(echo $AX_POINT_VERSION | $SED 's/-.*$//')
+AC_SUBST([AX_MAJOR_VERSION])
+AC_SUBST([AX_MINOR_VERSION])
+AC_SUBST([AX_POINT_VERSION])
+
 AC_PROG_CC_C99
 AM_PROG_CC_C_O
 
@@ -27,7 +36,8 @@ AC_SEARCH_LIBS([ev_run], [ev], [], [
 
 AC_CONFIG_FILES( \
   Makefile \
-  etc/bramble.service
+  etc/bramble.service \
+  src/libbramble/version.h
 )
 
 AC_OUTPUT
