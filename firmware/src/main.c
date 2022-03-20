@@ -17,6 +17,7 @@
 #include "canservices.h"
 #include "serial.h"
 #include "i2c.h"
+#include "rtc.h"
 
 /* Perform initialization:
  * - show the card address on the matrix display
@@ -53,6 +54,7 @@ int main (void)
     canbus_init ();
     canservices_init ();
     i2c_init ();
+    rtc_init ();
 
     xTaskCreate (init_task,
                  "init",
