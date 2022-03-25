@@ -12,13 +12,15 @@
 
 #include "src/libbramble/bramble.h"
 
-int firmware_version_main (int argc, char *argv[])
+int version_main (int argc, char *argv[])
 {
     int fd;
     char version[NVRAM_VERSION_SIZE];
 
     if (argc != 1)
-        die ("Usage: bramble firmware-version\n");
+        die ("Usage: bramble version\n");
+
+    printf ("bramble: %s\n", BRAMBLE_VERSION_STRING);
 
     if ((fd = nvram_open (O_RDONLY)) < 0)
         die ("could not open nvram: %s\n", strerror (errno));
@@ -29,7 +31,7 @@ int firmware_version_main (int argc, char *argv[])
                     sizeof (version)) < 0)
         die ("failed to read version: %s\n", strerror (errno));
     // N.B. result should be null terminated but take no chances
-    printf ("%.*s\n", (int)sizeof (version), version);
+    printf ("firmware: %.*s\n", (int)sizeof (version), version);
 
     close (fd);
     return 0;
