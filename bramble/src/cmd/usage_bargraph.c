@@ -9,6 +9,7 @@
 #include <string.h>
 #include <errno.h>
 #include <signal.h>
+#include <fcntl.h>
 
 #include "src/libbramble/bramble.h"
 
@@ -23,6 +24,10 @@
 #define NR_COLS 5
 #define NR_ROWS 7
 
+#if NR_COLS != NVRAM_MATRIX_COLUMNS_SIZE
+#error NR_COLS size does not match nvram size
+#endif
+
 #ifndef min
 #define min(x,y) ((x)>(y)?(y):(x))
 #endif
@@ -35,12 +40,15 @@ static void update_display (uint8_t cols[NR_COLS])
 {
     int fd;
 
-    if ((fd = i2c_open (BRAMBLE_I2C_DEVICE, I2C_ADDRESS)) < 0) {
-        warn ("%s: %s\n", BRAMBLE_I2C_DEVICE, strerror (errno));
+    if ((fd = nvram_open (O_RDWR)) < 0) {
+        warn ("could not open nvram: %s\n", strerror (errno));
         return;
     }
-    if (i2c_write (fd, I2C_REG_MATRIX_RAW, cols, NR_COLS) < 0)
-        warn ("i2c write: %s\n", strerror (errno));
+    if (nvram_write (fd,
+                     NVRAM_MATRIX_COLUMNS_ADDR,
+                     cols,
+                     NVRAM_MATRIX_COLUMNS_SIZE) < 0)
+        warn ("nvram write: %s\n", strerror (errno));
     close (fd);
 }
 

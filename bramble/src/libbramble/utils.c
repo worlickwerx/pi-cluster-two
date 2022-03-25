@@ -10,6 +10,7 @@
 #include <string.h>
 #include <errno.h>
 #include <time.h>
+#include <fcntl.h>
 
 #include "src/libbramble/bramble.h"
 #include "utils.h"
@@ -52,10 +53,10 @@ int slot_get (void)
     int fd;
     uint8_t slot;
 
-    fd = i2c_open (BRAMBLE_I2C_DEVICE, I2C_ADDRESS);
+    fd = nvram_open (O_RDONLY);
     if (fd < 0)
         return -1;
-    if (i2c_read (fd, I2C_REG_SLOT, &slot, 1) < 0) {
+    if (nvram_read (fd, NVRAM_SLOT_ADDR, &slot, 1) < 0) {
         close (fd);
         return -1;
     }

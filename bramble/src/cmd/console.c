@@ -305,7 +305,7 @@ int console_main (int argc, char *argv[])
     }
     else {
         if ((slot = slot_get ()) < 0) {
-            warn ("WARNING: i2c: %s, assuming CAN address 02\n",
+            warn ("WARNING: failed to read slot: %s, assuming CAN address 02\n",
                   strerror (errno));
             srcaddr = 0x02;
         }
