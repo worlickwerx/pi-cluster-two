@@ -44,7 +44,7 @@ static int parse_slot (const char *s)
 
 static void cmd_help (void)
 {
-    printf ("Commands: on, off, status, measure\n");
+    printf ("Commands: on, off, status\n");
 }
 
 static int write_power (int slot, int val)
@@ -73,25 +73,6 @@ static int read_power (int slot)
         printf ("%d: %s\n", slot, strerror (errno));
     else {
         printf ("%d: %s\n", slot, data[0] ? "on" : "off");
-    }
-    canobj_close (obj);
-}
-
-
-static int read_power_measure (int slot)
-{
-    int dstaddr = slot | CANMSG_ADDR_CONTROL;
-    struct canobj *obj;
-    uint8_t data[8];
-    int n;
-
-    if (!(obj = canobj_openfd (canfd, srcaddr, dstaddr,
-                               CANMSG_OBJ_POWER_MEASURE))
-        || (n = canobj_read (obj, data, sizeof (data))) < 0)
-        printf ("%d: %s\n", slot, strerror (errno));
-    else {
-        uint16_t ma = be16toh (*(uint16_t *)&data[0]);
-        printf ("%d: %.3fA\n", slot, 1E-3*ma);
     }
     canobj_close (obj);
 }
@@ -129,17 +110,6 @@ static void cmd_status (int argc, char **argv)
     read_power (slot);
 }
 
-static void cmd_measure (int argc, char **argv)
-{
-    int slot;
-
-    if (argc != 2 || (slot = parse_slot (argv[1])) < 0) {
-        warn ("Usage: measure SLOT (0-15)\n");
-        return;
-    }
-    read_power_measure (slot);
-}
-
 static bool run_command (char *argz, size_t argz_len)
 {
     int argc;
@@ -161,8 +131,6 @@ static bool run_command (char *argz, size_t argz_len)
         cmd_off (argc, argv);
     else if (!strcasecmp (argv[0], "status"))
         cmd_status (argc, argv);
-    else if (!strcasecmp (argv[0], "measure"))
-        cmd_measure (argc, argv);
     else
         valid = false;
     free (argv);
