@@ -8,6 +8,9 @@ void power_init (void);
 void power_set_state (bool enable); // can sleep
 bool power_get_state (void);
 
+void power_shutdown (void);
+bool power_is_shutdown (void);
+
 #endif /* !_FIRMWARE_POWER_H */
 
 /*

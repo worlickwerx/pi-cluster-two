@@ -10,6 +10,10 @@
  * - read PA7 (0=off, 1=on), connected to flip flop Q output
  * - read PA8 (0=off, 1=on), connecting to pi RUN_PG
  *
+ * shutdown
+ * - pulse PA4 low and then high to trigger gpio-shutdown overlay on pi
+ * - wait for PA5 to transition high to low indicating shutdown complete
+ *
  * The flip flop powers up in a known (off) state, then retains its
  * state across a STM32 reset.  On startup, set GLOBAL_EN to match flip flop Q,
  * and toggle flip flop on each power state change.
@@ -30,6 +34,8 @@
 #include "trace.h"
 #include "power.h"
 #include "matrix.h"
+
+static TaskHandle_t shutdown_task_handle = NULL;
 
 static bool pi_run_pg_get (void)
 {
@@ -108,6 +114,29 @@ static void power_task (void *args __attribute((unused)))
     }
 }
 
+/* Pulse the PI_HALT line low momentarily when notified by power_shutdown ().
+ */
+static void shutdown_task (void *args __attribute((unused)))
+{
+    for (;;) {
+        ulTaskNotifyTake (pdTRUE, portMAX_DELAY);
+
+        gpio_clear (GPIOA, GPIO4);
+        vTaskDelay (pdMS_TO_TICKS (1000));
+        gpio_set (GPIOA, GPIO4);
+    }
+}
+
+void power_shutdown (void)
+{
+    xTaskNotifyGive (shutdown_task_handle);
+}
+
+bool power_is_shutdown (void)
+{
+    return gpio_get (GPIOA, GPIO5) ? false : true;
+}
+
 void power_init (void)
 {
     rcc_periph_clock_enable (RCC_GPIOA);
@@ -130,14 +159,32 @@ void power_init (void)
                    GPIO_CNF_INPUT_PULL_UPDOWN,
                    GPIO7 | GPIO8); // PWR_SENSE, RUN_PG
 
+    gpio_set (GPIOA, GPIO4);
+
+    gpio_set_mode (GPIOA,
+                   GPIO_MODE_OUTPUT_2_MHZ,
+                   GPIO_CNF_OUTPUT_OPENDRAIN,
+                   GPIO4); // SHUTDOWN
+
+    gpio_set_mode (GPIOA,
+                   GPIO_MODE_INPUT,
+                   GPIO_CNF_INPUT_FLOAT,
+                   GPIO5); // RUNNING
+
     xTaskCreate (power_task,
                 "power",
                  100,
                  NULL,
                  configMAX_PRIORITIES - 1,
                  NULL);
-}
 
+    xTaskCreate (shutdown_task,
+                 "shutdown",
+                 200,
+                 NULL,
+                 configMAX_PRIORITIES - 1,
+                 &shutdown_task_handle);
+}
 
 /*
  * vi:ts=4 sw=4 expandtab
