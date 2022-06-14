@@ -37,14 +37,6 @@ static void trace_msg (const struct canmsg *msg)
                   msg->dlen);
 }
 
-/* Assume native little endian (ARM can be either, but usually this).
- * Network byte order is big endian.
- */
-static uint16_t htons (uint16_t val)
-{
-    return (val << 8) | (val >> 8);
-}
-
 static int send_msg (const struct canmsg *msg)
 {
     trace_msg (msg);
@@ -114,31 +106,6 @@ static void canservices_power (const struct canmsg *request)
 
     if (send_msg (&msg) < 0)
         trace_printf ("can-rx: error sending power response\n");
-    return;
-error:
-    send_nak (request);
-}
-
-static void canservices_power_measure (const struct canmsg *request)
-{
-    struct canmsg msg = *request;
-    uint16_t ma;
-
-    if (request->type != CANMSG_TYPE_RO)
-        goto error;
-    if (request->dlen != 0)
-        goto error;
-
-    msg.type = CANMSG_TYPE_ACK;
-    msg.dst = msg.src;
-    msg.src = srcaddr;
-
-    power_get_measurements (&ma, NULL);
-    msg.dlen = 2;
-    *(uint16_t *)msg.data = htons (ma);
-
-    if (send_msg (&msg) < 0)
-        trace_printf ("can-rx: error sending power measure response\n");
     return;
 error:
     send_nak (request);
@@ -277,9 +244,6 @@ static void canservices_rx_task (void *arg __attribute((unused)))
                             break;
                         case CANMSG_OBJ_POWER:
                             canservices_power (&msg);
-                            break;
-                        case CANMSG_OBJ_POWER_MEASURE:
-                            canservices_power_measure (&msg);
                             break;
                         case CANMSG_OBJ_CONSOLECONN:
                             canservices_consoleconn (&msg);
