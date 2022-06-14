@@ -36,6 +36,7 @@ static struct strtab objstr[] = {
     { CANMSG_OBJ_CONSOLESEND,    "CONSOLE-SEND" },
     { CANMSG_OBJ_CONSOLERECV,    "CONSOLE-RECV" },
     { CANMSG_OBJ_CONSOLEDISC,    "CONSOLE-DISC" },
+    { CANMSG_OBJ_SHUTDOWN,       "SHUTDOWN" },
 };
 
 static const char *strtab_lookup (int id, const struct strtab *tab, size_t size)

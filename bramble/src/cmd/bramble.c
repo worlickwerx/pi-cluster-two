@@ -13,6 +13,7 @@ int canping_main (int argc, char **argv);
 int slot_main (int argc, char **argv);
 int version_main (int argc, char **argv);
 int power_main (int argc, char **argv);
+int shutdown_main (int argc, char **argv);
 int console_main (int argc, char **argv);
 int led_main (int argc, char **argv);
 int usage_bargraph_main (int argc, char **argv);
@@ -31,6 +32,7 @@ static const struct subcmd builtins[] = {
     { "powerman-helper",    "power on/off slots",  power_main},
     { "conman-helper",      "netcat-like CAN console access",  console_main},
     { "led",                "update LED matrix display",  led_main},
+    { "shutdown",           "shut down OS",  shutdown_main},
     { "usage-bargraph",
       "show cpu utilization on LED matrix",
        usage_bargraph_main},
