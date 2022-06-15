@@ -100,17 +100,50 @@ void power_set_state (bool val)
 
 static void power_task (void *args __attribute((unused)))
 {
+    const int loop_msec = 10;
+    const int button_short_msec = 30; // debounce limit
+    const int button_long_msec = 2000;
+    bool button_press = false;
+    int button_msec = 0;
+
     pi_global_en_set (flipflop_get ());
 
     for (;;) {
+        /* Ensure that the flipflop and the red LED track the RUN_PG.
+         */
         bool run_pg = pi_run_pg_get ();
         if (run_pg != flipflop_get ())
             flipflop_toggle ();
-
         matrix_set_red (run_pg ? 1 : 0);
 
-        vTaskDelay (pdMS_TO_TICKS (100));
+        /* Perform OS friendly shutdown on short press of power button,
+         * or hard power off on long press.  Or if the power is off, turn it
+         * on with a short press.
+         */
+        if (!gpio_get (GPIOA, GPIO3)) { // button depressed
+            if (button_press)
+                button_msec += loop_msec;
+            else {
+                button_press = true;
+                button_msec = 0;
+            }
+            if (button_msec >= button_long_msec) {
+                power_set_state (false);
+            }
+            else if (button_msec >= button_short_msec) {
+                if (power_get_state ()) {
+                    power_shutdown ();
+                }
+                else {
+                    power_set_state (true);
+                }
+            }
+        }
+        else { // button released
+            button_press = false;
+        }
 
+        vTaskDelay (pdMS_TO_TICKS (loop_msec));
     }
 }
 
@@ -170,6 +203,12 @@ void power_init (void)
                    GPIO_MODE_INPUT,
                    GPIO_CNF_INPUT_FLOAT,
                    GPIO5); // RUNNING
+
+    gpio_set_mode (GPIOA,
+                   GPIO_MODE_INPUT,
+                   GPIO_CNF_INPUT_PULL_UPDOWN,
+                   GPIO3); // BUTTON
+    gpio_set (GPIOA, GPIO3); // pull up
 
     xTaskCreate (power_task,
                 "power",
