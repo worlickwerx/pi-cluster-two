@@ -8,7 +8,8 @@ void power_init (void);
 void power_set_state (bool enable); // can sleep
 bool power_get_state (void);
 
-void power_get_measurements (uint16_t *ma, uint16_t *mv);
+void power_shutdown (void);
+bool power_is_shutdown (void);
 
 #endif /* !_FIRMWARE_POWER_H */
 

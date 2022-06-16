@@ -32,11 +32,11 @@ static struct strtab typestr[] = {
 static struct strtab objstr[] = {
     { CANMSG_OBJ_ECHO,           "ECHO" },
     { CANMSG_OBJ_POWER,          "POWER" },
-    { CANMSG_OBJ_POWER_MEASURE,  "POWER-MEASURE" },
     { CANMSG_OBJ_CONSOLECONN,    "CONSOLE-CONN" },
     { CANMSG_OBJ_CONSOLESEND,    "CONSOLE-SEND" },
     { CANMSG_OBJ_CONSOLERECV,    "CONSOLE-RECV" },
     { CANMSG_OBJ_CONSOLEDISC,    "CONSOLE-DISC" },
+    { CANMSG_OBJ_SHUTDOWN,       "SHUTDOWN" },
 };
 
 static const char *strtab_lookup (int id, const struct strtab *tab, size_t size)
