@@ -9935,7 +9935,7 @@
     (property "Value" "100uF 16V" (id 1) (at 12.7 193.04 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "" (id 2) (at 25.0952 194.31 0)
+    (property "Footprint" "Capacitor_SMD:CP_Elec_3x5.3" (id 2) (at 25.0952 194.31 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 24.13 190.5 0)
@@ -9950,7 +9950,7 @@
     (uuid 84c3fabc-e977-49be-994f-37fed9bce5e7)
     (property "Reference" "D2" (id 0) (at 248.793 13.97 0))
     (property "Value" "LED_Dual_AAKK" (id 1) (at 248.793 16.51 0))
-    (property "Footprint" "" (id 2) (at 249.682 25.4 0)
+    (property "Footprint" "LED_THT:LED_BL-FL7680RGB" (id 2) (at 249.682 25.4 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 249.682 25.4 0)
@@ -10247,7 +10247,7 @@
       (reference "#PWR0134") (unit 1) (value "GND") (footprint "")
     )
     (path "/5b3c9143-4a88-4586-a41d-71dcd6e39798"
-      (reference "C1") (unit 1) (value "100uF 16V") (footprint "")
+      (reference "C1") (unit 1) (value "100uF 16V") (footprint "Capacitor_SMD:CP_Elec_3x5.3")
     )
     (path "/00000000-0000-0000-0000-00005f6ce1bf"
       (reference "C2") (unit 1) (value "10uF 16V") (footprint "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder")
@@ -10310,7 +10310,7 @@
       (reference "D1") (unit 1) (value "LED_RED") (footprint "LED_SMD:LED_0805_2012Metric_Pad1.15x1.40mm_HandSolder")
     )
     (path "/84c3fabc-e977-49be-994f-37fed9bce5e7"
-      (reference "D2") (unit 1) (value "LED_Dual_AAKK") (footprint "")
+      (reference "D2") (unit 1) (value "LED_Dual_AAKK") (footprint "LED_THT:LED_BL-FL7680RGB")
     )
     (path "/00000000-0000-0000-0000-00005f847300"
       (reference "D3") (unit 1) (value "LED_GREEN") (footprint "LED_SMD:LED_0805_2012Metric_Pad1.15x1.40mm_HandSolder")
