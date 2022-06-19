@@ -7,7 +7,7 @@
   (title_block
     (title "Molliebus Pi Carrier")
     (date "2020-01-24")
-    (rev "2")
+    (rev "3")
     (company "WorlickWerx")
     (comment 1 "SPDX-License-Identifier: CERN-OHL-1.2")
   )
