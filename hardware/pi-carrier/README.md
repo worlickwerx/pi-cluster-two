@@ -8,4 +8,4 @@ GPIO pins and additional backplane pins.
 ![Image of pi-parport latest](eurocard.png)
 
 See also:
-* [schematic](schematic.pdf)
+* [schematic](schematic_v2.pdf)
