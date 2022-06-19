@@ -29,7 +29,6 @@ libltdl
 /config/ltversion.m4
 /config/lt~obsolete.m4
 
-
 # Object files
 *.o
 *.ko
@@ -63,3 +62,8 @@ libltdl
 # Debug files
 *.dSYM/
 *.su
+
+# Kicad
+*.kicad_prl
+*-backups
+*.net
