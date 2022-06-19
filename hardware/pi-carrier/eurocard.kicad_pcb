@@ -478,7 +478,7 @@
     )
   )
 
-  (footprint "00_eurocard:LED_Dual_RG_discrete" (layer "F.Cu")
+  (footprint "00_eurocard:LED_Dual_RG_discrete" locked (layer "F.Cu")
     (tedit 5FBB4B36) (tstamp 00000000-0000-0000-0000-00005f101bae)
     (at 55.08 134.43 90)
     (path "/00000000-0000-0000-0000-00005f119cd6")
@@ -510,7 +510,7 @@
     )
   )
 
-  (footprint "00_eurocard:DIP-12_W7.62mm_right_angle" (layer "F.Cu")
+  (footprint "00_eurocard:DIP-12_W7.62mm_right_angle" locked (layer "F.Cu")
     (tedit 5FBB2430) (tstamp 00000000-0000-0000-0000-00005f14a2cf)
     (at 68.88 111.33)
     (path "/00000000-0000-0000-0000-00005ea6059f")
@@ -625,7 +625,7 @@
     )
   )
 
-  (footprint "00_eurocard:DIN41612_C_3x32_Male_Horizontal_THT" (layer "F.Cu")
+  (footprint "00_eurocard:DIN41612_C_3x32_Male_Horizontal_THT" locked (layer "F.Cu")
     (tedit 5FBAE7AA) (tstamp 00000000-0000-0000-0000-00005f1a021e)
     (at 209.766 55.649 -90)
     (descr "DIN41612 connector, type C, Horizontal, 3 rows 32 pins wide, https://www.erni-x-press.com/de/downloads/kataloge/englische_kataloge/erni-din41612-iec60603-2-e.pdf")
@@ -2354,7 +2354,7 @@
     (pad "" np_thru_hole circle locked (at 0 0) (size 2.7 2.7) (drill 2.7) (layers *.Cu *.Mask) (tstamp 1f7f4593-c78f-49fb-9124-239e2d12c8af))
   )
 
-  (footprint "00_eurocard:Rasp_pi4_mounted" (layer "F.Cu")
+  (footprint "00_eurocard:Rasp_pi4_mounted" locked (layer "F.Cu")
     (tedit 5FBB42A2) (tstamp 00000000-0000-0000-0000-00005fac4094)
     (at 55.61 110.48 90)
     (path "/00000000-0000-0000-0000-00005eeae6eb")
