@@ -7903,7 +7903,7 @@
     (in_bom yes) (on_board yes)
     (uuid 56d7d8d6-b695-4376-86f2-8b14665ae311)
     (property "Reference" "D1" (id 0) (at 105.41 58.42 0))
-    (property "Value" "1N5819" (id 1) (at 102.362 56.388 0))
+    (property "Value" "1N5819W" (id 1) (at 102.362 56.388 0))
     (property "Footprint" "Diode_SMD:D_SOD-123F" (id 2) (at 102.616 59.944 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -8580,7 +8580,7 @@
       (reference "C20") (unit 1) (value "100nF 16V") (footprint "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder")
     )
     (path "/56d7d8d6-b695-4376-86f2-8b14665ae311"
-      (reference "D1") (unit 1) (value "1N5819") (footprint "Diode_SMD:D_SOD-123F")
+      (reference "D1") (unit 1) (value "1N5819W") (footprint "Diode_SMD:D_SOD-123F")
     )
     (path "/84c3fabc-e977-49be-994f-37fed9bce5e7"
       (reference "D2") (unit 1) (value "LED_Dual_AAKK") (footprint "00_eurocard:LED_Dual_RG_discrete")
