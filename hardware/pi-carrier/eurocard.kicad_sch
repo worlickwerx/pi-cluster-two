@@ -7333,7 +7333,7 @@
     (property "Value" "Conn_02x20_Odd_Even" (id 1) (at 245.11 103.4796 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_2x20_P2.54mm_Vertical" (id 2) (at 243.84 129.54 0)
+    (property "Footprint" "00_eurocard:Rasp_pi_hat_socket" (id 2) (at 243.84 129.54 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 243.84 129.54 0)
@@ -8545,7 +8545,7 @@
       (reference "J3") (unit 1) (value "Conn_01x03") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical")
     )
     (path "/00000000-0000-0000-0000-00006295af49"
-      (reference "J4") (unit 1) (value "Conn_02x20_Odd_Even") (footprint "Connector_PinHeader_2.54mm:PinHeader_2x20_P2.54mm_Vertical")
+      (reference "J4") (unit 1) (value "Conn_02x20_Odd_Even") (footprint "00_eurocard:Rasp_pi_hat_socket")
     )
     (path "/00000000-0000-0000-0000-00005eeae6eb"
       (reference "J5") (unit 1) (value "Conn_02x20_raspberry_pi4B") (footprint "00_eurocard:Rasp_pi4_mounted")
