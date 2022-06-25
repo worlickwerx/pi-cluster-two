@@ -44,12 +44,22 @@ static void init_task (void *args __attribute((unused)))
 
 int main (void)
 {
+    bool por_flag = false;
+
     rcc_clock_setup_in_hse_8mhz_out_72mhz ();    // Use this for "blue pill"
+
+    /* Pi power control subsystem needs to know if this is a board power-up
+     * vs other reset so it can set GLOBAL_EN to an appropriate initial state.
+     * N.B. power flags must be cleared since they persist across reset.
+     */
+    if ((RCC_CSR & RCC_CSR_PORRSTF))
+        por_flag = true;
+    RCC_CSR |= RCC_CSR_RMVF;
 
     blink_init ();
     matrix_init ();
     address_init ();
-    power_init ();
+    power_init (por_flag);
     serial_init ();
     canbus_init ();
     canservices_init ();

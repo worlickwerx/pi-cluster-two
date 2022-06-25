@@ -3,7 +3,7 @@
 #ifndef _FIRMWARE_POWER_H
 #define _FIRMWARE_POWER_H
 
-void power_init (void);
+void power_init (bool por_flag);
 
 void power_set_state (bool enable); // can sleep
 bool power_get_state (void);
