@@ -5330,7 +5330,7 @@
     (property "Value" "SN74LVC1G07DBVR" (id 1) (at 124.46 25.4 0)
       (effects (font (size 0.9906 0.9906)) (justify left))
     )
-    (property "Footprint" "digikey-footprints:SOT-753" (id 2) (at 139.7 24.13 0)
+    (property "Footprint" "00_eurocard:SOT-753" (id 2) (at 139.7 24.13 0)
       (effects (font (size 1.524 1.524)) (justify left) hide)
     )
     (property "Datasheet" "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Fsn74lvc1g07" (id 3) (at 139.7 21.59 0)
@@ -8274,7 +8274,7 @@
       (reference "R16") (unit 1) (value "100K") (footprint "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder")
     )
     (path "/00000000-0000-0000-0000-00005e488a75"
-      (reference "U1") (unit 1) (value "SN74LVC1G07DBVR") (footprint "digikey-footprints:SOT-753")
+      (reference "U1") (unit 1) (value "SN74LVC1G07DBVR") (footprint "00_eurocard:SOT-753")
     )
     (path "/00000000-0000-0000-0000-0000632f3c6c"
       (reference "U2") (unit 1) (value "TCAN332DR") (footprint "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm")
