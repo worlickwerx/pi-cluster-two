@@ -7579,7 +7579,7 @@
     (property "Value" "100uF 16V" (id 1) (at 12.7 193.04 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "Capacitor_SMD:CP_Elec_3x5.3" (id 2) (at 25.0952 194.31 0)
+    (property "Footprint" "Capacitor_SMD:CP_Elec_6.3x7.7" (id 2) (at 25.0952 194.31 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 24.13 190.5 0)
@@ -8180,7 +8180,7 @@
       (reference "BT1") (unit 1) (value "CR2032") (footprint "Battery:BatteryHolder_Keystone_1060_1x2032")
     )
     (path "/5b3c9143-4a88-4586-a41d-71dcd6e39798"
-      (reference "C1") (unit 1) (value "100uF 16V") (footprint "Capacitor_SMD:CP_Elec_3x5.3")
+      (reference "C1") (unit 1) (value "100uF 16V") (footprint "Capacitor_SMD:CP_Elec_6.3x7.7")
     )
     (path "/00000000-0000-0000-0000-00005f6ce1bf"
       (reference "C2") (unit 1) (value "10uF 16V") (footprint "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder")
