@@ -5653,7 +5653,7 @@
     (property "Value" "SN74AHCT125PWR" (id 1) (at 177.8 29.21 0)
       (effects (font (size 0.9906 0.9906)))
     )
-    (property "Footprint" "digikey-footprints:DIP-14_W3mm" (id 2) (at 191.77 38.1 0)
+    (property "Footprint" "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm" (id 2) (at 191.77 38.1 0)
       (effects (font (size 1.524 1.524)) (justify left) hide)
     )
     (property "Datasheet" "http://www.ti.com/general/docs/suppproductinfo.tsp?distId=10&gotoUrl=http%3A%2F%2Fwww.ti.com%2Flit%2Fgpn%2Fsn74ahct125" (id 3) (at 191.77 35.56 0)
@@ -8286,7 +8286,7 @@
       (reference "U6") (unit 1) (value "STM32F103C8T6") (footprint "Package_QFP:LQFP-48_7x7mm_P0.5mm")
     )
     (path "/00000000-0000-0000-0000-00005ecd43f7"
-      (reference "U8") (unit 1) (value "SN74AHCT125PWR") (footprint "digikey-footprints:DIP-14_W3mm")
+      (reference "U8") (unit 1) (value "SN74AHCT125PWR") (footprint "Package_SO:SSOP-14_5.3x6.2mm_P0.65mm")
     )
     (path "/00000000-0000-0000-0000-00005eabaf43"
       (reference "U9") (unit 1) (value "MAX7219CWG") (footprint "Package_SO:SOIC-24W_7.5x15.4mm_P1.27mm")
