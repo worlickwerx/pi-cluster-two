@@ -2,21 +2,13 @@
 
 /* power.c - control power of raspberry pi
  *
- * power switch
- * - pulse PA6 to clock flip flop (clocked on rising edge)
+ * pi pmic
  * - write PB14 (0=off, 1=on), connected to pi GLOBAL_EN
- *
- * power status
- * - read PA7 (0=off, 1=on), connected to flip flop Q output
  * - read PA8 (0=off, 1=on), connecting to pi RUN_PG
  *
- * shutdown
+ * soft shutdown
  * - pulse PA4 low and then high to trigger gpio-shutdown overlay on pi
  * - wait for PA5 to transition high to low indicating shutdown complete
- *
- * The flip flop powers up in a known (off) state, then retains its
- * state across a STM32 reset.  On startup, set GLOBAL_EN to match flip flop Q,
- * and toggle flip flop on each power state change.
  *
  * N.B. RUN_PG is 3V3, but GLOBAL_EN is pulled externally to 5V.
  * PB14 is a 5V tolerant pin.
@@ -61,19 +53,6 @@ static bool pi_global_en_get (void)
     return false;
 }
 
-static void flipflop_toggle (void)
-{
-    gpio_set (GPIOA, GPIO6);
-    gpio_clear (GPIOA, GPIO6);
-}
-
-static bool flipflop_get (void)
-{
-    if (gpio_get (GPIOA, GPIO7))
-        return true;
-    return false;
-}
-
 bool power_get_state (void)
 {
     return pi_run_pg_get ();
@@ -106,15 +85,10 @@ static void power_task (void *args __attribute((unused)))
     bool button_press = false;
     int button_msec = 0;
 
-    pi_global_en_set (flipflop_get ());
-
     for (;;) {
-        /* Ensure that the flipflop and the red LED track the RUN_PG.
+        /* Ensure that the red LED tracks RUN_PG.
          */
-        bool run_pg = pi_run_pg_get ();
-        if (run_pg != flipflop_get ())
-            flipflop_toggle ();
-        matrix_set_red (run_pg ? 1 : 0);
+        matrix_set_red (pi_run_pg_get () ? 1 : 0);
 
         /* Perform OS friendly shutdown on short press of power button,
          * or hard power off on long press.  Or if the power is off, turn it
@@ -170,7 +144,7 @@ bool power_is_shutdown (void)
     return gpio_get (GPIOA, GPIO5) ? false : true;
 }
 
-void power_init (void)
+void power_init (bool por_flag)
 {
     rcc_periph_clock_enable (RCC_GPIOA);
     rcc_periph_clock_enable (RCC_GPIOB);
@@ -183,16 +157,11 @@ void power_init (void)
                    GPIO14); // GLOBAL_EN
 
     gpio_set_mode (GPIOA,
-                   GPIO_MODE_OUTPUT_2_MHZ,
-                   GPIO_CNF_OUTPUT_PUSHPULL,
-                   GPIO6); // PWR_TOGGLE
-
-    gpio_set_mode (GPIOA,
                    GPIO_MODE_INPUT,
                    GPIO_CNF_INPUT_PULL_UPDOWN,
-                   GPIO7 | GPIO8); // PWR_SENSE, RUN_PG
+                   GPIO8); // RUN_PG
 
-    gpio_set (GPIOA, GPIO4);
+    gpio_set (GPIOA, GPIO4); // careful not to take SHUTDOWN low during init
 
     gpio_set_mode (GPIOA,
                    GPIO_MODE_OUTPUT_2_MHZ,
@@ -209,6 +178,12 @@ void power_init (void)
                    GPIO_CNF_INPUT_PULL_UPDOWN,
                    GPIO3); // BUTTON
     gpio_set (GPIOA, GPIO3); // pull up
+
+    /* Pull GLOBAL_EN low if this is board power-on, or if RUN_PG says pi
+     * is not currently powered up.
+     */
+    if (por_flag || !pi_run_pg_get ())
+        pi_global_en_set (false);
 
     xTaskCreate (power_task,
                 "power",
