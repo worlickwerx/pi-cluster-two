@@ -8077,7 +8077,7 @@
     (property "Reference" "C13" (id 0) (at 76.327 105.791 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "20pf" (id 1) (at 80.137 101.346 90)
+    (property "Value" "8pf" (id 1) (at 80.137 101.346 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Footprint" "Capacitor_SMD:C_0603_1608Metric" (id 2) (at 78.232 101.6508 0)
@@ -8166,7 +8166,7 @@
     (property "Reference" "Y1" (id 0) (at 82.042 98.806 90)
       (effects (font (size 1.27 1.27)) (justify right))
     )
-    (property "Value" "ABS07" (id 1) (at 86.487 98.806 90)
+    (property "Value" "ABS07-32.768KHZ-6-T" (id 1) (at 78.74 103.8352 90)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Footprint" "Crystal:Crystal_SMD_3215-2Pin_3.2x1.5mm" (id 2) (at 83.312 98.806 0)
@@ -8645,7 +8645,7 @@
     (property "Reference" "C6" (id 0) (at 75.692 98.171 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "20pf" (id 1) (at 80.137 93.726 90)
+    (property "Value" "8pf" (id 1) (at 80.137 93.726 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Footprint" "Capacitor_SMD:C_0603_1608Metric" (id 2) (at 78.232 94.0308 0)
@@ -8975,7 +8975,7 @@
       (reference "C5") (unit 1) (value "100nF 16V") (footprint "Capacitor_SMD:C_0603_1608Metric")
     )
     (path "/d722c931-abc0-4448-bdf4-321f37863a97"
-      (reference "C6") (unit 1) (value "20pf") (footprint "Capacitor_SMD:C_0603_1608Metric")
+      (reference "C6") (unit 1) (value "8pf") (footprint "Capacitor_SMD:C_0603_1608Metric")
     )
     (path "/00000000-0000-0000-0000-00005ee4c209"
       (reference "C7") (unit 1) (value "100nF 16V") (footprint "Capacitor_SMD:C_0603_1608Metric")
@@ -8993,7 +8993,7 @@
       (reference "C12") (unit 1) (value "100nF 16V") (footprint "Capacitor_SMD:C_0603_1608Metric")
     )
     (path "/2c4e9f3e-b7f0-4d93-8152-df5a959ae4a3"
-      (reference "C13") (unit 1) (value "20pf") (footprint "Capacitor_SMD:C_0603_1608Metric")
+      (reference "C13") (unit 1) (value "8pf") (footprint "Capacitor_SMD:C_0603_1608Metric")
     )
     (path "/00000000-0000-0000-0000-00005f7ef160"
       (reference "C14") (unit 1) (value "100nF 16V") (footprint "Capacitor_SMD:C_0603_1608Metric")
@@ -9158,7 +9158,7 @@
       (reference "X2") (unit 1) (value "ASE-8.000MHz-LC") (footprint "Oscillator:Oscillator_SMD_Abracon_ASE-4Pin_3.2x2.5mm")
     )
     (path "/4a56290b-e44d-4245-8f59-6421930de3a9"
-      (reference "Y1") (unit 1) (value "ABS07") (footprint "Crystal:Crystal_SMD_3215-2Pin_3.2x1.5mm")
+      (reference "Y1") (unit 1) (value "ABS07-32.768KHZ-6-T") (footprint "Crystal:Crystal_SMD_3215-2Pin_3.2x1.5mm")
     )
   )
 )
