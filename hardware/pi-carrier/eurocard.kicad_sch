@@ -6347,7 +6347,7 @@
     (property "Value" "Lite-on LTP747KR" (id 1) (at 241.3 69.85 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "Package_DIP:DIP-12_W7.62mm_Socket" (id 2) (at 247.65 40.64 0)
+    (property "Footprint" "00_eurocard:DIP-12_W7.62mm_right_angle" (id 2) (at 247.65 40.64 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "" (id 3) (at 247.65 40.64 0)
@@ -9819,7 +9819,7 @@
       (reference "U9") (unit 1) (value "MAX7219CWG") (footprint "Package_SO:SOIC-24W_7.5x15.4mm_P1.27mm")
     )
     (path "/00000000-0000-0000-0000-00005ea6059f"
-      (reference "U10") (unit 1) (value "Lite-on LTP747KR") (footprint "Package_DIP:DIP-12_W7.62mm_Socket")
+      (reference "U10") (unit 1) (value "Lite-on LTP747KR") (footprint "00_eurocard:DIP-12_W7.62mm_right_angle")
     )
     (path "/00000000-0000-0000-0000-000063d2a82d"
       (reference "U11") (unit 1) (value "TCAN332DR") (footprint "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm")
