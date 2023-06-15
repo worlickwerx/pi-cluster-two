@@ -69,7 +69,7 @@ void power_set_state (bool val)
         vTaskDelay (pdMS_TO_TICKS (1));
     }
 
-    /* Set GLOAL_EN to desired state, then wait for RUN_PG to change before
+    /* Set GLOBAL_EN to desired state, then wait for RUN_PG to change before
      * returning.
      */
     pi_global_en_set (val);
