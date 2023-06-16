@@ -22,6 +22,8 @@
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/gpio.h>
 #include <libopencm3/stm32/adc.h>
+#include <libopencm3/stm32/f1/bkp.h>
+#include <libopencm3/stm32/f1/pwr.h>
 
 #include "trace.h"
 #include "power.h"
@@ -53,6 +55,18 @@ static bool pi_global_en_get (void)
     return false;
 }
 
+static uint16_t backup_get_dr1 (void)
+{
+    return BKP_DR1;
+}
+
+static void backup_set_dr1 (uint16_t val)
+{
+    PWR_CR |= PWR_CR_DBP;    // write access enable
+    BKP_DR1 = val;
+    PWR_CR &= ~PWR_CR_DBP;   // write access disable
+}
+
 bool power_get_state (void)
 {
     return pi_run_pg_get ();
@@ -75,6 +89,8 @@ void power_set_state (bool val)
     pi_global_en_set (val);
     while (pi_run_pg_get () != val)
         vTaskDelay (pdMS_TO_TICKS (1));
+
+    backup_set_dr1 (val ? 1 : 0);
 }
 
 static void power_task (void *args __attribute((unused)))
@@ -149,6 +165,11 @@ void power_init (bool por_flag)
     rcc_periph_clock_enable (RCC_GPIOA);
     rcc_periph_clock_enable (RCC_GPIOB);
 
+    /* Enable power and backup interface clocks
+     */
+    rcc_peripheral_enable_clock (&RCC_APB1ENR, RCC_APB1ENR_PWREN);
+    rcc_peripheral_enable_clock (&RCC_APB1ENR, RCC_APB1ENR_BKPEN);
+
     /* Configure inputs
      */
     gpio_set_mode (GPIOA,
@@ -167,7 +188,8 @@ void power_init (bool por_flag)
 
     /* Configure outputs
      * N.B. the GLOBAL_EN output will revert to an input during reset,
-     * possibly allowing the pi PMIC to turn on.
+     * possibly allowing the pi PMIC to turn on briefly until we resolve
+     * it below.
      */
     gpio_set (GPIOA, GPIO4);
     gpio_set_mode (GPIOA,
@@ -182,10 +204,15 @@ void power_init (bool por_flag)
                    GPIO14); // GLOBAL_EN (pulled to +5V with 100K on the pi)
 
     /* Lower GLOBAL_EN if this is a power on reset (vs warm reset)
-     * OR if RUN_PG reads low indicating power is already off.
+     * OR if previous state from backup register is off.
+     * Backup register preserves last power state across a reset
+     * (only a warm reset if battery is not attached).
      */
-    if (por_flag || !pi_run_pg_get ())
+    if (por_flag || backup_get_dr1 () == 0)
         gpio_clear (GPIOB, GPIO14);
+
+    if (por_flag)
+        backup_set_dr1 (0);
 
     xTaskCreate (power_task,
                 "power",
