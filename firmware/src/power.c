@@ -149,41 +149,43 @@ void power_init (bool por_flag)
     rcc_periph_clock_enable (RCC_GPIOA);
     rcc_periph_clock_enable (RCC_GPIOB);
 
-    gpio_set (GPIOB, GPIO14); // careful not to take GLOBAL_EN low during init
-
-    gpio_set_mode (GPIOB,
-                   GPIO_MODE_OUTPUT_2_MHZ,
-                   GPIO_CNF_OUTPUT_OPENDRAIN,
-                   GPIO14); // GLOBAL_EN
-
+    /* Configure inputs
+     */
     gpio_set_mode (GPIOA,
                    GPIO_MODE_INPUT,
-                   GPIO_CNF_INPUT_PULL_UPDOWN,
-                   GPIO8); // RUN_PG
-
-    gpio_set (GPIOA, GPIO4); // careful not to take SHUTDOWN low during init
-
-    gpio_set_mode (GPIOA,
-                   GPIO_MODE_OUTPUT_2_MHZ,
-                   GPIO_CNF_OUTPUT_OPENDRAIN,
-                   GPIO4); // SHUTDOWN
-
+                   GPIO_CNF_INPUT_FLOAT,
+                   GPIO8); // RUN_PG (pulled to +3V3 with 10K on the pi)
     gpio_set_mode (GPIOA,
                    GPIO_MODE_INPUT,
                    GPIO_CNF_INPUT_FLOAT,
                    GPIO5); // RUNNING
-
     gpio_set_mode (GPIOA,
                    GPIO_MODE_INPUT,
                    GPIO_CNF_INPUT_PULL_UPDOWN,
                    GPIO3); // BUTTON
     gpio_set (GPIOA, GPIO3); // pull up
 
-    /* Pull GLOBAL_EN low if this is board power-on, or if RUN_PG says pi
-     * is not currently powered up.
+    /* Configure outputs
+     * N.B. the GLOBAL_EN output will revert to an input during reset,
+     * possibly allowing the pi PMIC to turn on.
+     */
+    gpio_set (GPIOA, GPIO4);
+    gpio_set_mode (GPIOA,
+                   GPIO_MODE_OUTPUT_2_MHZ,
+                   GPIO_CNF_OUTPUT_OPENDRAIN,
+                   GPIO4); // SHUTDOWN (active low)
+
+    gpio_set (GPIOB, GPIO14);
+    gpio_set_mode (GPIOB,
+                   GPIO_MODE_OUTPUT_2_MHZ,
+                   GPIO_CNF_OUTPUT_OPENDRAIN,
+                   GPIO14); // GLOBAL_EN (pulled to +5V with 100K on the pi)
+
+    /* Lower GLOBAL_EN if this is a power on reset (vs warm reset)
+     * OR if RUN_PG reads low indicating power is already off.
      */
     if (por_flag || !pi_run_pg_get ())
-        pi_global_en_set (false);
+        gpio_clear (GPIOB, GPIO14);
 
     xTaskCreate (power_task,
                 "power",
