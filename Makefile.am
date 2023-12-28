@@ -54,4 +54,9 @@ EXTRA_DIST = \
     LICENSE \
     LICENSE.hardware \
     scripts/install-deps-deb.sh \
+    scripts/debbuild.sh \
     $(powermanconf_DATA)
+
+export DEB_BUILD_OPTIONS ?= nocheck terse
+deb: debian scripts/debbuild.sh
+	+@$(top_srcdir)/scripts/debbuild.sh $(abs_top_srcdir)

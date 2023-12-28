@@ -1,0 +1,14 @@
+Source: bramble
+Section: devel
+Priority: optional
+Maintainer: Jim Garlick <garlick.jim@gmail.com>
+Standards-Version: 4.1.2
+Build-Depends:
+  debhelper (>= 10),
+  libev-dev
+
+Homepage: https://github.com/worlickwerx/pi-cluster-two
+Package: bramble
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description:  Pi cluster utilities
