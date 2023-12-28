@@ -1,5 +1,7 @@
 ACLOCAL_AMFLAGS = -I config
 
+SUBDIRS = .
+
 #if HAVE_SYSTEMD
 systemdsystemunit_DATA = etc/bramble.service
 #endif
@@ -47,4 +49,9 @@ powermanconfdir = $(sysconfdir)/powerman
 powermanconf_DATA = \
     etc/bramble.dev
 
-EXTRA_DIST = $(powermanconf_DATA)
+EXTRA_DIST = \
+    README.md \
+    LICENSE \
+    LICENSE.hardware \
+    scripts/install-deps-deb.sh \
+    $(powermanconf_DATA)

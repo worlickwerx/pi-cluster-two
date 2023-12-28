@@ -24,7 +24,7 @@ SRCFILES	= main.c \
 		  libwwg/miniprintf.c
 LDSCRIPT	= stm32f103c8t6.ld
 CFLAGS		+= -Ilibwwg
-CFLAGS		+= -I../../bramble/src/libbramble
+CFLAGS		+= -I../../src/libbramble
 
 # Enable stack protection and FreeRTOS assertions
 #CFLAGS	+= -DDEBUG_FIRMWARE
