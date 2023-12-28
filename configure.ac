@@ -2,11 +2,11 @@ AC_INIT([bramble],
         m4_esyscmd([git describe --always | awk '/.*/ {sub(/^v/, ""); printf "%s",$1; exit}']))
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_MACRO_DIR([config])
-AC_CANONICAL_SYSTEM
+AC_CANONICAL_TARGET
 
 AM_INIT_AUTOMAKE([subdir-objects tar-pax foreign])
 AM_SILENT_RULES([yes])
-AM_CONFIG_HEADER([config/config.h])
+AC_CONFIG_HEADERS([config/config.h])
 AM_MAINTAINER_MODE([enable])
 
 AC_DEFINE([_GNU_SOURCE], 1,
@@ -21,14 +21,13 @@ AC_SUBST([AX_MAJOR_VERSION])
 AC_SUBST([AX_MINOR_VERSION])
 AC_SUBST([AX_POINT_VERSION])
 
-AC_PROG_CC_C99
+AC_PROG_CC
 AM_PROG_CC_C_O
 
 X_AC_EXPAND_INSTALL_DIRS
 RRA_WITH_SYSTEMD_UNITDIR
 
 LT_INIT
-AC_HEADER_STDC
 
 AC_SEARCH_LIBS([ev_run], [ev], [], [
   AC_MSG_ERROR([Please install libev development package])
