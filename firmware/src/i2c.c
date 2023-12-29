@@ -1,4 +1,11 @@
-/* SPDX-License-Identifier: GPL-3.0-or-later */
+/************************************************************\
+ * Copyright 2023 Jim Garlick <garlick.jim@gmail.com>
+ *
+ * This file is part of the pi cluster II project
+ * https://github.com/worlickwerx/pi-cluster-two
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+\************************************************************/
 
 /* i2c.c - I2C2 (follower) connected to pi (leader)
  *
