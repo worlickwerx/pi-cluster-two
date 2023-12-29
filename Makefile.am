@@ -1,5 +1,7 @@
 ACLOCAL_AMFLAGS = -I config
 
+SUBDIRS = .
+
 #if HAVE_SYSTEMD
 systemdsystemunit_DATA = etc/bramble.service
 #endif
@@ -47,4 +49,14 @@ powermanconfdir = $(sysconfdir)/powerman
 powermanconf_DATA = \
     etc/bramble.dev
 
-EXTRA_DIST = $(powermanconf_DATA)
+EXTRA_DIST = \
+    README.md \
+    LICENSE \
+    LICENSE.hardware \
+    scripts/install-deps-deb.sh \
+    scripts/debbuild.sh \
+    $(powermanconf_DATA)
+
+export DEB_BUILD_OPTIONS ?= nocheck terse
+deb: debian scripts/debbuild.sh
+	+@$(top_srcdir)/scripts/debbuild.sh $(abs_top_srcdir)
