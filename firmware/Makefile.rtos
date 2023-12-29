@@ -1,5 +1,0 @@
-TGT_CFLAGS	+= -I./rtos -I.
-TGT_CXXFLAGS	+= -I./rtos -I.
-
-#LD		= $(CC)		# For C projects (default)
-#LD		= $(CXX)	# For C++ projects
