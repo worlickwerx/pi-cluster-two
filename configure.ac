@@ -23,11 +23,10 @@ AC_SUBST([AX_POINT_VERSION])
 
 AC_PROG_CC
 AM_PROG_CC_C_O
+AC_PROG_RANLIB
 
 X_AC_EXPAND_INSTALL_DIRS
 RRA_WITH_SYSTEMD_UNITDIR
-
-LT_INIT
 
 AC_SEARCH_LIBS([ev_run], [ev], [], [
   AC_MSG_ERROR([Please install libev development package])
