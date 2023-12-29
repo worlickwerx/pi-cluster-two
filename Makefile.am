@@ -6,8 +6,8 @@ SUBDIRS = .
 systemdsystemunit_DATA = etc/bramble.service
 #endif
 
-noinst_LTLIBRARIES = \
-    src/libbramble/libbramble.la
+noinst_LIBRARIES = \
+    src/libbramble/libbramble.a
 
 bin_PROGRAMS = \
     src/cmd/bramble
@@ -25,9 +25,9 @@ src_cmd_bramble_SOURCES = \
     src/cmd/shutdown.c
 
 src_cmd_bramble_LDADD = \
-    src/libbramble/libbramble.la
+    src/libbramble/libbramble.a
 
-src_libbramble_libbramble_la_SOURCES = \
+src_libbramble_libbramble_a_SOURCES = \
     src/libbramble/bramble.h \
     src/libbramble/utils.c \
     src/libbramble/utils.h \
