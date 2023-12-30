@@ -1,7 +1,17 @@
 #!/bin/bash
 
 die() { echo $* >&2; exit 1; }
-usage() { echo "Usage: bramble-fw-update [-t pi|stlink] [file]" >&2; exit 0; }
+usage() { echo "Usage: bramble-fw-update [-t pi|pi5|stlink] [file]" >&2; exit 0; }
+
+pi5_config() {
+    cat <<EOT
+    adapter driver linuxgpiod
+    transport select swd
+    adapter gpio swclk 13 -chip 4
+    adapter gpio swdio 16 -chip 4
+    source [find target/stm32f1x.cfg]
+EOT
+}
 
 pi_config() {
     cat <<EOT
@@ -23,7 +33,7 @@ while getopts "t:" opt; do
     case "$opt" in
     t)
         topt=${OPTARG}; shift
-        test "$topt" = "stlink" -o "$topt" = "pi" || usage
+        test "$topt" = "stlink" -o "$topt" = "pi" -o "$topt" = "pi5" || usage
         ;;
     *)
         usage
@@ -43,6 +53,9 @@ case "$topt" in
         ;;
     pi)
         pi_config >>$OCDCFG
+        ;;
+    pi5)
+        pi5_config >>$OCDCFG
         ;;
 esac
 
