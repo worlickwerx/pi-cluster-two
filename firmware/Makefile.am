@@ -45,6 +45,9 @@ firmwaredir = /lib/firmware
 
 firmware_PROGRAMS = bramble
 
+dist_bin_SCRIPTS = \
+    scripts/bramble-fw-update
+
 noinst_LIBRARIES = \
     librtos/librtos.a
 
@@ -107,6 +110,9 @@ librtos_librtos_a_SOURCES = \
 librtos_librtos_a_CPPFLAGS = \
     $(AM_CPPFLAGS) \
     -I$(srcdir)/librtos
+
+flash: bramble.fw
+	$(srcdir)/scripts/bramble-fw-update bramble.fw
 
 all-local:
 	$(SIZE) bramble.fw
