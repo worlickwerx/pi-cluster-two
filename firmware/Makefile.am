@@ -113,6 +113,8 @@ librtos_librtos_a_CPPFLAGS = \
 
 flash: bramble.fw
 	$(srcdir)/scripts/bramble-fw-update bramble.fw
+flash5: bramble.fw
+	$(srcdir)/scripts/bramble-fw-update -t pi5 bramble.fw
 
 all-local:
 	$(SIZE) bramble.fw

@@ -1,24 +1,30 @@
 #!/bin/bash
 
 die() { echo $* >&2; exit 1; }
-usage() { echo "Usage: bramble-fw-update [-t pi|stlink] [fwfile]" >&2; exit 0; }
+usage() { echo "Usage: bramble-fw-update [-t pi|pi5|stlink] [file]" >&2; exit 0; }
 
-piconfig() {
+pi5_config() {
     cat <<EOT
-    source [find interface/sysfsgpio-raspberrypi.cfg]
+    adapter driver linuxgpiod
     transport select swd
-    # override gpios for swclk swdio
-    sysfsgpio swd_nums 13 16
-
-    #set FLASH_SIZE 0x20000
+    adapter gpio swclk 13 -chip 4
+    adapter gpio swdio 16 -chip 4
     source [find target/stm32f1x.cfg]
 EOT
 }
-stconfig() {
+
+pi_config() {
+    cat <<EOT
+    adapter driver linuxgpiod
+    transport select swd
+    adapter gpio swclk 13 -chip 0
+    adapter gpio swdio 16 -chip 0
+    source [find target/stm32f1x.cfg]
+EOT
+}
+stlink_config() {
     cat <<EOT
     source [find interface/stlink-v2.cfg]
-
-    #set FLASH_SIZE 0x20000
     source [find target/stm32f1x.cfg]
 EOT
 }
@@ -27,7 +33,7 @@ while getopts "t:" opt; do
     case "$opt" in
     t)
         topt=${OPTARG}; shift
-        test "$topt" == "stlink" -o "$topt" == "pi" || usage
+        test "$topt" = "stlink" -o "$topt" = "pi" -o "$topt" = "pi5" || usage
         ;;
     *)
         usage
@@ -43,10 +49,13 @@ test -r "$fwpath" || die "could not read from $fwpath"
 OCDCFG=$(mktemp) || die "could not create temporary file"
 case "$topt" in
     stlink)
-        stconfig >>$OCDCFG
+        stlink_config >>$OCDCFG
         ;;
     pi)
-        piconfig >>$OCDCFG
+        pi_config >>$OCDCFG
+        ;;
+    pi5)
+        pi5_config >>$OCDCFG
         ;;
 esac
 
