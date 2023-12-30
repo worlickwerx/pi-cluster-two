@@ -5,10 +5,14 @@ Maintainer: Jim Garlick <garlick.jim@gmail.com>
 Standards-Version: 4.1.2
 Build-Depends:
   debhelper (>= 10),
-  libev-dev
+  libev-dev,
+  gcc-arm-none-eabi,
+  binutils-arm-none-eabi,
+  libnewlib-arm-none-eabi,
+  openocd
 
 Homepage: https://github.com/worlickwerx/pi-cluster-two
 Package: bramble
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, openocd
 Description:  Pi cluster utilities

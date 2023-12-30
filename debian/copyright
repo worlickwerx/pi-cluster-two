@@ -1,10 +1,27 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: flux-core
-Source: <https://github.com/flux-framework/flux-core>
+Source: <https://github.com/worlickwerx/pi-cluster-two>
 
 Files: *
-Copyright: Copyright (c) Jim Garlick
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: bramble
+Source: <https://github.com/worlickwerx/pi-cluster-two>
+
+Files: *
+Copyright: 2023 Jim Garlick <garlick.jim@gmail.com>
 License: GPL-3+
+
+Files: firmware/libopencm3
+Copyright: Project contributors
+License: LGPL-3+
+
+Files: firmware/librtos
+Copyright: 2019 Amazon.com, Inc. or its affiliates.
+License: MIT
+
+Files: firmware/libwwg
+Copyright: 2017 Warran W. Gay VE3WWG
+License: Public Domain
 
 Files: debian/*
 Copyright: 2023 Jim Garlick <garlick.jim@gmail.com>
