@@ -7,9 +7,10 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
 \************************************************************/
 
-#include "FreeRTOS.h"
-#include "task.h"
-#include "queue.h"
+#include "librtos/FreeRTOS.h"
+#include "librtos/task.h"
+#include "librtos/queue.h"
+
 #include "string.h"
 
 #include "canbus.h"

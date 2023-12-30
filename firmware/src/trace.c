@@ -16,7 +16,7 @@
 #include <libopencm3/cm3/itm.h>
 
 #include "trace.h"
-#include "miniprintf.h"
+#include "libwwg/miniprintf.h"
 
 static bool trace_enabled (void)
 {

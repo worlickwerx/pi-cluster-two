@@ -29,9 +29,9 @@
 
 #include <string.h>
 
-#include "FreeRTOS.h"
-#include "task.h"
-#include "queue.h"
+#include "librtos/FreeRTOS.h"
+#include "librtos/task.h"
+#include "librtos/queue.h"
 
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/gpio.h>
@@ -43,8 +43,8 @@
 #include "address.h"
 #include "matrix.h"
 #include "rtc.h"
-#include "version.h"    // libbramble, for currnet git version
-#include "nvram.h"      // libbramble, for nvram region mappings
+#include "src/libbramble/version.h"
+#include "src/libbramble/nvram.h"
 
 #define FOLLOWER_ADDRESS 0x68 // DS1307 address from data sheet
 

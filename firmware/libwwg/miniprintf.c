@@ -7,7 +7,7 @@
  */
 #include <string.h>
 #include <stdbool.h>
-#include <miniprintf.h>
+#include "miniprintf.h"
 
 /*********************************************************************
  * Internal structure for I/O

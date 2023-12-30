@@ -10,8 +10,8 @@
 /* rtc.c - real time clock
  */
 
-#include "FreeRTOS.h"
-#include "task.h"
+#include "librtos/FreeRTOS.h"
+#include "librtos/task.h"
 
 #include <libopencm3/cm3/cortex.h>
 #include <libopencm3/stm32/rcc.h>
