@@ -23,8 +23,8 @@
 
 #include <string.h>
 
-#include "FreeRTOS.h"
-#include "task.h"
+#include "librtos/FreeRTOS.h"
+#include "librtos/task.h"
 
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/gpio.h>

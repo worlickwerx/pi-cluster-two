@@ -11,7 +11,7 @@
 #define _FIRMWARE_CANBUS_H
 
 #include <stdbool.h>
-#include "canmsg.h"
+#include "src/libbramble/canmsg.h"
 
 /* Initialize the can bus at 1mbps.
  */

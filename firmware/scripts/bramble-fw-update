@@ -1,0 +1,61 @@
+#!/bin/bash
+
+die() { echo $* >&2; exit 1; }
+usage() { echo "Usage: bramble-fw-update [-t pi|stlink] [fwfile]" >&2; exit 0; }
+
+piconfig() {
+    cat <<EOT
+    source [find interface/sysfsgpio-raspberrypi.cfg]
+    transport select swd
+    # override gpios for swclk swdio
+    sysfsgpio swd_nums 13 16
+
+    #set FLASH_SIZE 0x20000
+    source [find target/stm32f1x.cfg]
+EOT
+}
+stconfig() {
+    cat <<EOT
+    source [find interface/stlink-v2.cfg]
+
+    #set FLASH_SIZE 0x20000
+    source [find target/stm32f1x.cfg]
+EOT
+}
+
+while getopts "t:" opt; do
+    case "$opt" in
+    t)
+        topt=${OPTARG}; shift
+        test "$topt" == "stlink" -o "$topt" == "pi" || usage
+        ;;
+    *)
+        usage
+        ;;
+    esac
+    shift
+done
+test -n "$topt" || topt=pi
+fwpath=$1; shift
+test -n "$fwpath" || fwpath=/lib/firmware/bramble.fw
+test -r "$fwpath" || die "could not read from $fwpath"
+
+OCDCFG=$(mktemp) || die "could not create temporary file"
+case "$topt" in
+    stlink)
+        stconfig >>$OCDCFG
+        ;;
+    pi)
+        piconfig >>$OCDCFG
+        ;;
+esac
+
+echo "Flashing $fwpath using $topt" >&2
+openocd -f $OCDCFG -c "program $fwpath verify reset exit"
+rc=$?
+
+rm -f $OCDCFG
+
+exit $rc
+
+# vi:ts=4 sw=4 expandtab

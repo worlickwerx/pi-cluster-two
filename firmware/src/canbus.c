@@ -22,13 +22,13 @@
 #include <libopencm3/stm32/f1/nvic.h>
 #include <libopencm3/stm32/can.h>
 
-#include "FreeRTOS.h"
-#include "queue.h"
+#include "librtos/FreeRTOS.h"
+#include "librtos/queue.h"
 
 #include "canbus.h"
 #include "matrix.h"
 #include "trace.h"
-#include "canmsg.h"
+#include "src/libbramble/canmsg.h"
 
 static const uint32_t baudrate = 1000000;
 

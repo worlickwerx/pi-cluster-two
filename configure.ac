@@ -3,6 +3,7 @@ AC_INIT([bramble],
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_MACRO_DIR([config])
 AC_CANONICAL_TARGET
+AX_SUBDIRS_CONFIGURE([firmware],[--host=arm-none-eabi])
 
 AM_INIT_AUTOMAKE([subdir-objects tar-pax foreign])
 AM_SILENT_RULES([yes])
