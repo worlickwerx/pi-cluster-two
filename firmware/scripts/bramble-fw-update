@@ -29,6 +29,20 @@ stlink_config() {
 EOT
 }
 
+guess_config() {
+    case "$(tr -d '\000' </sys/firmware/devicetree/base/model)" in
+        "Raspberry Pi 5"*)
+            echo pi5
+            ;;
+        "Raspberry Pi"*)
+            echo pi
+            ;;
+        *)
+            echo stlink
+            ;;
+    esac
+}
+
 while getopts "t:" opt; do
     case "$opt" in
     t)
@@ -41,7 +55,7 @@ while getopts "t:" opt; do
     esac
     shift
 done
-test -n "$topt" || topt=pi
+test -n "$topt" || topt=$(guess_config)
 fwpath=$1; shift
 test -n "$fwpath" || fwpath=/lib/firmware/bramble.fw
 test -r "$fwpath" || die "could not read from $fwpath"
