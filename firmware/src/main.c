@@ -34,16 +34,15 @@
 static void init_task (void *args __attribute((unused)))
 {
     uint8_t addr = address_get ();
+    char addrchr[] = { '0', '1', '2', '3',
+                       '4', '5', '6', '7',
+                       '8', '9', 'A', 'B',
+                       'C', 'D', 'E', 'F' };
 
     vTaskDelay (pdMS_TO_TICKS (200));
 
-    matrix_set_char ('0' + addr / 10); // tens
+    matrix_set_char (addrchr[addr % 16]);
     vTaskDelay (pdMS_TO_TICKS (1000));
-
-    matrix_set_char ('0' + addr % 10); // ones
-    vTaskDelay (pdMS_TO_TICKS (1000));
-
-    matrix_set_char (' '); // clear
 
     /* init complete - block forever
      */
