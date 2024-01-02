@@ -7993,7 +7993,7 @@
   (gr_text "LED Matrix Display" (at 88.53 141.2) (layer "F.SilkS") (tstamp 72081308-c6d0-44f8-8bf6-6a967e46f4a8)
     (effects (font (size 1 1) (thickness 0.15)))
   )
-  (gr_text "pi-carrier v3" (at 107.15 49.68) (layer "F.SilkS") (tstamp 8b1669e2-b468-4741-801a-96ef108141e5)
+  (gr_text "pi-carrier v3.1" (at 107.15 49.68) (layer "F.SilkS") (tstamp 8b1669e2-b468-4741-801a-96ef108141e5)
     (effects (font (size 2 2) (thickness 0.3)))
   )
   (gr_text "Pi CAN Interface" (at 168.95 83.58) (layer "F.SilkS") (tstamp 8b6c8a50-ed50-4218-9ef4-d8a43e992871)
