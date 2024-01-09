@@ -42,7 +42,8 @@ static void init_task (void *args __attribute((unused)))
     vTaskDelay (pdMS_TO_TICKS (200));
 
     matrix_set_char (addrchr[addr % 16]);
-    vTaskDelay (pdMS_TO_TICKS (1000));
+    vTaskDelay (pdMS_TO_TICKS (2000));
+    matrix_set_char (' '); // clear
 
     /* init complete - block forever
      */
