@@ -56,7 +56,9 @@
           "width": 0.0
         }
       ],
-      "drc_exclusions": [],
+      "drc_exclusions": [
+        "lib_footprint_mismatch|132470000|47480000|00000000-0000-0000-0000-00005a793e9f|00000000-0000-0000-0000-000000000000"
+      ],
       "meta": {
         "version": 2
       },
@@ -174,7 +176,8 @@
       ],
       "track_widths": [
         0.0,
-        0.5
+        0.5,
+        0.8
       ],
       "via_dimensions": [
         {
