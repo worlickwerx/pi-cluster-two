@@ -19,6 +19,11 @@
  *
  * N.B. RUN_PG is 3V3, but GLOBAL_EN is pulled externally to 5V.
  * PB14 is a 5V tolerant pin.
+ *
+ * Note: the Pi 5 and pi models before Pi 3B+ do not expose these PMIC
+ * lines.  To support these models, use a populated "pi5_adapter" board
+ * which adds a 3A load switch inline with the GPIO power supply.  Connect
+ * PB14 and PA8 to the adapter board's GLOBAL_EN and RUN_PG pins instead.
  */
 
 #include <string.h>
