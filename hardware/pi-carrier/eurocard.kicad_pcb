@@ -4603,11 +4603,11 @@
     (property "ki_keywords" "test point tp")
     (path "/20371431-6fbf-4ca4-9bfc-33b5b1c4838f")
     (attr exclude_from_pos_files)
-    (fp_text reference "TP10" (at 0 1.448) (layer "B.SilkS") hide
+    (fp_text reference "TP10" (at 0 1.448) (layer "B.SilkS")
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp c9458f81-e502-4c9d-812c-4efcaf2fa8cf)
     )
-    (fp_text value "~{RST}" (at 0.019 -2.02) (layer "B.SilkS")
+    (fp_text value "TestPoint" (at 0.019 -2.02) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 089aabca-e562-478a-bb37-b292b0385f90)
     )
@@ -4646,15 +4646,15 @@
     (property "ki_keywords" "test point tp")
     (path "/146ecb25-1ef6-4034-a68d-50599f11f54b")
     (attr exclude_from_pos_files)
-    (fp_text reference "TP13" (at 0 1.448) (layer "B.SilkS") hide
+    (fp_text reference "TP13" (at 0.762 1.6002) (layer "B.SilkS")
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp c880e27f-b174-473c-8c84-4b3ac1798b17)
     )
-    (fp_text value "CAN-" (at 1.016 -1.524) (layer "B.SilkS")
+    (fp_text value "TestPoint" (at 1.016 -1.524) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp b0844367-e772-4955-a363-17a0316de7b0)
     )
-    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab")
+    (fp_text user "${REFERENCE}" (at 0.5842 1.6002) (layer "B.Fab")
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 5839825f-aac3-4606-8bd9-055ff3c768a0)
     )
@@ -4689,11 +4689,11 @@
     (property "ki_keywords" "test point tp")
     (path "/742cedd8-f59c-488a-90ba-ace1820f1544")
     (attr exclude_from_pos_files)
-    (fp_text reference "TP1" (at 0 1.448) (layer "B.SilkS") hide
+    (fp_text reference "TP1" (at 0 1.448) (layer "B.SilkS")
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp acdce1b0-2ce1-4552-97be-0a76e9cb0eae)
     )
-    (fp_text value "5V" (at 0 -1.55) (layer "B.SilkS")
+    (fp_text value "TestPoint" (at 0 -1.55) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 84cd171d-2ec0-4d57-9b58-6cb6b8f08496)
     )
@@ -4732,15 +4732,15 @@
     (property "ki_keywords" "test point tp")
     (path "/7f1a4b58-c766-4cdb-ae71-facf29f05b5b")
     (attr exclude_from_pos_files)
-    (fp_text reference "TP9" (at 0 1.448) (layer "B.SilkS") hide
+    (fp_text reference "TP9" (at 0 1.448) (layer "B.SilkS")
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 17965f07-25c9-4b3f-af9e-4f2c72a6a528)
     )
-    (fp_text value "SCL" (at 0 -1.55) (layer "B.SilkS")
+    (fp_text value "TestPoint" (at 0 -1.55) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp d8095da5-6c6a-4875-b639-7ce918031aa3)
     )
-    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab")
+    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 38f0b21f-95fe-47c3-917b-111d9f1b5e76)
     )
@@ -4775,15 +4775,15 @@
     (property "ki_keywords" "test point tp")
     (path "/12996d63-0273-4188-bd20-c9c3d7bec4d2")
     (attr exclude_from_pos_files)
-    (fp_text reference "TP16" (at 0 1.448) (layer "B.SilkS") hide
+    (fp_text reference "TP16" (at -0.0186 1.6322) (layer "B.SilkS")
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 840382a2-dc65-46d0-8eec-2dd94a24bd70)
     )
-    (fp_text value "SCK" (at 0 -1.55) (layer "B.SilkS")
+    (fp_text value "TestPoint" (at 0 -1.55) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp e775eb20-17dd-4e7d-9714-fc87019fab2a)
     )
-    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab")
+    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 25fa525d-a139-4556-8d5a-cf6d28ca7626)
     )
@@ -4818,11 +4818,11 @@
     (property "ki_keywords" "test point tp")
     (path "/ebb24d8e-99db-4157-9aab-9122a6c701b1")
     (attr exclude_from_pos_files)
-    (fp_text reference "TP25" (at 0 1.448) (layer "B.SilkS") hide
+    (fp_text reference "TP25" (at -2.9464 0.0762) (layer "B.SilkS")
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 65a9bb48-a0ae-4ff6-816e-e94d9867858b)
     )
-    (fp_text value "RUN_PG" (at -4.064 -0.127) (layer "B.SilkS")
+    (fp_text value "TestPoint" (at -4.064 -0.127) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 10b66a83-153a-4a8a-b338-659b81ffa90b)
     )
@@ -4861,15 +4861,15 @@
     (property "ki_keywords" "test point tp")
     (path "/b926c765-cfec-444b-97c4-4318e90f1319")
     (attr exclude_from_pos_files)
-    (fp_text reference "TP17" (at 0 1.448) (layer "B.SilkS") hide
+    (fp_text reference "TP17" (at 0.1462 1.633) (layer "B.SilkS")
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp f051dd03-6e6b-4359-bf12-252c803c9743)
     )
-    (fp_text value "MOSI" (at 0 -1.55) (layer "B.SilkS")
+    (fp_text value "TestPoint" (at 0 -1.55) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 4feb5f88-ecc1-45dc-8605-a85a176c54be)
     )
-    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab")
+    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 129fe4ae-0978-432a-8cef-a3dda6431633)
     )
@@ -4904,15 +4904,15 @@
     (property "ki_keywords" "test point tp")
     (path "/1838f5b3-ada5-4ad1-9e7a-41b590633da3")
     (attr exclude_from_pos_files)
-    (fp_text reference "TP8" (at 0 1.448) (layer "B.SilkS") hide
+    (fp_text reference "TP8" (at 0 1.448) (layer "B.SilkS")
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp bddd814a-f919-482c-b616-145caaf67039)
     )
-    (fp_text value "SDA" (at 0 -1.55) (layer "B.SilkS")
+    (fp_text value "TestPoint" (at 0 -1.55) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp b3ce2d5f-0bf7-4c9a-bb4d-4a88773f6c95)
     )
-    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab")
+    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 18297a06-6ce8-4dee-92a4-4318ba9fb4d1)
     )
@@ -4947,15 +4947,15 @@
     (property "ki_keywords" "test point tp")
     (path "/d0081706-77c2-4f31-8fa0-e47e7f314a96")
     (attr exclude_from_pos_files)
-    (fp_text reference "TP21" (at 0 1.448) (layer "B.SilkS") hide
+    (fp_text reference "TP21" (at 0.4318 1.651) (layer "B.SilkS")
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 949e6c3a-5f41-4ab5-bce0-60abd59bf5c0)
     )
-    (fp_text value "PA11" (at 0.762 -1.778) (layer "B.SilkS")
+    (fp_text value "TestPoint" (at 0.762 -1.778) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp e43f66af-bae9-489c-9bd7-91eff4040247)
     )
-    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab")
+    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 2c08d538-c10d-4d6c-91bc-c8925ebab223)
     )
@@ -5044,15 +5044,15 @@
     (property "ki_keywords" "test point tp")
     (path "/1382e30f-e7c4-4888-9d15-af05cd61516f")
     (attr exclude_from_pos_files)
-    (fp_text reference "TP4" (at 0 1.448) (layer "B.SilkS") hide
+    (fp_text reference "TP4" (at 0 1.448) (layer "B.SilkS")
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 18a0cc7f-cbca-48b1-bfd6-5903b2a840f7)
     )
-    (fp_text value "CELL" (at -0.04 -1.665) (layer "B.SilkS")
+    (fp_text value "TestPoint" (at -0.04 -1.665) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp ad08ee6f-d78d-47ea-a6e4-ef8638c381bb)
     )
-    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab")
+    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 3610b7a2-b7cc-4367-8215-1901df945e0c)
     )
@@ -5087,11 +5087,11 @@
     (property "ki_keywords" "test point tp")
     (path "/abb53580-d47f-4ed6-aa8a-327ec412a733")
     (attr exclude_from_pos_files)
-    (fp_text reference "TP19" (at 3.1496 -1.1938) (layer "B.SilkS") hide
+    (fp_text reference "TP19" (at -2.8194 -0.0508) (layer "B.SilkS")
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 0e3319fc-bb81-41c6-b3ba-c1c74a40236c)
     )
-    (fp_text value "PA6" (at -2.5146 -0.1778) (layer "B.SilkS")
+    (fp_text value "TestPoint" (at -2.5146 -0.1778) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp eb05233f-688c-4c29-88ce-f12a4efa8bcb)
     )
@@ -5130,15 +5130,15 @@
     (property "ki_keywords" "test point tp")
     (path "/201081ef-0f25-4232-9497-fa1d74654379")
     (attr exclude_from_pos_files)
-    (fp_text reference "TP7" (at 0 1.448) (layer "B.SilkS") hide
+    (fp_text reference "TP7" (at 0 1.448) (layer "B.SilkS")
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 8d46c733-2ad5-4990-b85d-50d1f02a2376)
     )
-    (fp_text value "40MHz" (at 0 -1.55) (layer "B.SilkS")
+    (fp_text value "TestPoint" (at 0 -1.55) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 8308881a-7a00-4ec1-ba99-101d42f162fb)
     )
-    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab")
+    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 027e10a6-ccce-40cb-857c-4e8db3706fa2)
     )
@@ -5173,11 +5173,11 @@
     (property "ki_keywords" "test point tp")
     (path "/fb7e9a73-660b-4b63-8b2d-48f26d03301c")
     (attr exclude_from_pos_files)
-    (fp_text reference "TP2" (at 0 1.448) (layer "B.SilkS") hide
+    (fp_text reference "TP2" (at 0 1.448) (layer "B.SilkS")
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp c6f652be-20f3-4e09-a0ae-94c633587892)
     )
-    (fp_text value "3V3" (at 0 -1.55) (layer "B.SilkS")
+    (fp_text value "TestPoint" (at 0 -1.55) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp ea175688-e22c-4348-813c-cce174083879)
     )
@@ -5216,15 +5216,15 @@
     (property "ki_keywords" "test point tp")
     (path "/668d5884-c2f6-4856-b7cc-cb82034eb83b")
     (attr exclude_from_pos_files)
-    (fp_text reference "TP3" (at 0 1.448) (layer "B.SilkS") hide
+    (fp_text reference "TP3" (at 0 1.448) (layer "B.SilkS")
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 289d109c-a53e-4a6c-817a-e7eebb0075fe)
     )
-    (fp_text value "STBY" (at 0.45 -1.875) (layer "B.SilkS")
+    (fp_text value "TestPoint" (at 0.45 -1.875) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 1659cfa3-8a2a-4d40-97c3-3c7916b30412)
     )
-    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab")
+    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp c8705d34-0f80-48ad-9408-ea9ba0c5d0be)
     )
@@ -5259,15 +5259,15 @@
     (property "ki_keywords" "test point tp")
     (path "/36f5cf69-8b87-45b7-82da-de6cab071134")
     (attr exclude_from_pos_files)
-    (fp_text reference "TP15" (at 0 1.448) (layer "B.SilkS") hide
+    (fp_text reference "TP15" (at -0.587 1.6576) (layer "B.SilkS")
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 033c2789-d6e7-4488-af74-30efd2f2c910)
     )
-    (fp_text value "NSS" (at 0 -1.55) (layer "B.SilkS")
+    (fp_text value "TestPoint" (at 0 -1.55) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp f9245b0f-f99f-4b79-9256-e2cd3532ad68)
     )
-    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab")
+    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp e49e347d-5a65-4720-bde5-128641c7dde1)
     )
@@ -5302,15 +5302,15 @@
     (property "ki_keywords" "test point tp")
     (path "/8896d593-d9f6-44e2-ae50-6a530075fd69")
     (attr exclude_from_pos_files)
-    (fp_text reference "TP6" (at 0 1.448) (layer "B.SilkS") hide
+    (fp_text reference "TP6" (at 0 1.448) (layer "B.SilkS")
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp b33af1f9-d1a7-413c-b9eb-2e3030b57a6f)
     )
-    (fp_text value "VBAT" (at -0.575 -1.85) (layer "B.SilkS")
+    (fp_text value "TestPoint" (at -0.575 -1.85) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp f595029a-4fe9-410b-a621-1839a2732383)
     )
-    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab")
+    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 20bc38d9-524b-4079-b679-efc4708e2bbe)
     )
@@ -7275,15 +7275,15 @@
     (property "ki_keywords" "test point tp")
     (path "/e21d2528-167e-402a-a632-ceef61a2106c")
     (attr exclude_from_pos_files)
-    (fp_text reference "TP20" (at 0 1.448) (layer "B.SilkS") hide
+    (fp_text reference "TP20" (at 0 1.448) (layer "B.SilkS")
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 5c8ef809-2523-4c17-8798-a27d867cb2bd)
     )
-    (fp_text value "PA7" (at 0 -1.55) (layer "B.SilkS")
+    (fp_text value "TestPoint" (at 0 -1.55) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp f58bcb1d-b839-4efe-bf46-27f102b06bbc)
     )
-    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab")
+    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp cb84d665-ca11-4eda-ae00-77221d5cde79)
     )
@@ -7318,11 +7318,11 @@
     (property "ki_keywords" "test point tp")
     (path "/d1217637-a07a-4562-82f0-f63af04220be")
     (attr exclude_from_pos_files)
-    (fp_text reference "TP12" (at 0 1.448) (layer "B.SilkS") hide
+    (fp_text reference "TP12" (at -0.9144 1.6256) (layer "B.SilkS")
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp ac69631a-7a58-4682-abf5-77d9eaae9187)
     )
-    (fp_text value "CAN+" (at -0.889 -1.524) (layer "B.SilkS")
+    (fp_text value "TestPoint" (at -0.889 -1.524) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp d8fb023c-302c-4e06-87bc-28e9dfe37c69)
     )
@@ -7807,11 +7807,11 @@
     (property "ki_keywords" "test point tp")
     (path "/612988bd-f0e1-4325-995c-c88a8701fa16")
     (attr exclude_from_pos_files)
-    (fp_text reference "TP14" (at 0 1.448) (layer "B.SilkS") hide
+    (fp_text reference "TP14" (at 0 1.448) (layer "B.SilkS")
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 23815a8f-ab3c-4c8a-9cdd-9a58c2439a46)
     )
-    (fp_text value "PI3V3" (at 0 -1.55) (layer "B.SilkS")
+    (fp_text value "TestPoint" (at 0 -1.55) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp b33da098-8684-4ed7-bb62-7418b10a3dea)
     )
@@ -7850,15 +7850,15 @@
     (property "ki_keywords" "test point tp")
     (path "/38da19d6-d136-4df3-8404-9f0df413ba79")
     (attr exclude_from_pos_files)
-    (fp_text reference "TP18" (at 0 1.448) (layer "B.SilkS") hide
+    (fp_text reference "TP18" (at -0.6858 1.651) (layer "B.SilkS")
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 8560e454-a513-495f-baad-9b032ae08d30)
     )
-    (fp_text value "PB4" (at 0.127 -1.778) (layer "B.SilkS")
+    (fp_text value "TestPoint" (at 0.127 -1.778) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 5643d2c2-f052-4f18-aeb0-1518a68dff98)
     )
-    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab")
+    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 1b96fb86-897c-4a15-967b-92247c1363a0)
     )
@@ -7893,11 +7893,11 @@
     (property "ki_keywords" "test point tp")
     (path "/3419fbe9-0846-41f3-8285-8e12eaf7e98d")
     (attr exclude_from_pos_files)
-    (fp_text reference "TP11" (at 0 1.448) (layer "B.SilkS") hide
+    (fp_text reference "TP11" (at 0 1.448) (layer "B.SilkS")
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 72908762-a542-4f31-a184-ee45c7aa36b3)
     )
-    (fp_text value "GND" (at 0 -1.55) (layer "B.SilkS")
+    (fp_text value "TestPoint" (at 0 -1.55) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp cdecd2ab-0320-4a52-a641-a52fef55199a)
     )
@@ -7936,11 +7936,11 @@
     (property "ki_keywords" "test point tp")
     (path "/e3008a9e-e2d5-4c49-991a-22cda2f569e5")
     (attr exclude_from_pos_files)
-    (fp_text reference "TP26" (at 0 1.448) (layer "B.SilkS") hide
+    (fp_text reference "TP26" (at -2.8702 0.0508) (layer "B.SilkS")
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp ce64ebaa-8435-4cda-b463-50efa4c9552b)
     )
-    (fp_text value "GLOBAL_EN" (at -5.207 0) (layer "B.SilkS")
+    (fp_text value "TestPoint" (at -5.207 0) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 17ce6cc1-46d3-4518-a9f2-071b1ae4ec50)
     )
@@ -7979,15 +7979,15 @@
     (property "ki_keywords" "test point tp")
     (path "/25f1ed64-1aca-4ace-a240-819442d64a2f")
     (attr exclude_from_pos_files)
-    (fp_text reference "TP5" (at 0 1.448) (layer "B.SilkS") hide
+    (fp_text reference "TP5" (at 0 1.448) (layer "B.SilkS")
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp cc3919c7-865c-4394-8307-bdf8c38cb0b9)
     )
-    (fp_text value "8MHz" (at 0 -1.55) (layer "B.SilkS")
+    (fp_text value "TestPoint" (at 0 -1.55) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 3476ff77-4a9a-4bd9-8dbb-6933565bca21)
     )
-    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab")
+    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 1ca5e014-30b1-4aaa-8ef1-d90707dc007e)
     )
@@ -8022,15 +8022,15 @@
     (property "ki_keywords" "test point tp")
     (path "/bef78572-e626-494e-86f4-49ba32c9b17a")
     (attr exclude_from_pos_files)
-    (fp_text reference "TP22" (at 0 1.448) (layer "B.SilkS") hide
+    (fp_text reference "TP22" (at -0.0762 1.6256) (layer "B.SilkS")
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp 5235aaa0-5d03-46a2-99f2-0ebf1d7199b4)
     )
-    (fp_text value "PA12" (at -0.127 -1.778) (layer "B.SilkS")
+    (fp_text value "TestPoint" (at -0.127 -1.778) (layer "B.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp c4028fe7-d4e9-4817-bc51-7205a355ed9d)
     )
-    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab")
+    (fp_text user "${REFERENCE}" (at 0 1.45) (layer "B.Fab") hide
         (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
       (tstamp fc16a4f2-5e92-466e-878a-d4e998586030)
     )
