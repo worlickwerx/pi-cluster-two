@@ -9,44 +9,21 @@
 
 /* power.c - control power of raspberry pi
  *
- * This was originally written for the pi 4, which exposes its PMIC:
+ * pi pmic
+ * - write PB14 (0=off, 1=on), connected to pi GLOBAL_EN
+ * - read PA8 (0=off, 1=on), connecting to pi RUN_PG
  *
- * GLOBAL_EN (PB14) - enable
- *   Set to 0 to turn off the PMIC.
- *   Set to 1 to turn on the PMIC.
- *   This pin is pulled to 5V on the pi (PB14 is 5V tolerant on the STM32).
+ * soft shutdown
+ * - pulse PA4 low and then high to trigger gpio-shutdown overlay on pi
+ * - wait for PA5 to transition high to low indicating shutdown complete
  *
- * RUN_PG (PA8) - power good
- *   If 0, power is off.
- *   If 1, power is on.
- *   This is a 3V3 signal.
+ * N.B. RUN_PG is 3V3, but GLOBAL_EN is pulled externally to 5V.
+ * PB14 is a 5V tolerant pin.
  *
- * Pi 5 support was added later.  The pi 5 has a power button but does not
- * expose the PMIC:
- *
- * PI5_MODE (PA6) - pi 5 mode select
- *   Jumpered to ground for pi 5 mode.
- *   Floating (internal pull to 3V3) for the previous behavior
- *
- * PI5_BUTTON (PB14) - power button (was GLOBAL_EN)
- *   Set to 0 to depress the button.
- *   Set to 1 to release the button
- *
- * PI_3V3 (PA8) - pulled to pi 3V3 power bus (was RUN_PG)
- *   If 0, power is off.
- *   If 1, power is on.
- *
- * Soft shutdown support is available via the 'gpio-shutdown' device tree
- * overlay.  Add the following to /boot/config.txt:
- *
- *   dtoverlay=gpio-shutdown,gpio_pin=27,active_low=1,gpio_pull=up
- *   gpio=26=op,dh
- *
- * GPIO27 (PA4)
- *   Pulse low and then high to trigger shutdown.
-
- * GPIO26 (PA5)
- *   Wait for transition high to low to indicate shutdown complete.
+ * Note: the Pi 5 and pi models before Pi 3B+ do not expose these PMIC
+ * lines.  To support these models, use a populated "pi5_adapter" board
+ * which adds a 3A load switch inline with the GPIO power supply.  Connect
+ * PB14 and PA8 to the adapter board's GLOBAL_EN and RUN_PG pins instead.
  */
 
 #include <string.h>
@@ -65,13 +42,6 @@
 #include "matrix.h"
 
 static TaskHandle_t shutdown_task_handle = NULL;
-
-static bool pi5_mode (void)
-{
-    if (gpio_get (GPIOA, GPIO6))
-        return false;
-    return true;
-}
 
 static bool pi_run_pg_get (void)
 {
@@ -116,45 +86,22 @@ bool power_get_state (void)
 
 void power_set_state (bool val)
 {
-    if (pi5_mode ()) {
-        if (pi_run_pg_get () == val)
-            return;
-        /* Short press to turn on the pi 5 from off.
-         */
-        if (val) {
-            pi_global_en_set (0);
-            vTaskDelay (pdMS_TO_TICKS (100));
-            pi_global_en_set (1);
-            while (!pi_run_pg_get ())
-                vTaskDelay (pdMS_TO_TICKS (1));
-        }
-        /* Long press to turn off the pi 5 from on.
-         */
-        else {
-            pi_global_en_set (0);
-            vTaskDelay (pdMS_TO_TICKS (1));
-            while (pi_run_pg_get ())
-                vTaskDelay (pdMS_TO_TICKS (1));
-            pi_global_en_set (1);
-        }
+    /* If GLOBAL_EN is high and RUN_PG is low, the pi may have turned off
+     * its own PMIC (e.g. shutdown -h).  In that case, GLOBAL_EN needs to be
+     * pulsed low for >= 1ms.
+     */
+    if (val && pi_global_en_get () && !pi_run_pg_get ()) {
+        pi_global_en_set (false);
+        vTaskDelay (pdMS_TO_TICKS (1));
     }
-    else {
-        /* If GLOBAL_EN is high and RUN_PG is low, the pi may have turned off
-         * its own PMIC (e.g. shutdown -h).  In that case, GLOBAL_EN needs to be
-         * pulsed low for >= 1ms.
-         */
-        if (val && pi_global_en_get () && !pi_run_pg_get ()) {
-            pi_global_en_set (false);
-            vTaskDelay (pdMS_TO_TICKS (1));
-        }
 
-        /* Set GLOBAL_EN to desired state, then wait for RUN_PG to change before
-         * returning.
-         */
-        pi_global_en_set (val);
-        while (pi_run_pg_get () != val)
-            vTaskDelay (pdMS_TO_TICKS (1));
-    }
+    /* Set GLOBAL_EN to desired state, then wait for RUN_PG to change before
+     * returning.
+     */
+    pi_global_en_set (val);
+    while (pi_run_pg_get () != val)
+        vTaskDelay (pdMS_TO_TICKS (1));
+
     backup_set_dr1 (val ? 1 : 0);
 }
 
@@ -250,11 +197,6 @@ void power_init (bool por_flag)
                    GPIO_CNF_INPUT_PULL_UPDOWN,
                    GPIO3); // BUTTON
     gpio_set (GPIOA, GPIO3); // pull up
-    gpio_set_mode (GPIOA,
-                   GPIO_MODE_INPUT,
-                   GPIO_CNF_INPUT_PULL_UPDOWN,
-                   GPIO6); // PI5 select
-    gpio_set (GPIOA, GPIO6); // pull up
 
     /* Configure outputs
      * N.B. the GLOBAL_EN output will revert to an input during reset,
@@ -273,24 +215,16 @@ void power_init (bool por_flag)
                    GPIO_CNF_OUTPUT_OPENDRAIN,
                    GPIO14); // GLOBAL_EN (pulled to +5V with 100K on the pi)
 
-    if (pi5_mode ()) {
-        /* Initialize to "button unpressed".
-         * The pi 5 always starts when power is initially applied.
-         */
-        gpio_set (GPIOB, GPIO14); // initialize to "button unpressed"
-    }
-    else {
-        /* Lower GLOBAL_EN if this is a power on reset (vs warm reset)
-         * OR if previous state from backup register is off.
-         * Backup register preserves last power state across a reset
-         * (only a warm reset if battery is not attached).
-         */
-        if (por_flag || backup_get_dr1 () == 0)
-            gpio_clear (GPIOB, GPIO14);
+    /* Lower GLOBAL_EN if this is a power on reset (vs warm reset)
+     * OR if previous state from backup register is off.
+     * Backup register preserves last power state across a reset
+     * (only a warm reset if battery is not attached).
+     */
+    if (por_flag || backup_get_dr1 () == 0)
+        gpio_clear (GPIOB, GPIO14);
 
-        if (por_flag)
-            backup_set_dr1 (0);
-    }
+    if (por_flag)
+        backup_set_dr1 (0);
 
     xTaskCreate (power_task,
                 "power",
