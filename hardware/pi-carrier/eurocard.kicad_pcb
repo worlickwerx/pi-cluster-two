@@ -4132,11 +4132,11 @@
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp efb18afe-22ad-4089-8879-14f857212ca5)
     )
-    (fp_text value "Console" (at 0 3.98) (layer "F.SilkS")
+    (fp_text value "Console" (at 0 3.98) (layer "F.SilkS") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 612ab94d-0a40-4eef-8ffe-c3c2114d5fbe)
     )
-    (fp_text user "${REFERENCE}" (at 0 0) (layer "F.Fab")
+    (fp_text user "${REFERENCE}" (at 0 0) (layer "F.Fab") hide
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp cd8a59ce-db29-4126-8345-09ed043bb44f)
     )
@@ -8255,6 +8255,9 @@
   )
   (gr_text "CERN-OHL-1.2" (at 195.1356 138.453) (layer "F.SilkS") (tstamp 38d45882-2f9b-46e4-9389-d9e5b441390f)
     (effects (font (size 1 1) (thickness 0.15)))
+  )
+  (gr_text "Pi Console" (at 161.0996 96.6446) (layer "F.SilkS") (tstamp 4ba645b0-5dcb-44fb-89f2-29a2b8a88ccb)
+    (effects (font (size 1 1) (thickness 0.15)) (justify left bottom))
   )
   (gr_text "3V3@800mA" (at 181.88 59.17) (layer "F.SilkS") (tstamp 505f0094-9acf-40dc-9adf-ef4372f7b205)
     (effects (font (size 1 1) (thickness 0.15)))
