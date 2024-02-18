@@ -9084,6 +9084,16 @@
     (stroke (width 0.15) (type solid)) (layer "F.SilkS") (tstamp 5e8a9216-d784-4d5d-bfe0-99d1e6c248a5))
   (gr_line (start 64.01 135.14) (end 55.68 135.13)
     (stroke (width 0.15) (type solid)) (layer "F.SilkS") (tstamp 8ba62e78-5228-4962-a198-499a199989da))
+  (gr_poly
+    (pts
+      (xy 134.1628 115.9256)
+      (xy 135.1788 114.9096)
+      (xy 135.1788 116.8908)
+      (xy 135.128 116.9416)
+      (xy 134.1628 115.9764)
+    )
+
+    (stroke (width 0.15) (type solid)) (fill solid) (layer "F.SilkS") (tstamp 9069be35-331f-4b77-b653-7168fab18ad6))
   (gr_line (start 75.45 121.58) (end 96.32 121.58)
     (stroke (width 0.15) (type solid)) (layer "F.SilkS") (tstamp b260f5b8-b04a-490b-a36e-03067d3d9689))
   (gr_line (start 64.01 142.45) (end 64.01 135.14)
