@@ -1962,7 +1962,7 @@
     (property "Value" "Conn_01x16_MountingPin" (at 48.26 60.0456 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "00_eurocard:FPC16" (at 50.8 57.15 0)
+    (property "Footprint" "00_eurocard:CONN_F31W-1A7H1-11016_AMP" (at 50.8 57.15 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (at 50.8 57.15 0)
