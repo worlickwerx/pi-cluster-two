@@ -506,6 +506,18 @@
     [
       "78247a58-bd33-4427-a596-05636cd08db2",
       "M.2 Storage"
+    ],
+    [
+      "2ec3229e-4e63-43c6-8c53-295add7972cd",
+      "Pi CAN adapter"
+    ],
+    [
+      "84fd49cc-c4cb-4f78-8316-2b49c25b31fd",
+      "Matrix Display"
+    ],
+    [
+      "6e86315c-2a36-4fc9-9e0b-18643ccfeec1",
+      "Wired OR Network"
     ]
   ],
   "text_variables": {}
