@@ -518,6 +518,10 @@
     [
       "6e86315c-2a36-4fc9-9e0b-18643ccfeec1",
       "Wired OR Network"
+    ],
+    [
+      "4dfe9b43-7b43-4154-be91-1074449c60f9",
+      "eFuse"
     ]
   ],
   "text_variables": {}
