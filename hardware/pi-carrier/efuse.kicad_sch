@@ -604,7 +604,7 @@
     (property "Value" "TPS2421-1DDAR" (at 158.75 74.93 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "TPS2421-1DDAR:VREG_LM5017MR_NOPB" (at 158.75 90.17 0)
+    (property "Footprint" "00_eurocard:VREG_LM5017MR_NOPB" (at 158.75 90.17 0)
       (effects (font (size 1.27 1.27)) (justify bottom) hide)
     )
     (property "Datasheet" "" (at 158.75 90.17 0)
