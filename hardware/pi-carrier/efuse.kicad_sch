@@ -482,7 +482,7 @@
     (uuid ea7ab5f5-18a6-4342-9b0b-2f147483d1e9)
   )
 
-  (text "Notes:\n\nR10 determines current limit:\n\nI_{SET} = fault current (fault timer started)\nI_{LIM} = 1.5 * I_{SET}\nR_{RSET} = 200KΩ / I_{SET} (recommended range of 49.9K to 200K)\n\nFor maximum current within recommendations, R{RSET} = 49.9K.\nI_{SET} = 200K / 49.9K = 4.0A\nI_{LIM} = 1.5 * 4.0A = 6.0A\n\nC28 determines the fault timer period:\n\nC_{CT} = T_{FAULT} / (40 x 10^{3}) (farads and seconds)\n\nC_{CT}                  T_{FAULT}\n47 x 10^{-9} (47nF)   1880 x 10^{-6} = 1.8msec\n"
+  (text "Notes:\n\nR10 determines current limit:\n\nI_{SET} = fault current (fault timer started)\nI_{LIM} = 1.5 * I_{SET}\nR_{RSET} = 200KΩ / I_{SET} (recommended range of 49.9K to 200K)\n\nFor maximum current within recommendations, R_{RSET} = 49.9K.\nI_{SET} = 200K / 49.9K = 4.0A\nI_{LIM} = 1.5 * 4.0A = 6.0A\n\nC28 determines the fault timer period:\n\nC_{CT} = T_{FAULT} / (40 x 10^{3}) (farads and seconds)\n\nC_{CT}                  T_{FAULT}\n47 x 10^{-9} (47nF)   1880 x 10^{-6} = 1.8msec\n"
     (at 20.32 191.77 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 166dc3fd-3b3b-4b10-92d7-8ff1ccfe1dba)
