@@ -5,3 +5,6 @@ kicad-cli pcb drc \
     --exit-code-violations \
     --severity-all \
     $DRC_INPUT
+result=$?
+test $result -eq 0 || cat pcb_drc.rpt >&2
+exit $result
