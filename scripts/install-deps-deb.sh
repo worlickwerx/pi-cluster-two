@@ -3,7 +3,6 @@
 apt install \
   autoconf \
   automake \
-  libtool \
   make \
   libev-dev \
   openocd \

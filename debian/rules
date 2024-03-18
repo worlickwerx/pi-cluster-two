@@ -16,7 +16,7 @@
 	dh $@
 
 override_dh_auto_configure:
-	dh_auto_configure -- --with-systemdsystemunitdir=/lib/systemd/system
+	dh_auto_configure -- --with-systemdsystemunitdir=/lib/systemd/system --without-kicad
 
 override_dh_autoreconf:
 	@echo not running autogen.sh on dist product
@@ -24,3 +24,7 @@ override_dh_autoreconf:
 override_dh_auto_install:
 	dh_auto_install
 	find . -name '*.la' -delete
+
+# stripping cross-compiled bramble.fw fails on amd64 arch so just disable
+# this for now
+override_dh_strip:
