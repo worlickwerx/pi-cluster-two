@@ -53,12 +53,11 @@
 				)
 			)
 			(property "Description" "IC LOAD SW HIGH SIDE 6SOT"
-				(at 5.08 25.4 0)
+				(at 0 0 0)
 				(effects
 					(font
-						(size 1.524 1.524)
+						(size 1.27 1.27)
 					)
-					(justify left)
 					(hide yes)
 				)
 			)
@@ -114,6 +113,16 @@
 			)
 			(property "DK_Detail_Page" "/product-detail/en/texas-instruments/TPS27081ADDCR/296-34970-1-ND/3671576"
 				(at 5.08 22.86 0)
+				(effects
+					(font
+						(size 1.524 1.524)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Description_1" "IC LOAD SW HIGH SIDE 6SOT"
+				(at 5.08 25.4 0)
 				(effects
 					(font
 						(size 1.524 1.524)
@@ -2628,10 +2637,11 @@
 			)
 		)
 		(symbol "Jumper:SolderJumper_2_Open"
+			(pin_numbers hide)
 			(pin_names
 				(offset 0) hide)
-			(exclude_from_sim no)
-			(in_bom yes)
+			(exclude_from_sim yes)
+			(in_bom no)
 			(on_board yes)
 			(property "Reference" "JP"
 				(at 0 2.032 0)
@@ -3033,9 +3043,9 @@
 		)
 		(symbol "power:+3.3V"
 			(power)
+			(pin_numbers hide)
 			(pin_names
-				(offset 0)
-			)
+				(offset 0) hide)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -3133,8 +3143,8 @@
 			(symbol "+3.3V_1_1"
 				(pin power_in line
 					(at 0 0 90)
-					(length 0) hide
-					(name "+3.3V"
+					(length 0)
+					(name "~"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -3153,9 +3163,9 @@
 		)
 		(symbol "power:+5V"
 			(power)
+			(pin_numbers hide)
 			(pin_names
-				(offset 0)
-			)
+				(offset 0) hide)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -3253,8 +3263,8 @@
 			(symbol "+5V_1_1"
 				(pin power_in line
 					(at 0 0 90)
-					(length 0) hide
-					(name "+5V"
+					(length 0)
+					(name "~"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -3273,9 +3283,9 @@
 		)
 		(symbol "power:GND"
 			(power)
+			(pin_numbers hide)
 			(pin_names
-				(offset 0)
-			)
+				(offset 0) hide)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -3349,8 +3359,8 @@
 			(symbol "GND_1_1"
 				(pin power_in line
 					(at 0 0 270)
-					(length 0) hide
-					(name "GND"
+					(length 0)
+					(name "~"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -3432,7 +3442,7 @@
 				(pin power_out line
 					(at 0 0 90)
 					(length 0)
-					(name "pwr"
+					(name "~"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -4158,6 +4168,16 @@
 	)
 	(wire
 		(pts
+			(xy 142.24 127) (xy 157.48 127)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "40a6ca4b-5350-493e-ae59-e8dcc3f6f88b")
+	)
+	(wire
+		(pts
 			(xy 138.43 105.41) (xy 138.43 114.3)
 		)
 		(stroke
@@ -4185,16 +4205,6 @@
 			(type solid)
 		)
 		(uuid "471e5a22-03a8-48a4-9d0f-23177f21743e")
-	)
-	(wire
-		(pts
-			(xy 157.48 127) (xy 142.875 127)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "475c921f-ac8b-4213-8c10-c2b4ba2727ce")
 	)
 	(wire
 		(pts
@@ -5417,7 +5427,7 @@
 		(uuid "0bec16b3-1718-4967-abb5-89274b1e4c31")
 	)
 	(label "5V_EXTERNAL"
-		(at 142.875 127 0)
+		(at 142.24 127 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -6250,7 +6260,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Power symbol creates a global label with name \"+5V\""
 			(at 74.93 36.83 0)
 			(effects
 				(font
@@ -6313,7 +6323,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
 			(at 54.61 36.83 0)
 			(effects
 				(font
@@ -6376,7 +6386,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
 			(at 74.93 90.17 0)
 			(effects
 				(font
@@ -6439,7 +6449,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
 			(at 57.15 90.17 0)
 			(effects
 				(font
@@ -6503,7 +6513,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Generic connector, double row, 02x20, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"
 			(at 64.77 62.23 0)
 			(effects
 				(font
@@ -6684,7 +6694,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Solder Jumper, 2-pole, open"
 			(at 171.45 134.62 0)
 			(effects
 				(font
@@ -6753,7 +6763,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 67.31 177.8 0)
 			(effects
 				(font
@@ -6822,7 +6832,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Unpolarized capacitor"
 			(at 167.64 143.51 0)
 			(effects
 				(font
@@ -6889,7 +6899,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Resistor"
 			(at 144.78 140.97 0)
 			(effects
 				(font
@@ -6960,7 +6970,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Generic connector, single row, 01x05, script generated (kicad-library-utils/schlib/autogen/connector/)"
 			(at 67.31 105.41 0)
 			(effects
 				(font
@@ -7035,7 +7045,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
 			(at 57.15 114.3 0)
 			(effects
 				(font
@@ -7101,7 +7111,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Resistor, small symbol"
 			(at 93.98 170.18 0)
 			(effects
 				(font
@@ -7170,7 +7180,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Resistor"
 			(at 137.16 140.97 0)
 			(effects
 				(font
@@ -7236,7 +7246,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
 			(at 135.89 36.83 0)
 			(effects
 				(font
@@ -7299,7 +7309,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
 			(at 167.64 154.94 0)
 			(effects
 				(font
@@ -7364,7 +7374,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Solder Jumper, 2-pole, open"
 			(at 96.52 180.34 0)
 			(effects
 				(font
@@ -7433,7 +7443,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Resistor"
 			(at 129.54 140.97 0)
 			(effects
 				(font
@@ -7500,7 +7510,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Generic connector, double row, 02x20, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"
 			(at 146.05 62.23 0)
 			(effects
 				(font
@@ -7683,7 +7693,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Resistor, small symbol"
 			(at 101.6 170.18 0)
 			(effects
 				(font
@@ -7751,7 +7761,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
 			(at 101.6 162.56 0)
 			(effects
 				(font
@@ -7815,7 +7825,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Resistor"
 			(at 67.31 124.46 0)
 			(effects
 				(font
@@ -7882,7 +7892,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "256 kb CMOS Serial EEPROM, DIP-8/SOIC-8/TSSOP-8/DFN-8"
 			(at 81.28 177.8 0)
 			(effects
 				(font
@@ -7966,7 +7976,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
 			(at 129.54 133.35 0)
 			(effects
 				(font
@@ -8029,7 +8039,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
 			(at 138.43 90.17 0)
 			(effects
 				(font
@@ -8075,7 +8085,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_TO_SOT_SMD:TSOT-23-6"
+		(property "Footprint" "digikey-footprints:SOT-23-6"
 			(at 160.02 144.78 0)
 			(effects
 				(font
@@ -8185,6 +8195,16 @@
 				(hide yes)
 			)
 		)
+		(property "Description_1" "IC LOAD SW HIGH SIDE 6SOT"
+			(at 160.02 124.46 0)
+			(effects
+				(font
+					(size 1.524 1.524)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "5226cad3-d697-4036-99c8-00363235f1e9")
 		)
@@ -8254,7 +8274,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
 			(at 156.21 90.17 0)
 			(effects
 				(font
@@ -8321,7 +8341,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Special symbol for telling ERC where power comes from"
 			(at 156.21 88.9 0)
 			(effects
 				(font
@@ -8384,7 +8404,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Power symbol creates a global label with name \"+5V\""
 			(at 175.26 162.56 0)
 			(effects
 				(font
@@ -8447,7 +8467,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
 			(at 81.28 190.5 0)
 			(effects
 				(font
@@ -8514,7 +8534,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Special symbol for telling ERC where power comes from"
 			(at 54.61 39.37 0)
 			(effects
 				(font
@@ -8580,7 +8600,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
 			(at 101.6 180.34 0)
 			(effects
 				(font
@@ -8643,7 +8663,7 @@
 				)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
 			(at 138.43 114.3 0)
 			(effects
 				(font
@@ -8709,7 +8729,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Special symbol for telling ERC where power comes from"
 			(at 162.56 39.37 0)
 			(effects
 				(font
@@ -8775,7 +8795,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Generic connector, double row, 02x05, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"
 			(at 146.05 105.41 0)
 			(effects
 				(font
@@ -8866,7 +8886,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Resistor"
 			(at 67.31 130.81 0)
 			(effects
 				(font
