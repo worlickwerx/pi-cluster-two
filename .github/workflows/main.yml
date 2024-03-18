@@ -1,0 +1,45 @@
+name: ci
+
+on: [ pull_request, push ]
+
+jobs:
+  build:
+    runs-on: ${{matrix.os}}
+
+    strategy:
+      matrix:
+        cc: [gcc]
+        os: [ubuntu-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: |
+        sudo add-apt-repository --yes ppa:kicad/kicad-8.0-releases \
+        sudo apt-get update
+        sudo apt-get install -y \
+            automake \
+            autoconf \
+            make \
+            libev-dev \
+            gcc-arm-none-eabi \
+            gdb-multiarch \
+            openocd \
+            kicad \
+            ${{matrix.cc}}
+    - name: Display configuration
+      run: |
+        echo "C compiler:"
+        ${CC} --version
+      env:
+        CC: ${{matrix.cc}}
+    - name: autogen
+      run: ./autogen.sh
+    - name: configure
+      run: |
+        ./configure \
+           --with-kicad
+    - name: make
+      run: make
+    - name: make check
+      run: make check
