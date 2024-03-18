@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = -I config
 
-SUBDIRS = . firmware
+SUBDIRS = . firmware hardware
 
 #if HAVE_SYSTEMD
 systemdsystemunit_DATA = etc/bramble.service
