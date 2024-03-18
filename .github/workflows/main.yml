@@ -33,6 +33,10 @@ jobs:
         ${CC} --version
       env:
         CC: ${{matrix.cc}}
+    - name: update submodules
+      run: |
+        git submodule init
+        git submodule update
     - name: autogen
       run: ./autogen.sh
     - name: configure
