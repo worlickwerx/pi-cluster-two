@@ -27,6 +27,11 @@ jobs:
             openocd \
             kicad \
             ${{matrix.cc}}
+    - name: initialize kicad config
+      run: |
+        mkdir -p $HOME/.config/kicad/8.0
+        cp /usr/share/kicad/template/fp-lib-table $HOME/.config/kicad/8.0/
+        cp /usr/share/kicad/template/sym-lib-table $HOME/.config/kicad/8.0/
     - name: Display configuration
       run: |
         echo "C compiler:"
