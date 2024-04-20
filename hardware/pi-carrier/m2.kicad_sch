@@ -4,6 +4,14 @@
 
   (paper "USLetter")
 
+  (title_block
+    (title "Molliebus Pi Carrier")
+    (date "2024-04-20")
+    (rev "4")
+    (company "WorlickWerx")
+    (comment 1 "SPDX-License-Identifier: CERN-OHL-1.2")
+  )
+
   (lib_symbols
     (symbol "Connector:Bus_M.2_Socket_M" (in_bom yes) (on_board yes)
       (property "Reference" "J4" (at 2.1941 50.8 0)

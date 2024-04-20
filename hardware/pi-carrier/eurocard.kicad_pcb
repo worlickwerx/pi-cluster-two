@@ -4,7 +4,14 @@
     (thickness 1.5842)
   )
 
-  (paper "A4")
+  (paper "USLetter")
+  (title_block
+    (title "Molliebus Pi Carrier")
+    (date "2024-04-20")
+    (rev "4")
+    (company "WorlickWerx")
+  )
+
   (layers
     (0 "F.Cu" signal)
     (1 "In1.Cu" power)
@@ -7617,7 +7624,7 @@
   (gr_text "1" (at 326.86 165.25) (layer "F.SilkS") (tstamp 00000000-0000-0000-0000-00005fb2f794)
     (effects (font (size 1 1) (thickness 0.15)))
   )
-  (gr_text "(c) 2020 WorlickWerx" (at 107.823 140.843) (layer "F.SilkS") (tstamp 0886c484-7239-4d6b-8b30-0640675983d4)
+  (gr_text "(c) 2020 WorlickWerx" (at 77.089 143.891) (layer "F.SilkS") (tstamp 0886c484-7239-4d6b-8b30-0640675983d4)
     (effects (font (size 1 1) (thickness 0.15)))
   )
   (gr_text "3V3" (at 199.7456 128.3716) (layer "F.SilkS") (tstamp 14e0ac98-01b4-4614-a9dc-7e74ee476023)
@@ -7694,7 +7701,7 @@
   (gr_text "Barrier" (at 193.5226 86.1822) (layer "F.SilkS") (tstamp 2cc9abf0-d5b9-40f4-8be6-4dfe03fce048)
     (effects (font (size 1 1) (thickness 0.15)))
   )
-  (gr_text "CERN-OHL-1.2" (at 105.537 143.129) (layer "F.SilkS") (tstamp 38d45882-2f9b-46e4-9389-d9e5b441390f)
+  (gr_text "CERN-OHL-1.2" (at 93.98 144.145) (layer "F.SilkS") (tstamp 38d45882-2f9b-46e4-9389-d9e5b441390f)
     (effects (font (size 1 1) (thickness 0.15)))
   )
   (gr_text "+" (at 187.833 121.5898) (layer "F.SilkS") (tstamp 5d77bc41-398f-4de6-b383-a423c166d566)
@@ -7703,7 +7710,7 @@
   (gr_text "LED Matrix Display" (at 86.7156 141.2748) (layer "F.SilkS") (tstamp 72081308-c6d0-44f8-8bf6-6a967e46f4a8)
     (effects (font (size 1 1) (thickness 0.15)))
   )
-  (gr_text "pi-carrier v3.2" (at 110.109 50.165) (layer "F.SilkS") (tstamp 8b1669e2-b468-4741-801a-96ef108141e5)
+  (gr_text "pi-carrier v4" (at 110.109 50.165) (layer "F.SilkS") (tstamp 8b1669e2-b468-4741-801a-96ef108141e5)
     (effects (font (size 2 2) (thickness 0.3)))
   )
   (gr_text "Pi CAN Interface" (at 195.072 62.23) (layer "F.SilkS") (tstamp 8b6c8a50-ed50-4218-9ef4-d8a43e992871)

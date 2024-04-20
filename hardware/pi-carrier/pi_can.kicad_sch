@@ -2,7 +2,15 @@
 
   (uuid 3efecdf7-419c-435e-932f-b84549cdc0c0)
 
-  (paper "A4")
+  (paper "USLetter")
+
+  (title_block
+    (title "Molliebus Pi Carrier")
+    (date "2024-04-20")
+    (rev "4")
+    (company "WorlickWerx")
+    (comment 1 "SPDX-License-Identifier: CERN-OHL-1.2")
+  )
 
   (lib_symbols
     (symbol "Device:C" (pin_numbers hide) (pin_names (offset 0.254)) (in_bom yes) (on_board yes)
