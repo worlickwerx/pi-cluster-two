@@ -1,5 +1,6 @@
 SUBDIRS = \
-	pi5_adapter
+	pi5_adapter \
+	pi-carrier
 
 check_SCRIPTS = \
 	scripts/plot.sh \
