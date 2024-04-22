@@ -19,25 +19,23 @@
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(property "Reference" "U"
-				(at -12.7 13.7 0)
+			(property "Reference" "U13"
+				(at 0 17.78 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
-					(justify left bottom)
 				)
 			)
 			(property "Value" "TPS2421-1DDAR"
-				(at -12.7 -16.7 0)
+				(at 0 15.24 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
-					(justify left bottom)
 				)
 			)
-			(property "Footprint" ""
+			(property "Footprint" "00_eurocard:VREG_LM5017MR_NOPB"
 				(at 0 0 0)
 				(effects
 					(font
@@ -185,7 +183,7 @@
 						)
 					)
 				)
-				(pin output line
+				(pin power_out line
 					(at 17.78 5.08 180)
 					(length 5.08)
 					(name "VOUT"
@@ -1078,7 +1076,7 @@
 		(uuid "166dc3fd-3b3b-4b10-92d7-8ff1ccfe1dba")
 	)
 	(hierarchical_label "VOUT"
-		(shape input)
+		(shape output)
 		(at 213.36 85.09 0)
 		(fields_autoplaced yes)
 		(effects

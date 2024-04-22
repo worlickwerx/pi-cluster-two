@@ -2916,12 +2916,6 @@
 		(uuid "7a796fdb-ee98-488e-a6e9-c76be0d878ba")
 	)
 	(junction
-		(at 41.91 135.89)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "81deb13b-7c20-431f-a349-70e002b324e7")
-	)
-	(junction
 		(at 124.46 135.89)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3443,7 +3437,7 @@
 	)
 	(wire
 		(pts
-			(xy 39.37 135.89) (xy 41.91 135.89)
+			(xy 39.37 135.89) (xy 46.99 135.89)
 		)
 		(stroke
 			(width 0)
@@ -3840,16 +3834,6 @@
 			(type default)
 		)
 		(uuid "d841bdd9-fa91-4642-8cbe-328134dab7a9")
-	)
-	(wire
-		(pts
-			(xy 41.91 135.89) (xy 46.99 135.89)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d874e1e4-f8d7-4f51-8dd9-ee47e79f3248")
 	)
 	(wire
 		(pts
@@ -5443,73 +5427,6 @@
 			(project "eurocard"
 				(path "/e048be62-6e5d-4330-8748-f1a6c1c5d89d/78247a58-bd33-4427-a596-05636cd08db2"
 					(reference "#PWR023")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:PWR_FLAG")
-		(at 41.91 135.89 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "81c6aa4e-c422-4a31-8b6b-172c4aca9c2f")
-		(property "Reference" "#FLG05"
-			(at 41.91 133.985 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "PWR_FLAG"
-			(at 41.91 130.81 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Footprint" ""
-			(at 41.91 135.89 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 41.91 135.89 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 41.91 135.89 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "49c47299-18ad-4bbe-b84d-d26d5379bbfd")
-		)
-		(instances
-			(project "eurocard"
-				(path "/e048be62-6e5d-4330-8748-f1a6c1c5d89d/78247a58-bd33-4427-a596-05636cd08db2"
-					(reference "#FLG05")
 					(unit 1)
 				)
 			)
