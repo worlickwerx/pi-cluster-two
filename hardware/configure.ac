@@ -40,6 +40,7 @@ AM_CONDITIONAL([HAVE_KICAD], [test "x$have_kicad" = "xyes"])
 AC_CONFIG_FILES( \
   Makefile
   pi5_adapter/Makefile
+  pi-carrier/Makefile
 )
 
 AC_OUTPUT
