@@ -2637,11 +2637,10 @@
 			)
 		)
 		(symbol "Jumper:SolderJumper_2_Open"
-			(pin_numbers hide)
 			(pin_names
 				(offset 0) hide)
-			(exclude_from_sim yes)
-			(in_bom no)
+			(exclude_from_sim no)
+			(in_bom yes)
 			(on_board yes)
 			(property "Reference" "JP"
 				(at 0 2.032 0)
@@ -3043,9 +3042,9 @@
 		)
 		(symbol "power:+3.3V"
 			(power)
-			(pin_numbers hide)
 			(pin_names
-				(offset 0) hide)
+				(offset 0)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -3143,8 +3142,8 @@
 			(symbol "+3.3V_1_1"
 				(pin power_in line
 					(at 0 0 90)
-					(length 0)
-					(name "~"
+					(length 0) hide
+					(name "+3.3V"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -3163,9 +3162,9 @@
 		)
 		(symbol "power:+5V"
 			(power)
-			(pin_numbers hide)
 			(pin_names
-				(offset 0) hide)
+				(offset 0)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -3263,8 +3262,8 @@
 			(symbol "+5V_1_1"
 				(pin power_in line
 					(at 0 0 90)
-					(length 0)
-					(name "~"
+					(length 0) hide
+					(name "+5V"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -3283,9 +3282,9 @@
 		)
 		(symbol "power:GND"
 			(power)
-			(pin_numbers hide)
 			(pin_names
-				(offset 0) hide)
+				(offset 0)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -3359,8 +3358,8 @@
 			(symbol "GND_1_1"
 				(pin power_in line
 					(at 0 0 270)
-					(length 0)
-					(name "~"
+					(length 0) hide
+					(name "GND"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -3442,7 +3441,7 @@
 				(pin power_out line
 					(at 0 0 90)
 					(length 0)
-					(name "~"
+					(name "pwr"
 						(effects
 							(font
 								(size 1.27 1.27)
