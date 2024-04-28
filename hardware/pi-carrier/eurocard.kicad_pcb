@@ -27635,7 +27635,7 @@
 		)
 	)
 	(gr_text "(c) 2020 WorlickWerx"
-		(at 106.68 50.165 0)
+		(at 109 47 0)
 		(layer "F.SilkS")
 		(uuid "0886c484-7239-4d6b-8b30-0640675983d4")
 		(effects
@@ -27718,7 +27718,7 @@
 		)
 	)
 	(gr_text "CERN-OHL-1.2"
-		(at 128.524 50.165 0)
+		(at 128 47 0)
 		(layer "F.SilkS")
 		(uuid "38d45882-2f9b-46e4-9389-d9e5b441390f")
 		(effects
