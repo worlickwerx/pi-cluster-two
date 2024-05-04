@@ -6495,8 +6495,8 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_2x20_P2.54mm_Vertical"
-			(at -58.42 86.36 0)
+		(property "Footprint" ""
+			(at 64.77 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6505,7 +6505,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at -58.42 86.36 0)
+			(at 64.77 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6655,8 +6655,8 @@
 		(lib_id "Jumper:SolderJumper_2_Open")
 		(at 171.45 134.62 0)
 		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
+		(exclude_from_sim yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "014d30e2-fc4c-4a61-9a7f-eefbd56a5b30")
@@ -6676,7 +6676,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
+		(property "Footprint" ""
 			(at 171.45 134.62 0)
 			(effects
 				(font
@@ -6745,7 +6745,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" ""
 			(at 67.31 177.8 0)
 			(effects
 				(font
@@ -6814,7 +6814,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" ""
 			(at 168.6052 147.32 0)
 			(effects
 				(font
@@ -6881,7 +6881,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" ""
 			(at 146.558 140.97 90)
 			(effects
 				(font
@@ -6934,7 +6934,7 @@
 		(fields_autoplaced yes)
 		(uuid "16de5751-f626-462e-9214-a2719524e122")
 		(property "Reference" "J3"
-			(at 69.85 105.41 0)
+			(at 69.85 105.4099 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6952,7 +6952,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "lib:PinSocket_1x05_P2.54mm_Vertical"
+		(property "Footprint" ""
 			(at 67.31 105.41 0)
 			(effects
 				(font
@@ -7093,7 +7093,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" ""
 			(at 93.98 170.18 0)
 			(effects
 				(font
@@ -7162,7 +7162,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" ""
 			(at 135.382 140.97 90)
 			(effects
 				(font
@@ -7334,8 +7334,8 @@
 		(lib_id "Jumper:SolderJumper_2_Open")
 		(at 96.52 180.34 0)
 		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
+		(exclude_from_sim yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "43e66c4c-de75-44f8-8171-19825b035cbb")
@@ -7356,7 +7356,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
+		(property "Footprint" ""
 			(at 96.52 180.34 0)
 			(effects
 				(font
@@ -7425,7 +7425,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" ""
 			(at 131.318 140.97 90)
 			(effects
 				(font
@@ -7492,8 +7492,8 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_2x20_P2.54mm_Vertical"
-			(at 22.86 86.36 0)
+		(property "Footprint" ""
+			(at 146.05 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7502,7 +7502,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 22.86 86.36 0)
+			(at 146.05 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7675,7 +7675,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" ""
 			(at 101.6 170.18 0)
 			(effects
 				(font
@@ -7807,7 +7807,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" ""
 			(at 67.31 126.238 90)
 			(effects
 				(font
@@ -7874,7 +7874,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm"
+		(property "Footprint" ""
 			(at 81.28 177.8 0)
 			(effects
 				(font
@@ -8106,12 +8106,11 @@
 			)
 		)
 		(property "Description" "IC LOAD SW HIGH SIDE 6SOT"
-			(at 160.02 124.46 0)
+			(at 154.94 149.86 0)
 			(effects
 				(font
-					(size 1.524 1.524)
+					(size 1.27 1.27)
 				)
-				(justify left)
 				(hide yes)
 			)
 		)
@@ -8315,7 +8314,7 @@
 			)
 		)
 		(property "Value" "PWR_FLAG"
-			(at 160.02 88.9 90)
+			(at 160.02 88.8999 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8508,7 +8507,7 @@
 			)
 		)
 		(property "Value" "PWR_FLAG"
-			(at 50.546 39.37 90)
+			(at 50.8 39.3699 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8704,7 +8703,7 @@
 			)
 		)
 		(property "Value" "PWR_FLAG"
-			(at 162.56 34.925 0)
+			(at 162.56 34.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8777,7 +8776,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_2x05_P2.54mm_Vertical"
+		(property "Footprint" ""
 			(at 146.05 105.41 0)
 			(effects
 				(font
@@ -8868,7 +8867,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" ""
 			(at 67.31 132.588 90)
 			(effects
 				(font
