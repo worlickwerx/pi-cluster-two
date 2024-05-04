@@ -10,7 +10,7 @@ all-local: cam.zip
 endif
 
 cam.zip: eurocard.kicad_pcb
-	$(abs_top_srcdir)/scripts/plot.sh $< $@
+	$(abs_top_srcdir)/scripts/plot_jlc4.sh $< $@
 
 clean-local:
 	$(RM) -f cam.zip
