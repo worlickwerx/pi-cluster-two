@@ -6285,102 +6285,6 @@
 				)
 			)
 		)
-		(symbol "PWR_FLAG_1"
-			(power)
-			(pin_numbers hide)
-			(pin_names
-				(offset 0) hide)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "#FLG"
-				(at 0 1.905 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Value" "PWR_FLAG_1"
-				(at 0 3.81 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "~"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Special symbol for telling ERC where power comes from"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "flag power"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "PWR_FLAG_1_0_0"
-				(pin power_out line
-					(at 0 0 90)
-					(length 0)
-					(name "pwr"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(symbol "PWR_FLAG_1_0_1"
-				(polyline
-					(pts
-						(xy 0 0) (xy 0 1.27) (xy -1.016 1.905) (xy 0 2.54) (xy 1.016 1.905) (xy 0 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-		)
 		(symbol "PWR_FLAG_2"
 			(power)
 			(pin_numbers hide)
@@ -7267,12 +7171,6 @@
 		(uuid "ec97e809-8ade-4816-a2cb-34a6222407b7")
 	)
 	(junction
-		(at 81.28 186.69)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "edf938f5-baae-42bc-aa8d-5eaf28fc5e02")
-	)
-	(junction
 		(at 203.2 25.4)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -7580,7 +7478,7 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 186.69) (xy 87.63 186.69)
+			(xy 73.66 186.69) (xy 87.63 186.69)
 		)
 		(stroke
 			(width 0)
@@ -8057,16 +7955,6 @@
 			(type default)
 		)
 		(uuid "3abdea15-1fff-4e53-8c2e-482fa790706f")
-	)
-	(wire
-		(pts
-			(xy 66.04 186.69) (xy 73.66 186.69)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3b0519ed-04f5-483d-963e-e69fdbf9c9e9")
 	)
 	(wire
 		(pts
@@ -10364,7 +10252,7 @@
 		(uuid "8ed21a92-e62b-43cc-9ede-3443978f388b")
 	)
 	(label "SAFE_5V"
-		(at 66.04 186.69 0)
+		(at 73.66 186.69 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -16707,74 +16595,6 @@
 		)
 	)
 	(symbol
-		(lib_name "PWR_FLAG_1")
-		(lib_id "power:PWR_FLAG")
-		(at 81.28 186.69 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "de39eb66-9a43-4a17-993a-67f8d7b75631")
-		(property "Reference" "#FLG01"
-			(at 81.28 184.785 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "PWR_FLAG"
-			(at 81.28 181.61 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Footprint" ""
-			(at 81.28 186.69 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 81.28 186.69 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 81.28 186.69 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "76bf32b2-ed00-466e-95de-07ea914122b3")
-		)
-		(instances
-			(project "eurocard"
-				(path "/e048be62-6e5d-4330-8748-f1a6c1c5d89d"
-					(reference "#FLG01")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Connector:TestPoint")
 		(at 146.05 130.81 270)
 		(unit 1)
@@ -16899,75 +16719,6 @@
 			(project "eurocard"
 				(path "/e048be62-6e5d-4330-8748-f1a6c1c5d89d"
 					(reference "#PWR031")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Jumper:SolderJumper_2_Bridged")
-		(at 77.47 186.69 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "efb61b0d-9748-464b-b3a5-046fcc257792")
-		(property "Reference" "JP6"
-			(at 77.47 182.88 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SolderJumper_2_Bridged"
-			(at 77.47 182.88 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Bridged_RoundedPad1.0x1.5mm"
-			(at 77.47 186.69 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 77.47 186.69 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 77.47 186.69 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "c707ad69-67c2-43b8-85ef-242b5838fc9c")
-		)
-		(pin "2"
-			(uuid "417e57e5-5b91-461b-a5b6-0f13f4c02641")
-		)
-		(instances
-			(project "eurocard"
-				(path "/e048be62-6e5d-4330-8748-f1a6c1c5d89d"
-					(reference "JP6")
 					(unit 1)
 				)
 			)
