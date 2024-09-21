@@ -88,11 +88,12 @@ void power_set_state (bool val)
 {
     /* If GLOBAL_EN is high and RUN_PG is low, the pi may have turned off
      * its own PMIC (e.g. shutdown -h).  In that case, GLOBAL_EN needs to be
-     * pulsed low for >= 1ms.
+     * turned off for a while before it can be turned on.  1ms was reliable
+     * for the pi4 but the pi5 requires more time so conservatively wait 100ms.
      */
     if (val && pi_global_en_get () && !pi_run_pg_get ()) {
         pi_global_en_set (false);
-        vTaskDelay (pdMS_TO_TICKS (1));
+        vTaskDelay (pdMS_TO_TICKS (100));
     }
 
     /* Set GLOBAL_EN to desired state, then wait for RUN_PG to change before
