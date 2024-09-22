@@ -12,7 +12,7 @@ jobs:
         os: [ubuntu-latest]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Install dependencies
       run: |
         sudo add-apt-repository --yes ppa:kicad/kicad-8.0-releases
@@ -25,7 +25,7 @@ jobs:
             gcc-arm-none-eabi \
             gdb-multiarch \
             openocd \
-            kicad \
+            kicad=8.0.5* \
             ${{matrix.cc}}
     - name: initialize kicad config
       run: |
